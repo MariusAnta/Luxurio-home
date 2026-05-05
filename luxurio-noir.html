@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUXURIO — Noir Editorial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0e0d0b; --bg2:#131109; --bg3:#181510;
+      --fg:#f0ede6; --fg2:rgba(240,237,230,0.55); --fg3:rgba(240,237,230,0.25);
+      --gold:#b8a070; --gold2:rgba(184,160,112,0.4);
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --sans:'DM Sans',Helvetica,sans-serif;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    ::selection{background:rgba(184,160,112,0.2)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.9s cubic-bezier(.19,1,.22,1),transform 0.9s cubic-bezier(.19,1,.22,1)}
+    .reveal.visible{opacity:1;transform:none}
+  /* ── MOBILE ── */
+  @media(max-width:900px){
+    nav{padding:0 24px!important}
+    .nav-links{display:none!important}
+    [data-screen-label="Hero"]{grid-template-columns:1fr!important}
+    [data-screen-label="Hero"]>div:last-child{display:none!important}
+    [data-screen-label="Hero"]>div:first-child{padding:100px 24px 56px!important}
+    [data-screen-label="Featured Product"]{grid-template-columns:1fr!important;padding:64px 24px!important;gap:40px!important}
+    [data-screen-label="Editorial"]{grid-template-columns:1fr!important;padding:64px 24px!important;gap:40px!important}
+    [data-screen-label="Services"]{grid-template-columns:1fr!important;padding:64px 24px!important;gap:40px!important}
+    [data-screen-label="Products"]{padding:64px 24px!important}
+    [data-screen-label="Newsletter"]{padding:64px 24px!important}
+    .col-grid{grid-template-columns:1fr 1fr!important;grid-template-rows:auto!important}
+    .col-grid>*{grid-row:auto!important}
+    .prod-grid{grid-template-columns:1fr 1fr!important}
+    .foot-grid{grid-template-columns:1fr 1fr!important;gap:28px!important;margin-bottom:48px!important}
+    footer{padding:56px 24px 32px!important}
+  }
+  @media(max-width:480px){
+    [data-screen-label="Hero"]>div:first-child{padding:88px 20px 48px!important}
+    .col-grid{grid-template-columns:1fr!important}
+    .foot-grid{grid-template-columns:1fr!important}
+  }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef} = React;
+
+/* helpers */
+function Img({id,bg="#1a1714",angle=25,color="rgba(200,175,130,0.1)",label,style={}}){
+  return(
+    <div style={{background:bg,position:"relative",overflow:"hidden",...style}}>
+      <svg width="100%" height="100%" style={{position:"absolute",inset:0,pointerEvents:"none"}}>
+        <defs><pattern id={`p${id}`} width="24" height="24" patternUnits="userSpaceOnUse" patternTransform={`rotate(${angle})`}><line x1="0" y1="0" x2="0" y2="24" stroke={color} strokeWidth="1"/></pattern></defs>
+        <rect width="100%" height="100%" fill={`url(#p${id})`}/>
+      </svg>
+      {label&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"monospace",fontSize:9,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(200,175,130,0.3)"}}>{label}</div>}
+    </div>
+  );
+}
+
+function useReveal(){
+  useEffect(()=>{
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:0.15});
+    document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+    return()=>obs.disconnect();
+  },[]);
+}
+
+/* NAV */
+function Nav(){
+  const [scrolled,setScrolled]=useState(false);
+  useEffect(()=>{const fn=()=>setScrolled(window.scrollY>80);window.addEventListener("scroll",fn);return()=>window.removeEventListener("scroll",fn)},[]);
+  return(
+    <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:64,
+      display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 56px",
+      background:scrolled?"rgba(14,13,11,0.96)":"transparent",
+      borderBottom:scrolled?"1px solid rgba(240,237,230,0.06)":"1px solid transparent",
+      backdropFilter:scrolled?"blur(12px)":"none",
+      transition:"background 0.5s,border-color 0.5s"}}>
+      <div className="nav-links" style={{display:"flex",gap:40}}>
+        {["Collections","Designers","Atelier"].map(l=><a key={l} href="#" style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"var(--fg3)",transition:"color 0.2s"}} onMouseEnter={e=>e.currentTarget.style.color="var(--fg)"} onMouseLeave={e=>e.currentTarget.style.color="var(--fg3)"}>{l}</a>)}
+      </div>
+      <a href="#" style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:18,letterSpacing:"0.45em",textTransform:"uppercase",color:"var(--fg)"}}>LUXURIO</a>
+      <div className="nav-links" style={{display:"flex",gap:40,alignItems:"center"}}>
+        {["Interiors","About"].map(l=><a key={l} href="#" style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"var(--fg3)",transition:"color 0.2s"}} onMouseEnter={e=>e.currentTarget.style.color="var(--fg)"} onMouseLeave={e=>e.currentTarget.style.color="var(--fg3)"}>{l}</a>)}
+        <a href="#" style={{fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",color:"var(--fg3)"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+/* HERO */
+function Hero(){
+  const [loaded,setLoaded]=useState(false);
+  useEffect(()=>{setTimeout(()=>setLoaded(true),100)},[]);
+  return(
+    <section data-screen-label="Hero" style={{minHeight:"100vh",display:"grid",gridTemplateColumns:"1fr 1fr",position:"relative"}}>
+      {/* Left */}
+      <div style={{padding:"140px 56px 80px",display:"flex",flexDirection:"column",justifyContent:"space-between",borderRight:"1px solid rgba(240,237,230,0.05)"}}>
+        <div>
+          <p style={{fontSize:9,letterSpacing:"0.35em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:48,
+            opacity:loaded?1:0,transform:loaded?"none":"translateY(16px)",transition:"opacity 1s 0.2s,transform 1s 0.2s"}}>
+            S/S 2026 — Collection N° 001
+          </p>
+          <h1 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(72px,8vw,130px)",lineHeight:0.88,letterSpacing:"-0.02em",
+            opacity:loaded?1:0,transform:loaded?"none":"translateY(48px)",transition:"opacity 1.4s 0.4s cubic-bezier(.19,1,.22,1),transform 1.4s 0.4s cubic-bezier(.19,1,.22,1)"}}>
+            The<br/><em style={{fontStyle:"italic",color:"var(--gold)"}}>Art</em><br/>of<br/>Stillness.
+          </h1>
+        </div>
+        <div style={{opacity:loaded?1:0,transition:"opacity 1.2s 1s"}}>
+          <div style={{width:40,height:1,background:"var(--gold2)",marginBottom:20}}/>
+          <p style={{fontSize:13,lineHeight:1.85,color:"var(--fg2)",maxWidth:340,letterSpacing:"0.03em",marginBottom:40}}>
+            Furniture conceived for spaces that refuse to shout. Handmade in Italy. Built to last decades.
+          </p>
+          <div style={{display:"flex",gap:48,alignItems:"center"}}>
+            <a href="#collections" style={{display:"flex",alignItems:"center",gap:14,fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",borderBottom:"1px solid rgba(240,237,230,0.2)",paddingBottom:4,transition:"border-color 0.3s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(240,237,230,0.7)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(240,237,230,0.2)"}>
+              Explore Collections <svg width="20" height="8" viewBox="0 0 20 8" fill="none"><line x1="0" y1="4" x2="17" y2="4" stroke="currentColor" strokeWidth="1"/><polyline points="14,1 17,4 14,7" fill="none" stroke="currentColor" strokeWidth="1"/></svg>
+            </a>
+            <span style={{fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:"var(--fg3)"}}>Est. 2012 · Milan</span>
+          </div>
+        </div>
+      </div>
+      {/* Right image */}
+      <div style={{position:"relative",overflow:"hidden"}}>
+        <Img id="hero" bg="#1e1b17" label="campaign photography" style={{height:"100%"}}/>
+        {/* Corner numbers */}
+        <div style={{position:"absolute",top:80,right:32,writingMode:"vertical-rl",transform:"rotate(180deg)",fontSize:9,letterSpacing:"0.3em",color:"var(--fg3)"}}>LUXURIO HOME — 2026</div>
+        <div style={{position:"absolute",bottom:40,left:32,fontSize:9,letterSpacing:"0.3em",color:"var(--fg3)"}}>001 / 048</div>
+      </div>
+      {/* Scroll hint */}
+      <div style={{position:"absolute",bottom:40,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:8,opacity:loaded?0.4:0,transition:"opacity 1s 1.5s"}}>
+        <span style={{fontSize:9,letterSpacing:"0.25em",textTransform:"uppercase",color:"var(--fg3)"}}>Scroll</span>
+        <div style={{width:1,height:32,background:"linear-gradient(to bottom,var(--fg3),transparent)"}}/>
+      </div>
+    </section>
+  );
+}
+
+/* MARQUEE */
+function Marquee(){
+  const items=["White-Glove Delivery","Bespoke Commissions","Milan · New York · London","30-Day Returns","Handcrafted in Italy"];
+  const rep=[...items,...items];
+  return(
+    <div style={{borderTop:"1px solid rgba(240,237,230,0.06)",borderBottom:"1px solid rgba(240,237,230,0.06)",height:42,overflow:"hidden",display:"flex",alignItems:"center"}}>
+      <div style={{display:"flex",gap:64,whiteSpace:"nowrap",animation:"marquee 26s linear infinite"}}>
+        {rep.map((t,i)=><span key={i} style={{fontSize:9,letterSpacing:"0.25em",textTransform:"uppercase",color:"var(--fg3)"}}>
+          {t} <span style={{opacity:0.3,marginLeft:32}}>·</span>
+        </span>)}
+      </div>
+    </div>
+  );
+}
+
+/* COLLECTIONS */
+const cols=[
+  {id:"s",label:"Seating",no:"001",count:48,bg:"#1a1714"},
+  {id:"t",label:"Tables",no:"002",count:32,bg:"#161310"},
+  {id:"l",label:"Lighting",no:"003",count:21,bg:"#1c1916"},
+  {id:"o",label:"Objects",no:"004",count:64,bg:"#1e1b17"},
+  {id:"tx",label:"Textiles",no:"005",count:39,bg:"#181512"},
+  {id:"st",label:"Storage",no:"006",count:27,bg:"#141210"},
+];
+
+function Collections(){
+  return(
+    <section id="collections" data-screen-label="Collections" style={{padding:"120px 0 0"}}>
+      <div style={{padding:"0 56px 64px",display:"flex",alignItems:"flex-end",justifyContent:"space-between"}} className="reveal">
+        <div>
+          <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:16}}>Curated Rooms</p>
+          <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(40px,4vw,72px)",letterSpacing:"-0.01em"}}>Our Collections</h2>
+        </div>
+        <a href="#" style={{fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:"var(--fg3)",borderBottom:"1px solid rgba(240,237,230,0.15)",paddingBottom:3}}>View All</a>
+      </div>
+      <div className="col-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gridTemplateRows:"360px 260px",gap:2}}>
+        {cols.map((c,i)=><CollCard key={c.id} c={c} big={i===0}/>)}
+      </div>
+    </section>
+  );
+}
+
+function CollCard({c,big}){
+  const [hov,setHov]=useState(false);
+  return(
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{position:"relative",overflow:"hidden",cursor:"pointer",gridRow:big?"span 2":"span 1"}}>
+      <Img id={`col${c.id}`} bg={c.bg} style={{position:"absolute",inset:0,transform:hov?"scale(1.05)":"scale(1)",transition:"transform 0.8s cubic-bezier(.19,1,.22,1)"}}/>
+      <div style={{position:"absolute",inset:0,background:hov?"linear-gradient(to top,rgba(14,13,11,0.85),rgba(14,13,11,0.1))":"linear-gradient(to top,rgba(14,13,11,0.65),transparent 60%)",transition:"background 0.6s"}}/>
+      <div style={{position:"absolute",inset:0,padding:"28px 32px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+        <span style={{fontSize:9,letterSpacing:"0.3em",color:"var(--fg3)"}}>{c.no}</span>
+        <div>
+          <p style={{fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:8,opacity:hov?1:0,transform:hov?"none":"translateY(8px)",transition:"opacity 0.4s,transform 0.4s"}}>{c.count} pieces</p>
+          <h3 style={{fontFamily:"var(--serif)",fontWeight:400,fontSize:big?44:28,color:"var(--fg)"}}>{c.label}</h3>
+        </div>
+      </div>
+      <div style={{position:"absolute",top:24,right:24,opacity:hov?1:0,transform:hov?"none":"translate(-8px,8px)",transition:"opacity 0.4s,transform 0.5s"}}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(240,237,230,0.6)" strokeWidth="1"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="9,5 19,5 19,15"/></svg>
+      </div>
+    </div>
+  );
+}
+
+/* FEATURED PRODUCT */
+function Featured(){
+  const [tab,setTab]=useState("details");
+  const [finish,setFinish]=useState(0);
+  const finishes=[{name:"Warm Walnut",c:"#7a5c3c"},{name:"Blackened Oak",c:"#2c2420"},{name:"Natural Ash",c:"#b89870"}];
+  return(
+    <section data-screen-label="Featured Product" style={{padding:"140px 56px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:96,alignItems:"center"}}>
+      <div className="reveal" style={{position:"relative"}}>
+        <div style={{position:"relative",paddingBottom:"125%",overflow:"hidden"}}>
+          <Img id="feat" bg="#1c1916" style={{position:"absolute",inset:0}}/>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,height:4,background:finishes[finish].c,transition:"background 0.4s"}}/>
+        </div>
+        <div style={{position:"absolute",top:-16,right:-16,background:"var(--gold)",color:"var(--bg)",padding:"10px 18px",fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase"}}>New Season</div>
+      </div>
+      <div className="reveal">
+        <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:16}}>Atelier Collection</p>
+        <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(32px,3.5vw,60px)",lineHeight:1,marginBottom:8}}>The Margaux<br/>Lounge Chair</h2>
+        <p style={{fontFamily:"var(--serif)",fontStyle:"italic",fontSize:17,color:"var(--fg2)",marginBottom:28}}>Designed by Luca Ferretti, Milan</p>
+        <p style={{fontSize:13,letterSpacing:"0.08em",color:"var(--gold)",marginBottom:36}}>From € 4,200</p>
+        {/* Finish */}
+        <div style={{marginBottom:40}}>
+          <p style={{fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:14}}>Finish — <span style={{color:"var(--fg)"}}>{finishes[finish].name}</span></p>
+          <div style={{display:"flex",gap:12}}>
+            {finishes.map((f,i)=><button key={i} onClick={()=>setFinish(i)} style={{width:28,height:28,borderRadius:"50%",background:f.c,border:"none",outline:finish===i?"2px solid var(--gold)":"2px solid transparent",outlineOffset:3,cursor:"pointer",transition:"outline-color 0.3s"}}/>)}
+          </div>
+        </div>
+        {/* Tabs */}
+        <div style={{borderTop:"1px solid rgba(240,237,230,0.08)",marginBottom:24}}>
+          <div style={{display:"flex"}}>
+            {["details","materials","shipping"].map(t=><button key={t} onClick={()=>setTab(t)} style={{background:"none",border:"none",borderBottom:tab===t?"1px solid var(--fg)":"1px solid transparent",padding:"14px 24px 12px",fontSize:9,letterSpacing:"0.18em",textTransform:"uppercase",cursor:"pointer",color:tab===t?"var(--fg)":"var(--fg3)",transition:"color 0.3s",fontFamily:"var(--sans)",marginTop:-1}}>{t}</button>)}
+          </div>
+        </div>
+        {tab==="details"&&<p style={{fontFamily:"var(--serif)",fontSize:16,lineHeight:1.8,color:"var(--fg2)",maxWidth:420}}>The Margaux is an exercise in considered restraint. Hand-sculpted from solid walnut, generously upholstered in vegetable-tanned leather.</p>}
+        {tab==="materials"&&<p style={{fontFamily:"var(--serif)",fontSize:16,lineHeight:1.8,color:"var(--fg2)",maxWidth:420}}>Frame: FSC-certified solid walnut or blackened oak. Upholstery: full-grain vegetable-tanned leather. Legs: hand-turned solid brass.</p>}
+        {tab==="shipping"&&<p style={{fontFamily:"var(--serif)",fontSize:16,lineHeight:1.8,color:"var(--fg2)",maxWidth:420}}>White-glove delivery within Europe. 8–12 weeks for bespoke orders. Our installation team handles placement and unwrapping.</p>}
+        <div style={{display:"flex",gap:12,marginTop:40}}>
+          <button style={{flex:1,padding:"16px 32px",background:"var(--fg)",color:"var(--bg)",border:"none",cursor:"pointer",fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",fontFamily:"var(--sans)",transition:"background 0.3s"}} onMouseEnter={e=>e.currentTarget.style.background="var(--gold)"} onMouseLeave={e=>e.currentTarget.style.background="var(--fg)"}>Request a Quote</button>
+          <button style={{padding:"16px 18px",background:"none",border:"1px solid rgba(240,237,230,0.15)",cursor:"pointer",color:"var(--fg)",transition:"border-color 0.3s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(240,237,230,0.5)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(240,237,230,0.15)"}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* EDITORIAL */
+function Editorial(){
+  return(
+    <section data-screen-label="Editorial" style={{background:"var(--bg2)",padding:"120px 56px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:80,alignItems:"center",borderTop:"1px solid rgba(240,237,230,0.05)"}}>
+      <div className="reveal">
+        <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:28}}>The Luxurio Atelier</p>
+        <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(36px,3.5vw,64px)",lineHeight:1.05,marginBottom:32}}>Every Object<br/>Begins as a<br/><em style={{color:"var(--gold)",fontStyle:"italic"}}>Conversation.</em></h2>
+        <p style={{fontFamily:"var(--serif)",fontSize:16,lineHeight:1.85,color:"var(--fg2)",maxWidth:440,marginBottom:40}}>We collaborate with Europe's most thoughtful designers to bring you furnishings built for decades. Each piece made to order, in small batches, with materials chosen for their integrity.</p>
+        <a href="#" style={{display:"flex",alignItems:"center",gap:14,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",borderBottom:"1px solid rgba(240,237,230,0.2)",paddingBottom:4,width:"fit-content"}}>
+          Our Story <svg width="20" height="8" viewBox="0 0 20 8" fill="none"><line x1="0" y1="4" x2="17" y2="4" stroke="currentColor" strokeWidth="1"/><polyline points="14,1 17,4 14,7" fill="none" stroke="currentColor" strokeWidth="1"/></svg>
+        </a>
+      </div>
+      <div className="reveal" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:2}}>
+        {["workshop","artisan close-up","material detail","studio"].map((l,i)=>(
+          <Img key={i} id={`ed${i}`} bg={["#1c1a16","#181512","#1e1b16","#141210"][i]} label={l} style={{paddingBottom:"130%"}}/>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* PRODUCTS */
+const prods=[
+  {name:"Éclat Side Table",by:"Neri & Hu",price:"€ 1,840",bg:"#1a1714"},
+  {name:"Sereno Pendant",by:"Ferretti Studio",price:"€ 3,200",bg:"#161310"},
+  {name:"Porto Armchair",by:"Studio Lievore",price:"€ 5,600",bg:"#1c1916"},
+  {name:"Monolith Console",by:"Claesson Koivisto",price:"€ 7,400",bg:"#181512"},
+];
+function Products(){
+  return(
+    <section data-screen-label="Products" style={{padding:"100px 56px"}}>
+      <div className="reveal" style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:56}}>
+        <div>
+          <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:12}}>Just Arrived</p>
+          <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(28px,3vw,48px)"}}>New This Season</h2>
+        </div>
+        <a href="#" style={{fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",color:"var(--fg3)",borderBottom:"1px solid rgba(240,237,230,0.15)",paddingBottom:3}}>View All</a>
+      </div>
+      <div className="prod-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24}}>
+        {prods.map((p,i)=><ProdCard key={i} p={p}/>)}
+      </div>
+    </section>
+  );
+}
+function ProdCard({p}){
+  const [hov,setHov]=useState(false);
+  return(
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{cursor:"pointer"}}>
+      <div style={{position:"relative",overflow:"hidden",marginBottom:20}}>
+        <Img id={`pr${p.name}`} bg={p.bg} style={{paddingBottom:"125%",transform:hov?"scale(1.04)":"scale(1)",transition:"transform 0.7s cubic-bezier(.19,1,.22,1)"}}/>
+        <div style={{position:"absolute",bottom:0,left:0,right:0,background:"rgba(14,13,11,0.9)",padding:"12px",textAlign:"center",fontSize:10,letterSpacing:"0.18em",textTransform:"uppercase",opacity:hov?1:0,transform:hov?"none":"translateY(100%)",transition:"opacity 0.3s,transform 0.4s cubic-bezier(.19,1,.22,1)"}}>Quick View</div>
+      </div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+        <div>
+          <p style={{fontFamily:"var(--serif)",fontSize:18,fontWeight:400,marginBottom:4}}>{p.name}</p>
+          <p style={{fontSize:10,letterSpacing:"0.1em",color:"var(--fg3)"}}>{p.by}</p>
+        </div>
+        <p style={{fontSize:12,color:"var(--fg2)"}}>{p.price}</p>
+      </div>
+    </div>
+  );
+}
+
+/* SERVICES */
+function Services(){
+  return(
+    <section data-screen-label="Services" style={{background:"var(--bg3)",padding:"120px 56px",display:"grid",gridTemplateColumns:"1.2fr 0.8fr",gap:80,alignItems:"center",borderTop:"1px solid rgba(240,237,230,0.05)"}}>
+      <div className="reveal" style={{position:"relative",paddingBottom:"65%"}}>
+        <Img id="svc" bg="#1a1714" label="interiors project" style={{position:"absolute",inset:0}}/>
+      </div>
+      <div className="reveal">
+        <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:20}}>Bespoke Service</p>
+        <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(28px,3vw,52px)",lineHeight:1.1,marginBottom:24}}>Private Interiors<br/><em style={{fontStyle:"italic",color:"var(--gold)"}}>Consultation</em></h2>
+        <p style={{fontFamily:"var(--serif)",fontSize:16,lineHeight:1.85,color:"var(--fg2)",marginBottom:36}}>Our in-house design team composes rooms of lasting significance — from a single statement piece to a complete interior.</p>
+        {["Site visit & mood board","Curated selection","Commission management","Installation & styling"].map((s,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:16,marginBottom:14}}>
+            <div style={{width:20,height:1,background:"var(--gold2)",flexShrink:0}}/>
+            <span style={{fontSize:12,letterSpacing:"0.06em",color:"var(--fg2)"}}>{s}</span>
+          </div>
+        ))}
+        <a href="#" style={{display:"flex",alignItems:"center",gap:14,marginTop:36,fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",borderBottom:"1px solid rgba(240,237,230,0.2)",paddingBottom:4,width:"fit-content"}}>
+          Book Consultation <svg width="20" height="8" viewBox="0 0 20 8" fill="none"><line x1="0" y1="4" x2="17" y2="4" stroke="currentColor" strokeWidth="1"/><polyline points="14,1 17,4 14,7" fill="none" stroke="currentColor" strokeWidth="1"/></svg>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+/* NEWSLETTER */
+function Newsletter(){
+  const [email,setEmail]=useState("");
+  const [done,setDone]=useState(false);
+  return(
+    <section data-screen-label="Newsletter" style={{padding:"120px 56px",textAlign:"center",borderTop:"1px solid rgba(240,237,230,0.06)"}}>
+      <p style={{fontSize:9,letterSpacing:"0.3em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:20}}>Stay in Touch</p>
+      <h2 style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:"clamp(32px,3.5vw,56px)",marginBottom:12}}>The Luxurio Letter</h2>
+      <p style={{fontFamily:"var(--serif)",fontStyle:"italic",fontSize:18,color:"var(--fg2)",marginBottom:48}}>New arrivals, atelier stories, and private events — once a month.</p>
+      {!done?(
+        <form onSubmit={e=>{e.preventDefault();if(email)setDone(true)}} style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
+          <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Your email address" style={{flex:1,padding:"16px 24px",border:"1px solid rgba(240,237,230,0.12)",borderRight:"none",background:"transparent",outline:"none",fontFamily:"var(--sans)",fontSize:13,color:"var(--fg)"}}/>
+          <button type="submit" style={{padding:"16px 28px",background:"var(--fg)",color:"var(--bg)",border:"none",cursor:"pointer",fontFamily:"var(--sans)",fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",whiteSpace:"nowrap"}}>Subscribe</button>
+        </form>
+      ):(
+        <p style={{fontFamily:"var(--serif)",fontStyle:"italic",fontSize:20,color:"var(--fg2)"}}>Thank you. You'll hear from us soon.</p>
+      )}
+    </section>
+  );
+}
+
+/* FOOTER */
+function Footer(){
+  const cols=[
+    {h:"Collections",l:["Seating","Tables","Lighting","Objects","Textiles","Storage"]},
+    {h:"Services",l:["Interiors","Bespoke","Trade","Gift Cards","Showrooms"]},
+    {h:"Company",l:["Our Story","Designers","Sustainability","Press","Careers"]},
+    {h:"Help",l:["Contact","Delivery","Returns","Care Guide","FAQs"]},
+  ];
+  return(
+    <footer style={{background:"#080706",color:"var(--fg)",padding:"80px 56px 40px",borderTop:"1px solid rgba(240,237,230,0.05)"}}>
+      <div className="foot-grid" style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 1fr",gap:48,marginBottom:72}}>
+        <div>
+          <div style={{fontFamily:"var(--serif)",fontWeight:300,fontSize:28,letterSpacing:"0.4em",marginBottom:20}}>LUXURIO</div>
+          <p style={{fontFamily:"var(--serif)",fontSize:15,lineHeight:1.8,color:"var(--fg3)",maxWidth:260}}>Fine furnishings for spaces of lasting significance. Handcrafted in Europe since 2012.</p>
+          <div style={{display:"flex",gap:20,marginTop:28}}>
+            {["Instagram","Pinterest"].map(s=><a key={s} href="#" style={{fontSize:10,letterSpacing:"0.15em",textTransform:"uppercase",color:"var(--fg3)"}}>{s}</a>)}
+          </div>
+        </div>
+        {cols.map(col=>(
+          <div key={col.h}>
+            <p style={{fontSize:9,letterSpacing:"0.22em",textTransform:"uppercase",color:"var(--fg3)",marginBottom:20}}>{col.h}</p>
+            {col.l.map(l=><a key={l} href="#" style={{display:"block",fontSize:12,color:"rgba(240,237,230,0.45)",marginBottom:12,letterSpacing:"0.04em",transition:"color 0.2s"}} onMouseEnter={e=>e.currentTarget.style.color="var(--fg)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(240,237,230,0.45)"}>{l}</a>)}
+          </div>
+        ))}
+      </div>
+      <div style={{borderTop:"1px solid rgba(240,237,230,0.06)",paddingTop:28,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <p style={{fontSize:10,letterSpacing:"0.1em",color:"var(--fg3)"}}>© 2026 Luxurio Home. All rights reserved.</p>
+        <div style={{display:"flex",gap:28}}>
+          {["Privacy","Terms","Cookies"].map(l=><a key={l} href="#" style={{fontSize:10,letterSpacing:"0.1em",color:"var(--fg3)"}}>{l}</a>)}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function App(){
+  useReveal();
+  return(<><Nav/><Hero/><Marquee/><Collections/><Featured/><Editorial/><Products/><Services/><Newsletter/><Footer/></>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+<template id="__bundler_thumbnail"><svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg"><rect width="80" height="56" fill="#0e0d0b"/><text x="40" y="30" font-family="serif" font-size="6" fill="#b8a070" text-anchor="middle" letter-spacing="4">LUXURIO</text></svg></template>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "collections": "Collections",
+    "featured": "Featured",
+    "atelier": "Atelier",
+    "favorites": "Favorites",
+    "signIn": "Sign In",
+    "logout": "Logout"
+  },
+  "hero": {
+    "season": "S/S 2026 — Collection N° 001",
+    "titleLine1": "The",
+    "titleArt": "Art",
+    "titleLine2": "of",
+    "titleLine3": "Stillness.",
+    "tagline": "Furniture conceived for spaces that refuse to shout. Handmade in Italy. Built to last decades.",
+    "exploreCollections": "Explore Collections",
+    "established": "Est. 2012 · Milan",
+    "scroll": "Scroll"
+  },
+  "marquee": {
+    "delivery": "White-Glove Delivery",
+    "bespoke": "Bespoke Commissions",
+    "cities": "Milan · New York · London",
+    "returns": "30-Day Returns",
+    "handcrafted": "Handcrafted in Italy"
+  },
+  "collections": {
+    "eyebrow": "Curated Rooms",
+    "title": "Our Collections",
+    "viewAll": "View All",
+    "pieces": "{{count}} pieces"
+  },
+  "featured": {
+    "eyebrow": "Atelier Collection",
+    "designedBy": "Designed by {{designer}}",
+    "from": "From {{price}}",
+    "onSale": "On Sale",
+    "newSeason": "New Season",
+    "tabDetails": "Details",
+    "tabMaterials": "Materials",
+    "tabShipping": "Shipping",
+    "shippingNote": "White-glove delivery within Europe. 8–12 weeks for bespoke orders.",
+    "materialsFallback": "Materials specified upon request.",
+    "viewPiece": "View Piece"
+  },
+  "editorial": {
+    "eyebrow": "The Luxurio Atelier",
+    "titleLine1": "Every Object",
+    "titleLine2": "Begins as a",
+    "titleAccent": "Conversation.",
+    "body": "We collaborate with Europe's most thoughtful designers to bring you furnishings built for decades. Each piece made to order, in small batches, with materials chosen for their integrity."
+  },
+  "newArrivals": {
+    "eyebrow": "Just Arrived",
+    "title": "New This Season",
+    "viewAll": "View All"
+  },
+  "services": {
+    "eyebrow": "Bespoke Service",
+    "titleLine1": "Private Interiors",
+    "titleAccent": "Consultation",
+    "body": "Our in-house design team composes rooms of lasting significance — from a single statement piece to a complete interior.",
+    "step1": "Site visit & mood board",
+    "step2": "Curated selection",
+    "step3": "Commission management",
+    "step4": "Installation & styling"
+  },
+  "newsletter": {
+    "eyebrow": "Stay in Touch",
+    "title": "The Luxurio Letter",
+    "body": "New arrivals, atelier stories, and private events — once a month.",
+    "placeholder": "Your email address",
+    "subscribe": "Subscribe",
+    "thanks": "Thank you. You'll hear from us soon."
+  },
+  "footer": {
+    "tagline": "Fine furnishings for spaces of lasting significance. Handcrafted in Europe since 2012.",
+    "colCollections": "Collections",
+    "colServices": "Services",
+    "colCompany": "Company",
+    "colHelp": "Help",
+    "rights": "© 2026 Luxurio Home. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "createAccount": "Create Account",
+    "signIn": "Sign In",
+    "register": "Register",
+    "loginSubtitle": "Access your favorites and orders.",
+    "registerSubtitle": "Save your favorite pieces.",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "confirmPlaceholder": "Re-enter password",
+    "passwordMismatch": "Passwords do not match",
+    "genericError": "Something went wrong",
+    "newCustomer": "New to Luxurio?",
+    "alreadyMember": "Already a member?",
+    "createOne": "Create account",
+    "signInLink": "Sign in"
+  },
+  "shop": {
+    "title": "All Pieces",
+    "all": "All",
+    "search": "Search",
+    "noResults": "No pieces found",
+    "sale": "Sale"
+  },
+  "product": {
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "quickView": "Quick View",
+    "designer": "Designer",
+    "material": "Material",
+    "dimensions": "Dimensions",
+    "color": "Color",
+    "back": "Back to Shop"
+  },
+  "favorites": {
+    "title": "Your Favorites",
+    "empty": "No favorites yet — tap the heart on any piece you love.",
+    "signInRequired": "Sign in to view your favorites."
+  },
+  "common": {
+    "loading": "Loading…",
+    "language": "Language"
+  }
+}
