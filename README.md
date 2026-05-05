@@ -1,6 +1,6 @@
 # Luxurio Home
 
-Luxury furniture e-commerce starter — **React + TypeScript** frontend, **Express + Prisma + PostgreSQL** backend, JWT-based admin panel.
+Luxury furniture e-commerce — **React + TypeScript** frontend, **Express + Prisma + SQLite** backend, JWT-based admin panel.
 
 ```
 Luxurio_home/
@@ -10,53 +10,62 @@ Luxurio_home/
 
 ## Prerequisites
 - Node.js 18+
-- PostgreSQL 14+ running locally (or Docker)
-
-Quick Postgres via Docker:
-```powershell
-docker run --name luxurio-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=luxurio -p 5432:5432 -d postgres:16
-```
 
 ## 1. Backend setup
+
+Copy the example env file and fill in your own values:
 ```powershell
 cd backend
+cp .env.example .env
+# Edit .env — set JWT_SECRET to a long random string
+```
+
+Then install and run:
+```powershell
 npm install
-# adjust DATABASE_URL in .env if needed
 npm run prisma:migrate -- --name init
 npm run seed
 npm run dev
 ```
-API runs at **http://localhost:4000**.
-Default admin: `admin@luxurio.local` / `admin123`.
 
-### Endpoints
+API runs at **http://localhost:4000**.
+
+> Admin credentials are configured via the seed script using values from your `.env` file. See `backend/.env.example` for the available variables.
+
+### API Overview
 | Method | Route | Auth |
 |-|-|-|
 | POST | `/api/auth/login` | – |
-| GET  | `/api/auth/me` | ✅ |
+| POST | `/api/auth/admin/login` | – |
+| GET  | `/api/auth/me` | user |
 | GET  | `/api/products` (filters: `category`, `featured`, `q`, `page`, `limit`) | – |
 | GET  | `/api/products/:slug` | – |
-| GET  | `/api/products/admin/all` | ✅ |
-| POST/PUT/DELETE | `/api/products[/:id]` | ✅ |
+| GET  | `/api/products/admin/all` | admin |
+| POST/PUT/DELETE | `/api/products[/:id]` | admin |
 | GET  | `/api/categories` | – |
-| POST/PUT/DELETE | `/api/categories[/:id]` | ✅ |
+| POST/PUT/DELETE | `/api/categories[/:id]` | admin |
+| GET/POST/DELETE | `/api/favorites[/:productId]` | user |
 
 ## 2. Frontend setup
+
+Copy and configure the frontend env:
 ```powershell
 cd frontend
+cp .env.example .env
+# Set VITE_API_URL if your backend runs on a different port/host
 npm install
 npm run dev
 ```
+
 App runs at **http://localhost:5173**.
 
-- Public site: `/`, `/shop`, `/product/:slug`
+- Public site: `/`, `/shop`, `/product/:slug`, `/our-story`
+- Favorites: `/favorites` (requires user login)
 - Admin login: `/admin/login`
-- Admin panel: `/admin` (dashboard, products, categories)
-
-## 3. Adding your Claude HTML design
-Drop the markup into `frontend/src/pages/Home.tsx` (replace the JSX inside the component). Move CSS into `frontend/src/styles.css` or import a separate stylesheet. Convert `class=` → `className=` and inline `style="..."` → `style={{ ... }}`.
+- Admin panel: `/admin` (dashboard, products, categories, admins)
 
 ## Project layout
+
 ```
 backend/
 ├── prisma/
@@ -66,23 +75,32 @@ backend/
     ├── server.js
     ├── lib/prisma.js
     ├── middleware/{auth,error}.js
-    └── routes/{auth,categories,products}.routes.js
+    └── routes/{auth,admins,categories,products,favorites}.routes.js
 
 frontend/src/
 ├── App.tsx
 ├── main.tsx
 ├── styles.css
-├── lib/{api.ts, auth.tsx}
+├── i18n/           (en / lt / ru translations)
+├── lib/{api.ts, userAuth.tsx, adminAuth.tsx}
 ├── layouts/{PublicLayout, AdminLayout}.tsx
+├── components/
 └── pages/
     ├── Home.tsx
     ├── Shop.tsx
-    ├── ProductDetail.tsx
-    └── admin/{AdminLogin, AdminDashboard, AdminProducts, AdminCategories}.tsx
+    ├── ProductDetail.tsx  (supports 3D .glb model viewer)
+    ├── Favorites.tsx
+    ├── OurStory.tsx
+    └── admin/{AdminLogin, AdminDashboard, AdminProducts, AdminCategories, AdminAdmins}.tsx
 ```
 
-## Next ideas
-- Image upload (multer is already installed; wire `/api/uploads`)
-- Order/cart system
-- Product variants & gallery
-- Stripe checkout
+## Environment variables
+
+See `backend/.env.example` and `frontend/.env.example` for all required variables. Never commit `.env` files — they are gitignored.
+
+## Features
+- Multi-language UI (English / Lithuanian / Russian)
+- 3D product viewer via `@google/model-viewer` (`.glb` files)
+- Favorites system (per-user, JWT-authenticated)
+- Admin panel: product & category management, inline status toggles, dashboard stats
+- Rate-limited auth endpoints
