@@ -13,7 +13,6 @@ interface UserAuthCtx {
 }
 
 const Ctx = createContext<UserAuthCtx | null>(null);
-const TOKEN_KEY = 'luxurio_user_token';
 
 export function UserAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -30,31 +29,28 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) { setLoading(false); return; }
+    // Cookie is sent automatically; 401 means not logged in
     api.get('/auth/me')
       .then(async (r) => {
         setUser(r.data.user);
         await refreshFavorites();
       })
-      .catch(() => localStorage.removeItem(TOKEN_KEY))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [refreshFavorites]);
 
   async function login(email: string, password: string) {
     const { data } = await api.post('/auth/login', { email, password });
-    localStorage.setItem(TOKEN_KEY, data.token);
     setUser(data.user);
     await refreshFavorites();
   }
   async function register(email: string, password: string, name?: string) {
     const { data } = await api.post('/auth/register', { email, password, name });
-    localStorage.setItem(TOKEN_KEY, data.token);
     setUser(data.user);
     await refreshFavorites();
   }
   function logout() {
-    localStorage.removeItem(TOKEN_KEY);
+    api.post('/auth/logout').catch(() => {});
     setUser(null);
     setFavorites(new Set());
   }

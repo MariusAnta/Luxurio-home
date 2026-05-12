@@ -26,22 +26,53 @@ const productSchema = z.object({
   dimensions: z.string().optional().nullable(),
   weightKg: z.number().optional().nullable(),
   modelUrl: z.string().url().optional().nullable(),
+  assembled: z.boolean().optional(),
   categoryId: z.string().optional().nullable(),
   images: z.array(imageSchema).optional(),
 });
 
 // Public list with filters & pagination
+// Supports two modes:
+//   Cursor-based  (preferred): ?cursor=<lastProductId>&limit=20
+//   Offset-based  (legacy):    ?page=1&limit=20
 router.get('/', async (req, res, next) => {
   try {
-    const { category, featured, q, page = '1', limit = '20' } = req.query;
+    const { category, featured, q, page = '1', limit = '20', cursor } = req.query;
     const where = { published: true };
-    if (category) where.category = { slug: String(category) };
+    if (category) {
+      const cat = await prisma.category.findUnique({
+        where: { slug: String(category) },
+        select: { id: true, children: { select: { id: true } } },
+      });
+      if (cat) {
+        // Always include the parent's own products + all children
+        const ids = [cat.id, ...cat.children.map((c) => c.id)];
+        where.categoryId = { in: ids };
+      }
+    }
     if (featured === 'true') where.featured = true;
-    if (q) where.name = { contains: String(q), mode: 'insensitive' };
+    if (q) where.name = { contains: String(q) }; // SQLite LIKE is case-insensitive for ASCII
 
     const take = Math.min(parseInt(limit, 10) || 20, 100);
-    const skip = (Math.max(parseInt(page, 10) || 1, 1) - 1) * take;
 
+    if (cursor) {
+      // Cursor-based: fetch take+1 to detect whether a next page exists
+      const raw = await prisma.product.findMany({
+        where,
+        take: take + 1,
+        cursor: { id: String(cursor) },
+        skip: 1, // skip the cursor item itself
+        include: { images: { orderBy: { order: 'asc' } }, category: true },
+        orderBy: { createdAt: 'desc' },
+      });
+      const hasMore = raw.length > take;
+      const items = hasMore ? raw.slice(0, take) : raw;
+      const nextCursor = hasMore ? items[items.length - 1].id : null;
+      return res.json({ items, nextCursor, hasMore });
+    }
+
+    // Offset-based (backward-compatible)
+    const skip = (Math.max(parseInt(page, 10) || 1, 1) - 1) * take;
     const [items, total] = await Promise.all([
       prisma.product.findMany({
         where, take, skip,

@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64"]
 }
 
 datasource db {
@@ -28,13 +29,16 @@ model User {
 }
 
 model Category {
-  id        String    @id @default(cuid())
-  name      String    @unique
-  slug      String    @unique
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
   number    String?
+  parentId  String?
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryTree")
   products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Product {
@@ -54,6 +58,7 @@ model Product {
   dimensions String?
   weightKg   Float?
   modelUrl   String?
+  assembled  Boolean   @default(false)
 
   images     ProductImage[]
   favorites  Favorite[]
@@ -89,4 +94,10 @@ model Favorite {
 
   @@unique([userId, productId])
   @@index([userId])
+}
+
+model SiteSettings {
+  key       String   @id
+  value     String   // JSON-encoded value
+  updatedAt DateTime @updatedAt
 }

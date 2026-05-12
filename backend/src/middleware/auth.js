@@ -6,20 +6,28 @@ export function signToken(payload) {
   });
 }
 
-function verify(req) {
+/** Read and verify a JWT for a specific role type ('admin' | 'user').
+ *  Checks httpOnly cookie first, then falls back to Bearer header. */
+function getDecoded(req, type) {
+  const cookieName = type === 'admin' ? 'luxurio_admin_jwt' : 'luxurio_user_jwt';
+  const cookieToken = req.cookies?.[cookieName];
+
   const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
-  if (!token) return null;
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET);
-  } catch {
-    return null;
+  const bearerToken = header.startsWith('Bearer ') ? header.slice(7) : null;
+
+  for (const token of [cookieToken, bearerToken]) {
+    if (!token) continue;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded.type === type) return decoded;
+    } catch { /* invalid or expired — try next */ }
   }
+  return null;
 }
 
 export function requireAdmin(req, res, next) {
-  const decoded = verify(req);
-  if (!decoded || decoded.type !== 'admin') {
+  const decoded = getDecoded(req, 'admin');
+  if (!decoded) {
     return res.status(401).json({ error: 'Admin authentication required' });
   }
   req.admin = decoded;
@@ -27,8 +35,8 @@ export function requireAdmin(req, res, next) {
 }
 
 export function requireSuperAdmin(req, res, next) {
-  const decoded = verify(req);
-  if (!decoded || decoded.type !== 'admin' || decoded.role !== 'SUPER_ADMIN') {
+  const decoded = getDecoded(req, 'admin');
+  if (!decoded || decoded.role !== 'SUPER_ADMIN') {
     return res.status(403).json({ error: 'Super admin only' });
   }
   req.admin = decoded;
@@ -36,8 +44,8 @@ export function requireSuperAdmin(req, res, next) {
 }
 
 export function requireUser(req, res, next) {
-  const decoded = verify(req);
-  if (!decoded || decoded.type !== 'user') {
+  const decoded = getDecoded(req, 'user');
+  if (!decoded) {
     return res.status(401).json({ error: 'Login required' });
   }
   req.user = decoded;
@@ -45,7 +53,7 @@ export function requireUser(req, res, next) {
 }
 
 export function optionalUser(req, _res, next) {
-  const decoded = verify(req);
-  if (decoded && decoded.type === 'user') req.user = decoded;
+  const decoded = getDecoded(req, 'user');
+  if (decoded) req.user = decoded;
   next();
 }

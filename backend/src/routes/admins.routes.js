@@ -10,7 +10,7 @@ const adminSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(1).optional(),
-  role: z.enum(['ADMIN', 'SUPER_ADMIN']).default('ADMIN'),
+  role: z.enum(['ADMIN']).default('ADMIN'),
 });
 
 router.get('/', requireSuperAdmin, async (_req, res, next) => {

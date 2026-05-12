@@ -24,7 +24,7 @@ interface PlaceholderProps {
   label?: string;
   style?: React.CSSProperties;
 }
-export function Placeholder({ id, bg = '#1a1714', angle = 25, color = 'rgba(200,175,130,0.1)', label, style = {} }: PlaceholderProps) {
+export function Placeholder({ id, bg = '#f0ece4', angle = 25, color = 'rgba(139,109,26,0.1)', label, style = {} }: PlaceholderProps) {
   return (
     <div style={{ background: bg, position: 'relative', overflow: 'hidden', ...style }}>
       <svg width="100%" height="100%" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -51,14 +51,17 @@ interface ImgOrPlaceholderProps {
   id: string;
   label?: string;
   style?: React.CSSProperties;
+  className?: string;
 }
-export function ImgOrPlaceholder({ url, alt, bg, id, label, style = {} }: ImgOrPlaceholderProps) {
+export function ImgOrPlaceholder({ url, alt, bg, id, label, style = {}, className }: ImgOrPlaceholderProps) {
   if (url) {
     return (
-      <div style={{ position: 'relative', overflow: 'hidden', ...style }}>
+      <div className={className} style={{ position: 'relative', overflow: 'hidden', ...style }}>
         <img
           src={url}
           alt={alt || ''}
+          loading="lazy"
+          decoding="async"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>

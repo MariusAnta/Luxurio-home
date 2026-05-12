@@ -2,17 +2,8 @@ import axios from 'axios';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
-});
-
-api.interceptors.request.use((config) => {
-  const url = config.url ?? '';
-  // Admin routes must use the admin JWT; all other routes use the user JWT.
-  const isAdminRoute = url.startsWith('/admin') || url.startsWith('/auth/admin') || url.includes('/admin/');
-  const token = isAdminRoute
-    ? localStorage.getItem('luxurio_admin_token')
-    : localStorage.getItem('luxurio_user_token') ?? localStorage.getItem('luxurio_admin_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
+  // Send httpOnly cookies on every request (JWT tokens are stored server-side in cookies)
+  withCredentials: true,
 });
 
 export interface ProductImage {
@@ -26,6 +17,7 @@ export interface Category {
   name: string;
   slug: string;
   number?: string | null;
+  parentId?: string | null;
   productCount?: number;
   coverImage?: string | null;
 }
@@ -45,6 +37,7 @@ export interface Product {
   dimensions?: string | null;
   weightKg?: number | null;
   modelUrl?: string | null;
+  assembled: boolean;
   category?: Category | null;
   images: ProductImage[];
 }
@@ -64,4 +57,11 @@ export interface User {
 export function formatPrice(p: string | number) {
   const n = typeof p === 'string' ? parseFloat(p) : p;
   return `€ ${n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+}
+
+/** Price excluding 21% Lithuanian VAT (PVM). Prices in DB are incl. VAT. */
+export function formatPriceExVat(p: string | number, vatRate = 0.21) {
+  const n = typeof p === 'string' ? parseFloat(p) : p;
+  const exVat = n / (1 + vatRate);
+  return `€ ${exVat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 }

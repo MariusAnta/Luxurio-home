@@ -7,6 +7,19 @@ import { signToken, requireAdmin, requireUser } from '../middleware/auth.js';
 
 const router = Router();
 
+const isProd = process.env.NODE_ENV === 'production';
+
+/** Shared cookie options — httpOnly prevents JS access (XSS mitigation) */
+function cookieOpts() {
+  return {
+    httpOnly: true,
+    secure: isProd,       // HTTPS only in production
+    sameSite: 'lax',      // blocks cross-site POST; safe for same-origin SPAs
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+    path: '/',
+  };
+}
+
 // 10 attempts per 15 minutes per IP on all login/register endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -34,11 +47,14 @@ router.post('/admin/login', authLimiter, async (req, res, next) => {
     const ok = await bcrypt.compare(password, admin.password);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
     const token = signToken({ id: admin.id, email: admin.email, role: admin.role, type: 'admin' });
-    res.json({
-      token,
-      admin: { id: admin.id, email: admin.email, name: admin.name, role: admin.role },
-    });
+    res.cookie('luxurio_admin_jwt', token, cookieOpts());
+    res.json({ admin: { id: admin.id, email: admin.email, name: admin.name, role: admin.role } });
   } catch (e) { next(e); }
+});
+
+router.post('/admin/logout', (_req, res) => {
+  res.clearCookie('luxurio_admin_jwt', { path: '/', httpOnly: true, sameSite: 'lax', secure: isProd });
+  res.json({ ok: true });
 });
 
 router.get('/admin/me', requireAdmin, async (req, res) => {
@@ -55,13 +71,14 @@ router.post('/register', authLimiter, async (req, res, next) => {
     const { email, password, name } = registerSchema.parse(req.body);
     const exists = await prisma.user.findUnique({ where: { email } });
     if (exists) return res.status(409).json({ error: 'Email already registered' });
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
       data: { email, password: hash, name },
       select: { id: true, email: true, name: true },
     });
     const token = signToken({ id: user.id, email: user.email, type: 'user' });
-    res.status(201).json({ token, user });
+    res.cookie('luxurio_user_jwt', token, cookieOpts());
+    res.status(201).json({ user });
   } catch (e) { next(e); }
 });
 
@@ -73,8 +90,14 @@ router.post('/login', authLimiter, async (req, res, next) => {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
     const token = signToken({ id: user.id, email: user.email, type: 'user' });
-    res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
+    res.cookie('luxurio_user_jwt', token, cookieOpts());
+    res.json({ user: { id: user.id, email: user.email, name: user.name } });
   } catch (e) { next(e); }
+});
+
+router.post('/logout', (_req, res) => {
+  res.clearCookie('luxurio_user_jwt', { path: '/', httpOnly: true, sameSite: 'lax', secure: isProd });
+  res.json({ ok: true });
 });
 
 router.get('/me', requireUser, async (req, res) => {

@@ -4,9 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/grayscale_transparent_nobuffer.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Google model-viewer for 3D product previews -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
-    <title>Luxurio Home</title>
+    <meta name="theme-color" content="#0a0908" />
+    <!-- Fallback title/description — react-helmet-async overrides per page -->
+    <title>Luxurio Home — Luxury Furniture, Made to Order</title>
+    <meta name="description" content="Luxurio Home — made-to-order luxury furniture crafted by independent European workshops. Milan-founded, design-led, built to last." />
+    <!-- Fallback OG (overridden per page) -->
+    <meta property="og:site_name" content="Luxurio Home" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-cover.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- model-viewer is injected lazily by ProductDetail only when a 3D model is present -->
   </head>
   <body>
     <div id="root"></div>

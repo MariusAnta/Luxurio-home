@@ -46,7 +46,13 @@ export function AdminLayout() {
               Admins
             </NavLink>
           )}
-        </aside>
+          <NavLink to="/admin/users">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><circle cx="5" cy="5" r="3"/><path d="M1 14c0-3 2-4.5 4-4.5s4 1.5 4 4.5"/><circle cx="11" cy="5" r="2"/><path d="M11 10.5c1.5 0 3 1 3 3.5"/></svg>
+            Customers
+          </NavLink>          <NavLink to="/admin/settings">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+            Settings
+          </NavLink>        </aside>
         <main className="admin-main">
           <Outlet />
         </main>

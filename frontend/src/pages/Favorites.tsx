@@ -3,6 +3,7 @@ import { Navigate, useOutletContext } from 'react-router-dom';
 import { api, Product } from '../lib/api';
 import { ProductCard } from '../components/ProductCard';
 import { useUserAuth } from '../lib/userAuth';
+import { Seo } from '../components/Seo';
 import type { PublicOutletContext } from '../layouts/PublicLayout';
 
 export function Favorites() {
@@ -22,13 +23,14 @@ export function Favorites() {
     if (!loading && !user) openAuthRef.current();
   }, [loading, user]);
 
-  if (loading) return <main style={{ padding: '160px 56px', color: 'var(--fg3)' }}>Loading…</main>;
+  if (loading) return <main className="pd-state">Loading…</main>;
   if (!user) return <Navigate to="/" replace />;
 
   return (
-    <main style={{ padding: '120px 56px 80px' }}>
-      <p style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 16 }}>Saved For You</p>
-      <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 80px)', marginBottom: 40 }}>Your Favorites</h1>
+    <main className="page-main">
+      <Seo title="Your Favorites" noindex />
+      <p className="t-eyebrow shop-eyebrow">Saved For You</p>
+      <h1 className="shop-title">Your Favorites</h1>
       {items === null ? (
         <p style={{ color: 'var(--fg3)' }}>Loading…</p>
       ) : items.length === 0 ? (
@@ -36,7 +38,7 @@ export function Favorites() {
           No favorites yet — tap the heart on any piece to save it here.
         </p>
       ) : (
-        <div className="prod-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        <div className="prod-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--sp-6)' }}>
           {items.map((p) => <ProductCard key={p.id} product={p} onRequireAuth={openAuth} />)}
         </div>
       )}

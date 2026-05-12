@@ -37,7 +37,7 @@ export function AdminLogin() {
             <label>Password</label>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
-          {err && <p style={{ color: '#c97070', fontSize: 12, marginBottom: 16 }}>{err}</p>}
+          {err && <p style={{ color: '#b05050', fontSize: 12, marginBottom: 16 }}>{err}</p>}
           <button className="btn" type="submit" style={{ width: '100%' }}>Sign In</button>
         </form>
       </div>

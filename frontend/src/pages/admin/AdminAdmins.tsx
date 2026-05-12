@@ -9,7 +9,7 @@ export function AdminAdmins() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'ADMIN' | 'SUPER_ADMIN'>('ADMIN');
+  const [role] = useState<'ADMIN'>('ADMIN');
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState('');
 
@@ -52,26 +52,20 @@ export function AdminAdmins() {
       <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 48, marginBottom: 40 }}>Admin Accounts</h1>
 
       <form onSubmit={add} style={{
-        background: 'var(--bg2)', border: '1px solid rgba(240,237,230,0.06)',
+        background: 'var(--bg2)', border: '1px solid rgba(26,23,20,0.07)',
         padding: 24, marginBottom: 32,
       }}>
         <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 22, marginBottom: 20 }}>Register New Admin</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+        <div className="admin-form-2col">
           <div className="field"><label>Email</label><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
           <div className="field"><label>Name</label><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Optional" /></div>
           <div className="field"><label>Password</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} /></div>
-          <div className="field">
-            <label>Role</label>
-            <select value={role} onChange={(e) => setRole(e.target.value as any)}>
-              <option value="ADMIN">Admin</option>
-              <option value="SUPER_ADMIN">Super Admin</option>
-            </select>
-          </div>
         </div>
-        {err && <p style={{ color: '#c97070', fontSize: 12, marginBottom: 12 }}>{err}</p>}
+        {err && <p style={{ color: '#b05050', fontSize: 12, marginBottom: 12 }}>{err}</p>}
         <button className="btn" type="submit" disabled={submitting}>Create Admin</button>
       </form>
 
+      <div className="table-wrap">
       <table>
         <thead>
           <tr><th>Email</th><th>Name</th><th>Role</th><th>Created</th><th></th></tr>
@@ -103,6 +97,7 @@ export function AdminAdmins() {
           ))}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

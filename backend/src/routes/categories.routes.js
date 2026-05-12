@@ -9,6 +9,7 @@ const categorySchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
   number: z.string().optional().nullable(),
+  parentId: z.string().optional().nullable(),
 });
 
 router.get('/', async (_req, res, next) => {

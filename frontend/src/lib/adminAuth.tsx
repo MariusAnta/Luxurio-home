@@ -9,28 +9,25 @@ interface AdminAuthCtx {
 }
 
 const Ctx = createContext<AdminAuthCtx | null>(null);
-const TOKEN_KEY = 'luxurio_admin_token';
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) { setLoading(false); return; }
+    // Cookie is sent automatically; 401 means not logged in
     api.get('/auth/admin/me')
       .then((r) => setAdmin(r.data.admin))
-      .catch(() => localStorage.removeItem(TOKEN_KEY))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
   async function login(email: string, password: string) {
     const { data } = await api.post('/auth/admin/login', { email, password });
-    localStorage.setItem(TOKEN_KEY, data.token);
     setAdmin(data.admin);
   }
   function logout() {
-    localStorage.removeItem(TOKEN_KEY);
+    api.post('/auth/admin/logout').catch(() => {});
     setAdmin(null);
   }
 

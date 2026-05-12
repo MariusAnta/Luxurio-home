@@ -1,11 +1,13 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { api, Category } from '../../lib/api';
 
+type CatRow = Category & { productCount?: number };
+
 export function AdminCategories() {
-  const [items, setItems] = useState<(Category & { productCount?: number })[]>([]);
+  const [items, setItems] = useState<CatRow[]>([]);
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [number, setNumber] = useState('');
+  const [parentId, setParentId] = useState('');
   const [editing, setEditing] = useState<string | null>(null);
   const [slugManual, setSlugManual] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -16,13 +18,13 @@ export function AdminCategories() {
   }
   useEffect(() => { load(); }, []);
 
-  function reset() { setName(''); setSlug(''); setNumber(''); setEditing(null); setSlugManual(false); }
+  function reset() { setName(''); setSlug(''); setParentId(''); setEditing(null); setSlugManual(false); }
 
-  function startEdit(c: Category) {
+  function startEdit(c: CatRow) {
     setEditing(c.id);
     setName(c.name);
     setSlug(c.slug);
-    setNumber(c.number ?? '');
+    setParentId(c.parentId || '');
     setSlugManual(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -31,10 +33,11 @@ export function AdminCategories() {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const payload = { name, slug, parentId: parentId || null };
       if (editing) {
-        await api.put(`/categories/${editing}`, { name, slug, number: number || null });
+        await api.put(`/categories/${editing}`, payload);
       } else {
-        await api.post('/categories', { name, slug, number: number || null });
+        await api.post('/categories', payload);
       }
       reset();
       load();
@@ -43,11 +46,20 @@ export function AdminCategories() {
     }
   }
 
-  async function remove(id: string) {
-    if (!confirm('Delete this category?')) return;
+  async function remove(id: string, name: string) {
+    const hasKids = items.some((c) => c.parentId === id);
+    const msg = hasKids
+      ? `"${name}" has subcategories. Deleting it will remove the parent grouping but keep the subcategories as top-level. Delete anyway?`
+      : `Delete "${name}"?`;
+    if (!confirm(msg)) return;
     await api.delete(`/categories/${id}`);
     load();
   }
+
+  const roots = items.filter((c) => !c.parentId);
+  const childrenOf = (id: string) => items.filter((c) => c.parentId === id);
+  // Only top-level categories can be selected as parent (prevents 3+ levels)
+  const availableParents = items.filter((c) => !c.parentId && c.id !== editing);
 
   return (
     <>
@@ -56,13 +68,13 @@ export function AdminCategories() {
 
       <form onSubmit={save} style={{
         background: 'var(--bg2)', padding: 24,
-        border: '1px solid rgba(240,237,230,0.06)',
+        border: '1px solid rgba(26,23,20,0.07)',
         marginBottom: 32,
       }}>
         <p style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: editing ? 'var(--gold)' : 'var(--fg3)', marginBottom: 16 }}>
           {editing ? 'Edit Category' : 'New Category'}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr 1fr auto auto', gap: 16, alignItems: 'end' }}>
+        <div className="cat-form-grid">
           <div className="field" style={{ margin: 0 }}>
             <label>Name</label>
             <input value={name} onChange={(e) => {
@@ -73,36 +85,57 @@ export function AdminCategories() {
           </div>
           <div className="field" style={{ margin: 0 }}>
             <label>Slug <span style={{ color: 'var(--fg3)', fontWeight: 400 }}>{!slugManual ? '(auto)' : ''}</span></label>
-            <input value={slug} onChange={(e) => { setSlugManual(true); setSlug(e.target.value); }} required pattern="[a-z0-9-]+" placeholder="lowercase-with-dashes" />
+            <input value={slug} onChange={(e) => { setSlugManual(true); setSlug(e.target.value); }} required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="lowercase-with-dashes" />
           </div>
           <div className="field" style={{ margin: 0 }}>
-            <label>Number</label>
-            <input value={number} onChange={(e) => setNumber(e.target.value)} placeholder="001" />
+            <label>Parent <span style={{ color: 'var(--fg3)', fontWeight: 400 }}>(optional)</span></label>
+            <select value={parentId} onChange={(e) => setParentId(e.target.value)}>
+              <option value="">— none (top-level) —</option>
+              {availableParents.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
           </div>
           <button className="btn" type="submit" disabled={submitting}>{editing ? 'Update' : 'Add'}</button>
           {editing && <button type="button" className="btn outline" onClick={reset}>Cancel</button>}
         </div>
       </form>
 
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Slug</th><th>Number</th><th>Products</th><th></th></tr>
-        </thead>
-        <tbody>
-          {items.map((c) => (
-            <tr key={c.id} style={{ background: editing === c.id ? 'rgba(184,160,112,0.04)' : undefined }}>
-              <td>{c.name}</td>
-              <td style={{ color: 'var(--fg3)' }}>{c.slug}</td>
-              <td style={{ color: 'var(--fg3)' }}>{c.number || '—'}</td>
-              <td>{c.productCount ?? 0}</td>
-              <td style={{ display: 'flex', gap: 8 }}>
-                <button className="btn outline" onClick={() => startEdit(c)}>Edit</button>
-                <button className="btn danger" onClick={() => remove(c.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Slug</th><th>Products</th><th></th></tr>
+          </thead>
+          <tbody>
+            {roots.map((root) => {
+              const kids = childrenOf(root.id);
+              const totalProducts = (root.productCount ?? 0) + kids.reduce((s, k) => s + (k.productCount ?? 0), 0);
+              return [
+                <tr key={root.id} style={{ background: editing === root.id ? 'rgba(184,160,112,0.04)' : undefined }}>
+                  <td style={{ fontWeight: 500 }}>{kids.length > 0 ? `▸ ${root.name}` : root.name}</td>
+                  <td style={{ color: 'var(--fg3)' }}>{root.slug}</td>
+                  <td>{totalProducts}</td>
+                  <td style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn outline" onClick={() => startEdit(root)}>Edit</button>
+                    <button className="btn danger" onClick={() => remove(root.id, root.name)}>Delete</button>
+                  </td>
+                </tr>,
+                ...kids.map((kid) => (
+                  <tr key={kid.id} style={{ background: editing === kid.id ? 'rgba(184,160,112,0.04)' : undefined }}>
+                    <td style={{ paddingLeft: 28, color: 'var(--fg2)' }}>└ {kid.name}</td>
+                    <td style={{ color: 'var(--fg3)' }}>{kid.slug}</td>
+                    <td>{kid.productCount ?? 0}</td>
+                    <td style={{ display: 'flex', gap: 8 }}>
+                      <button className="btn outline" onClick={() => startEdit(kid)}>Edit</button>
+                      <button className="btn danger" onClick={() => remove(kid.id, kid.name)}>Delete</button>
+                    </td>
+                  </tr>
+                )),
+              ];
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

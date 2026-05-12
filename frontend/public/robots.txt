@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /favorites
+
+Sitemap: https://luxuriohome.com/sitemap.xml

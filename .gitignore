@@ -7,3 +7,8 @@ build/
 .DS_Store
 .vscode/
 coverage/
+# SQLite database files — never commit these, they contain user data
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
