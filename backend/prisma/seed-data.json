@@ -1,0 +1,1688 @@
+{
+  "categories": [
+    {
+      "id": "cmosa53980001k31yd6fyp8bd",
+      "name": "Seating",
+      "slug": "seating",
+      "parentId": null
+    },
+    {
+      "id": "cmosa539h0002k31yat9ktk3v",
+      "name": "Tables",
+      "slug": "tables",
+      "parentId": "cmosa539h0002k31yat9ktk3v"
+    },
+    {
+      "id": "cmosa539u0004k31ymd2t5iob",
+      "name": "Objects",
+      "slug": "objects",
+      "parentId": null
+    },
+    {
+      "id": "cmosa53a00005k31y4rr1ycfn",
+      "name": "Textiles",
+      "slug": "textiles",
+      "parentId": null
+    },
+    {
+      "id": "cmosa53a60006k31ys1h9cv7n",
+      "name": "Storage",
+      "slug": "storage",
+      "parentId": null
+    },
+    {
+      "id": "cmowj77gt0003u7usp5k14ahv",
+      "name": "Lighting",
+      "slug": "lighting",
+      "parentId": null
+    },
+    {
+      "id": "cmowj77hs0008u7us8nc65hs3",
+      "name": "Sofas",
+      "slug": "sofas",
+      "parentId": "cmosa53980001k31yd6fyp8bd"
+    },
+    {
+      "id": "cmowj77hy000au7usayz6fopw",
+      "name": "Armchairs",
+      "slug": "armchairs",
+      "parentId": "cmosa53980001k31yd6fyp8bd"
+    },
+    {
+      "id": "cmowj77i4000cu7us5khib2g0",
+      "name": "Dining Chairs",
+      "slug": "dining-chairs",
+      "parentId": "cmosa53980001k31yd6fyp8bd"
+    },
+    {
+      "id": "cmp19oqvx00004bn7eon1frgi",
+      "name": "Bedroom",
+      "slug": "bedroom",
+      "parentId": null
+    },
+    {
+      "id": "cmp19oqvz00024bn7xhzzsg21",
+      "name": "Lounge Chairs",
+      "slug": "lounge-chairs",
+      "parentId": "cmosa53980001k31yd6fyp8bd"
+    },
+    {
+      "id": "cmp19oqw000044bn795wbccp8",
+      "name": "Stools",
+      "slug": "stools",
+      "parentId": "cmosa53980001k31yd6fyp8bd"
+    },
+    {
+      "id": "cmp19oqw100064bn7lhj1fwkx",
+      "name": "Coffee Tables",
+      "slug": "coffee-tables",
+      "parentId": "cmosa539h0002k31yat9ktk3v"
+    },
+    {
+      "id": "cmp19oqw200084bn7nnh0qu4t",
+      "name": "Dressing Tables",
+      "slug": "dressing-tables",
+      "parentId": "cmosa539h0002k31yat9ktk3v"
+    },
+    {
+      "id": "cmp19oqw2000a4bn74e0r3vwf",
+      "name": "Beds",
+      "slug": "beds",
+      "parentId": "cmp19oqvx00004bn7eon1frgi"
+    },
+    {
+      "id": "cmp19oqw3000c4bn7mdea930r",
+      "name": "Nightstands",
+      "slug": "nightstands",
+      "parentId": "cmp19oqvx00004bn7eon1frgi"
+    },
+    {
+      "id": "cmp19oqw3000e4bn7n4t4oyiv",
+      "name": "Benches",
+      "slug": "benches",
+      "parentId": "cmp19oqvx00004bn7eon1frgi"
+    },
+    {
+      "id": "cmp19oqw4000g4bn7v3a194xb",
+      "name": "Chest & Drawers",
+      "slug": "chest-and-drawers",
+      "parentId": "cmosa53a60006k31ys1h9cv7n"
+    },
+    {
+      "id": "cmp19oqw4000i4bn7v8fisq7d",
+      "name": "Entrance Cabinets",
+      "slug": "entrance-cabinets",
+      "parentId": "cmosa53a60006k31ys1h9cv7n"
+    },
+    {
+      "id": "cmp19oqw5000k4bn7xrjtte1f",
+      "name": "Showcases",
+      "slug": "showcases",
+      "parentId": "cmosa53a60006k31ys1h9cv7n"
+    },
+    {
+      "id": "cmp19oqw5000m4bn7td0xw1ys",
+      "name": "Carpets",
+      "slug": "carpets",
+      "parentId": "cmosa53a00005k31y4rr1ycfn"
+    }
+  ],
+  "products": [
+    {
+      "id": "cmosa53am0008k31y7u85odnf",
+      "name": "The Margaux Lounge Chair",
+      "slug": "margaux-lounge-chair",
+      "description": "Hand-sculpted from solid walnut, generously upholstered in vegetable-tanned leather.",
+      "price": 4200,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": "Walnut, Leather",
+      "dimensions": "85 x 90 x 82 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=900",
+          "order": 0
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=900",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "cmosa53b3000ck31yntychyyd",
+      "name": "Éclat Side Table",
+      "slug": "eclat-side-table",
+      "description": "Sculptural side table in solid brass and Carrara marble.",
+      "price": 1840,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Brass, Marble",
+      "dimensions": "45 x 45 x 55 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1549497538-303791108f95?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosa53bd000fk31yrxh04cfu",
+      "name": "Sereno Pendant",
+      "slug": "sereno-pendant",
+      "description": "Hand-blown smoked-glass pendant with brass canopy.",
+      "price": 3200,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Smoked glass, Brass",
+      "dimensions": "Ø 38 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosa53bj000ik31yc46dup17",
+      "name": "Porto Armchair",
+      "slug": "porto-armchair",
+      "description": "Solid oak frame, woven cane back, bouclé seat cushion.",
+      "price": 5600,
+      "stock": 0,
+      "published": true,
+      "featured": true,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": "Oak, Cane, Bouclé",
+      "dimensions": "70 x 75 x 80 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosa53bv000lk31yaq2dw1di",
+      "name": "Monolith Console",
+      "slug": "monolith-console",
+      "description": "Sculpted travertine console with brushed-bronze base.",
+      "price": 7400,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Travertine, Bronze",
+      "dimensions": "180 x 40 x 80 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosalkdj000hzy46xrizisj3",
+      "name": "Colline Sofa",
+      "slug": "colline-sofa",
+      "description": "Low-slung, modular sofa with solid ashwood legs and a hand-stitched linen slipcover. Available in three configurations.",
+      "price": 9800,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hs0008u7us8nc65hs3",
+      "material": "Ash, Linen",
+      "dimensions": "240 × 95 × 72 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=900",
+          "order": 0
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "cmosalkdu000tzy464pfzh00j",
+      "name": "Calla Dining Table",
+      "slug": "calla-dining-table",
+      "description": "Solid smoked-oak dining table with a subtly curved monolithic top and tapered legs. Seats up to eight.",
+      "price": 6200,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Smoked Oak",
+      "dimensions": "220 × 95 × 74 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1604578762246-41134e37f9cc?w=900",
+          "order": 0
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=900",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "cmosalke30011zy464fc56b5m",
+      "name": "Arco Floor Lamp",
+      "slug": "arco-floor-lamp",
+      "description": "Sweeping arc floor lamp in patinated bronze with a mouth-blown alabaster shade. Dimmable.",
+      "price": 2900,
+      "stock": 0,
+      "published": true,
+      "featured": true,
+      "categoryId": null,
+      "material": "Bronze, Alabaster",
+      "dimensions": "H 185 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=900",
+          "order": 0
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=900",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "cmosalke90015zy46wrx1yoq5",
+      "name": "Volta Vase",
+      "slug": "volta-vase",
+      "description": "Wheel-thrown stoneware vase with a poured-ash glaze. No two are identical.",
+      "price": 380,
+      "stock": 0,
+      "published": true,
+      "featured": true,
+      "categoryId": null,
+      "material": "Stoneware",
+      "dimensions": "Ø 14 × H 32 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosalkeg0018zy46qg3ewf4g",
+      "name": "Petra Sculpture",
+      "slug": "petra-sculpture",
+      "description": "Hand-carved black granite abstract sculpture. A meditation on mass and negative space.",
+      "price": 2200,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Black Granite",
+      "dimensions": "22 × 18 × 40 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosalkem001bzy46qrk8a9j2",
+      "name": "Dune Throw",
+      "slug": "dune-throw",
+      "description": "Hand-loomed from pure Mongolian cashmere. Generous 200 × 140 cm proportion.",
+      "price": 640,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Cashmere",
+      "dimensions": "200 × 140 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1611486212557-88be5ff6f941?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosalkes001ezy46uttp21pc",
+      "name": "Silence Rug",
+      "slug": "silence-rug",
+      "description": "Hand-knotted from New Zealand wool with a subtle geometric weave. 300 knots per square inch.",
+      "price": 4800,
+      "stock": 4,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "New Zealand Wool",
+      "dimensions": "250 × 350 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmosalkez001hzy4689g6u11a",
+      "name": "Arc Sideboard",
+      "slug": "arc-sideboard",
+      "description": "Four-door sideboard in solid smoked oak with integrated brushed-brass pulls. Felt-lined interior drawers.",
+      "price": 8600,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Smoked Oak, Brass",
+      "dimensions": "210 × 50 × 75 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=900",
+          "order": 0
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=900",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "cmosalkf6001lzy46fcfmloe8",
+      "name": "Forma Bookshelf",
+      "slug": "forma-bookshelf",
+      "description": "Asymmetric open shelving unit in powder-coated steel with hand-sanded oak shelves. Modular by design.",
+      "price": 3100,
+      "stock": 0,
+      "published": true,
+      "featured": false,
+      "categoryId": null,
+      "material": "Steel, Oak",
+      "dimensions": "120 × 35 × 200 cm",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=900",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqw6000o4bn7cw412oen",
+      "name": "LH Scandicly",
+      "slug": "lh-scandicly",
+      "description": "MATERIALSInner FrameA precisely engineered structural core combining solid wood multilayer board and solid larch, designed to ensure long-term stability, durability, and refined structural integrity.Seat FillingA multi-layer comfort system composed of premium high-resilience foam, feather foam, memory foam, and premium white goose down, delivering a balanced combination of support, softness, and adaptive seating comfort.Backrest FillingA refined cushioning composition of premium white goose down, memory foam, and feather foam, designed to provide soft ergonomic support and a naturally relaxed seating experience.Hardware / BaseTransparent brown aluminium alloy legs paired with aluminium plate curved panels. Saddle leather curved armrests remain intentionally exposed (non-fabric covered), highlighting material authenticity, while the base frame is finished with genuine leather edging for a continuous premium material expression.Note: full leather construction is applied. The curved panel armrests are executed in saddle leather and are not fabric-covered. The base frame features genuine leather edging as a standard detail.DIMENSIONS• Width: 300 cm• Depth: 105 cm• Height: 66 cmAssembly",
+      "price": 7180,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hs0008u7us8nc65hs3",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f1185d77-2a6d-4d94-96cf-59228512ff20.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f1185d77-2a6d-4d94-96cf-59228512ff20.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/4c4e0667-14ae-4bb0-8e66-919309654259.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/502f6aa9-5c83-4154-b8a4-074ed6c33985.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/5124272d-1b1c-4f90-baad-a07f4298583a.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ee94450f-6913-44b6-bfe3-c77b1c9fa63e.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqw7000w4bn7rtddgp8m",
+      "name": "LH Synicor",
+      "slug": "lh-synicor",
+      "description": "MATERIALSInner FrameA carefully engineered structure combining larch and multi-layer solid wood board, reinforced with structural bandages and birch elements for long-term stability and precision.Seat FillingA multi-layer comfort system composed of high-resilience foam, a thin memory foam layer, premium white goose down, and feather foam. This combination ensures a refined balance between support, softness, and adaptive comfort.Backrest FillingFilled with premium white goose down and feather foam, designed to provide soft ergonomic support while maintaining a light and natural seating feel.Hardware / BaseA matte black structural base frame paired with metal feet, designed to ensure durability while maintaining a visually clean and architectural presence.Note: the base frame is factory-assembled to ensure structural integrity and precision. Separate component assembly may incur additional costs.DIMENSIONS• Width: 320 cm• Depth: 110 cm• Height: 72 cmAssembly required",
+      "price": 5490,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hs0008u7us8nc65hs3",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/984738d5-9b45-4d91-bf76-08da81ae2f2a.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/984738d5-9b45-4d91-bf76-08da81ae2f2a.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/932a9857-8fb3-4643-80f4-ac3f009bc155.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/756c3502-301b-424f-a967-afab7ce86a3e.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/77483b58-5cee-46da-b260-cbed8a62218a.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/7c3ec49a-d9fc-4a2e-a7d9-4bfafcc1ebbd.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqw800144bn7jx0v9t4z",
+      "name": "LH Solarius",
+      "slug": "lh-solarius",
+      "description": "MATERIALSInner FrameA precisely engineered structural core combining solid wood multilayer board and solid larch, designed to ensure long-term stability, durability, and refined structural integrity.Seat FillingA multi-layer comfort system composed of premium high-resilience foam, feather foam, memory foam, and premium white goose down, delivering a balanced combination of support, softness, and adaptive seating comfort.Backrest FillingA refined cushioning composition of premium white goose down, memory foam, and feather foam, designed to provide soft ergonomic support and a naturally relaxed seating experience.Hardware / BaseTransparent brown aluminium alloy legs paired with aluminium plate curved panels. Saddle leather curved armrests remain intentionally exposed (non-fabric covered), highlighting material authenticity, while the base frame is finished with genuine leather edging for a continuous premium material expression.Note: full leather construction is applied. The curved panel armrests are executed in saddle leather and are not fabric-covered. The base frame features genuine leather edging as a standard detail.DIMENSIONS• Width: 298cm• Depth: 105 cm• Height: 68 cmAssembly ",
+      "price": 4210,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hs0008u7us8nc65hs3",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e58ba813-7e94-4db9-80d3-f57ee0b91d0e.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e58ba813-7e94-4db9-80d3-f57ee0b91d0e.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a83daab9-d15c-403d-a88b-10007f7d249d.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e9213109-56a3-44af-907d-a34fd0181bf3.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/72f27734-fede-47b1-96b7-077338480d25.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/8dbe44a3-9661-4656-942b-fa6ad92d5205.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqw9001c4bn7kt743hvx",
+      "name": "LH Spectron",
+      "slug": "lh-spectron",
+      "description": "MATERIALSInner FrameA reinforced structural base crafted from solid larch, supported with elastic bandage reinforcement to ensure long-term durability, stability, and controlled flexibility. Birch is used as a supplementary material to enhance structural precision and strength balance.Seat FillingA premium multi-layer comfort system composed of high-quality high-resilience foam, white goose down, and feather cotton, designed to provide a refined balance between supportive structure and soft, adaptive comfort across seating and armrest areas.Backrest FillingA soft ergonomic composition of high-quality white goose down and feather cotton, engineered to deliver a lightweight, breathable, and naturally enveloping comfort experience.Hardware / BaseMatte black sand-finished metal feet, designed to ensure structural stability while adding a subtle architectural contrast to the overall design.DIMENSIONS• Width: 280cm• Depth: 105 cm• Height: 71 cmAssembly required",
+      "price": 6000,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hs0008u7us8nc65hs3",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3e587004-e29f-4c8a-8e53-fc7dd0267a74.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3e587004-e29f-4c8a-8e53-fc7dd0267a74.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0ff79f11-aa9c-4522-b48c-640077088511.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3a5bda2b-8494-4981-b625-fc7f12fe884a.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3b80111c-2969-4664-a62e-209ba7945837.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fe2e1087-5f62-4618-a444-fe5df77604f7.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqw9001k4bn7iz4izhei",
+      "name": "LH Locus",
+      "slug": "lh-locus",
+      "description": "MATERIALSInner Frame / FeetA solid wood structural frame finished in black veneer, engineered for long-term stability, strength, and refined modern aesthetics. The carbon steel feet provide a durable and stable foundation, ensuring high load-bearing performance and a bold architectural presence.Seat / Back PaddingHigh-resilience sponge, designed to deliver consistent support, durability, and long-term comfort. The material adapts to pressure while maintaining shape retention and structural integrity over time.Hardware / BaseIntegrated reinforcement and fastening system within the wooden frame and metal base connection, ensuring stability, durability, and secure long-term assembly suitable for daily use.DIMENSIONSLounge chair• Width: 89 cm• Depth: 91 cm• Height: 100 cmPedal• Width: 61 cm• Depth: 51 cm• Height: 42 cmFully assembled",
+      "price": 2200,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqvz00024bn7xhzzsg21",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/39a7b05a-1562-465f-b4b6-977f2e976742.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/39a7b05a-1562-465f-b4b6-977f2e976742.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/86f01d77-96e3-40df-8f95-57144e3227b6.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/d44d9d30-a8da-4710-9c25-65c82d8e02d5.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3730f3b8-c871-4628-8c9b-53d622581d96.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e00c0407-1982-4cc7-ad05-8f2214f26c09.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwa001s4bn7362n9uff",
+      "name": "LH Lynock",
+      "slug": "lh-lynock",
+      "description": "MATERIALSInner Frame / FeetA multi-layer solid wood board structure finished with walnut veneer, engineered for long-term stability, durability, and refined natural wood expression. The integrated aluminium alloy hardware swivel feet provide smooth rotation functionality while ensuring structural balance and modern mobility.Seat / Back PaddingHigh-resilience sponge, designed to deliver consistent support, comfort, and shape retention over time. The material adapts to pressure while maintaining structural integrity and a clean seating form.Hardware / BaseIntegrated aluminium alloy swivel mechanism combined with reinforced fastening system, ensuring smooth rotational movement, stability, and long-term durability across all structural components.DIMENSIONSLounge chair• Width: 83 cm• Depth: 86 cm• Height: 80 cmPedal• Width: 62 cm• Depth: 54 cm• Height: 42 cmFully assembled",
+      "price": 1965,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqvz00024bn7xhzzsg21",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/39da0b2d-0877-4718-b964-6d0cb3dd477a.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/39da0b2d-0877-4718-b964-6d0cb3dd477a.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/2ba38cbc-721d-4937-9f0a-06ac0ea19be4.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c5494bcc-4483-493e-81bb-28cc6c3fa49d.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/efdf3248-4380-4984-bb9c-4e99ec3903f4.jpg",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwb001z4bn79a8bke3f",
+      "name": "LH Lucently",
+      "slug": "lh-lucently",
+      "description": "MATERIALSInner Frame / FeetA reinforced structural system integrating a curved plate core with stainless steel feet, designed to provide long-term stability, strength, and a clean architectural base. The metal legs ensure durability and balanced support while maintaining a refined modern aesthetic.Seat / Back PaddingHigh-resilience sponge combined with saddle leather upholstery, delivering a balanced seating experience with supportive comfort and a soft-touch, refined surface finish.Hardware / BaseIntegrated fastening and reinforcement system within the curved plate structure, ensuring stability, precise alignment, and long-term durability across all components.DIMENSIONSLounge chair• Width: 85 cm• Depth: 95 cm• Height: 84 cmPedal• Width: 65 cm• Depth: 55 cm• Height: 39 cmFully assembled",
+      "price": 2720,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqvz00024bn7xhzzsg21",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a4f079ed-8984-4dda-857a-825c244bfa17.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a4f079ed-8984-4dda-857a-825c244bfa17.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fc475d57-7964-4a12-af5e-f4d99ed93c0d.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/60c98e2c-db41-4404-b195-9cf3ec6281e4.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/66cb41bb-bbb3-454d-a0b7-3d88001a7b64.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/56f6f820-90ac-49b7-a79c-1070ec26989c.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwc00274bn7qprbd9jl",
+      "name": "LH Panda",
+      "slug": "lh-panda",
+      "description": "MATERIALSOuter MaterialPlush fabric upholstery, selected for its soft texture and inviting tactile feel. The surface creates a warm, comfortable, and visually cozy presence within the space.FillingShaped cotton padding, designed to provide gentle support while maintaining a soft, relaxed form. The filling ensures comfort, flexibility, and long-term shape retention for everyday use.DIMENSIONS• Width: 65 cm• Depth: 92 cm• Height: 43 cmFully assembled",
+      "price": 710,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqvz00024bn7xhzzsg21",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1ac2827e-0eb4-43e5-861f-dcba7e2532b1.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1ac2827e-0eb4-43e5-861f-dcba7e2532b1.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ef2dd224-ebb3-4695-8706-38faec7f0dd6.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/4d2f5536-7084-425c-a576-b1837cc36459.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/15543d42-2c23-4009-bf29-48a044cc35d4.jpg",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwd002e4bn74hxge6ks",
+      "name": "LH Ascor",
+      "slug": "lh-ascor",
+      "description": "MATERIALSInner Frame / FeetA solid wood structural frame finished with rosewood veneer, engineered for long-term stability, strength, and refined natural elegance. The material combination ensures a durable foundation with a rich wood grain appearance and a warm, sophisticated aesthetic.Seat / Back PaddingHigh-resilience sponge, designed to provide consistent support, durability, and long-lasting comfort. The material adapts to pressure while maintaining shape retention and seating stability over time.Hardware / BaseHardware chassis system integrated into the structural frame, engineered to ensure stability, reinforcement, and secure long-term assembly while maintaining a clean, technical foundation.DIMENSIONS• Width: 95 cm• Depth: 94 cm• Height: 77 cmFully assembled",
+      "price": 1480,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/089b2808-21d0-4a8a-9eb0-8f83a926007d.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/089b2808-21d0-4a8a-9eb0-8f83a926007d.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/9eacca55-94e2-41df-add7-b598e98eb26e.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/bf5205b5-3f48-469c-b8d1-7e7141b56a91.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b8e2a9dd-f5ab-4749-9722-ebf677c2a6e5.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/9ba65f3c-78ec-4fe7-8f27-c8fd4ec478b2.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwd002m4bn7iuhzi3ez",
+      "name": "LH Aukc",
+      "slug": "lh-aukc",
+      "description": "MATERIALSInner Frame / FeetA metal internal frame engineered for high structural strength, stability, and long-term durability. The integrated stainless steel feet provide a solid foundation, ensuring balanced support and a clean, modern architectural profile.Seat / Back PaddingIntegral shaping cotton, designed to provide soft comfort while maintaining a stable, formed structure. The material ensures consistent shape retention and a balanced seating experience over time.Hardware / Base:Integrated metal fastening and reinforcement system within the frame, ensuring stability, durability, and secure long-term assembly suitable for everyday use.DIMENSIONS• Width: 73 cm• Depth: 74 cm• Height: 70 cmFully assembled",
+      "price": 1335,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/33e22a0c-48b6-41f7-aaa7-0e2209c91afe.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/33e22a0c-48b6-41f7-aaa7-0e2209c91afe.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f2a1e461-e3cc-4ee5-a988-c2b51859611b.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c161ef72-d144-48ac-bd20-e548f43eb34a.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/8bf327f6-6ae2-4e56-b2fe-1568215ed075.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/7897d27d-121b-4164-aa61-34b65f550152.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwe002u4bn74kgglm5s",
+      "name": "LH Ackerman",
+      "slug": "lh-ackerman",
+      "description": "MATERIALSInner Frame / FeetA smoked solid wood structural frame engineered for long-term stability, strength, and refined natural depth. The material provides a durable foundation with a rich, dark-toned finish and a stable architectural presence.Seat / Back PaddingHigh-quality high-resilience sponge, designed to deliver consistent support, durability, and long-lasting comfort. The material maintains shape retention while adapting to daily pressure for a balanced seating experience.Hardware / BaseBright hardware support frame, engineered to ensure structural reinforcement, stability, and secure long-term assembly while adding a subtle refined metallic contrast to the wooden structure.DIMENSIONS• Width: 80 cm• Depth: 80 cm• Height: 78 cmFully assembled",
+      "price": 1570,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/cc417d41-85d3-4ff7-864a-548d2dbf65f1.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/cc417d41-85d3-4ff7-864a-548d2dbf65f1.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6ebb29aa-17b1-475e-81dd-28401c3a9e39.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/64769bcb-f7ac-4f85-b22c-4503156a3e54.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1fa760eb-3c7d-4a1e-a937-5acd15538d3d.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6d19fe5c-0e64-4ad6-90a2-29cf76c330ae.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwf00324bn7wf9li6mm",
+      "name": "LH Duchamp",
+      "slug": "lh-duchamp",
+      "description": "MATERIALSInner Frame / FeetA precisely engineered bent board structural frame designed for ergonomic shaping, stability, and long-term durability. Solid ash wood feet provide a strong and reliable foundation, adding natural warmth, refined grain texture, and visual balance to the overall form.Seat / Back PaddingShaped cotton padding, carefully formed to deliver balanced seating comfort and ergonomic support. Designed to maintain its sculpted form while ensuring a soft, comfortable seating experience.Hardware / BaseIntegrated structural fastening system within the bent board frame, ensuring stability, durability, and secure long-term assembly suitable for daily use.DIMENSIONS• Width: 61 cm• Depth: 63 cm• Height: 78 cmFully assembled",
+      "price": 870,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77i4000cu7us5khib2g0",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/01ac17d6-cf96-41be-aee6-b1cd56c0a857.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/01ac17d6-cf96-41be-aee6-b1cd56c0a857.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/2a801156-45a3-4fd3-8c7c-c95688f9f979.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e895d54b-4230-468e-a7d0-9413e1ce5a67.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/8ff55773-7004-40a9-b8f2-9c3a88846465.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e02195ff-aa24-4d28-8fa7-cd6dc350cf6e.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwg003a4bn7c6qhaqxp",
+      "name": "LH Darcenly",
+      "slug": "lh-darcenly",
+      "description": "MATERIALSInner Frame / FeetA precisely engineered stainless steel structural frame designed for long-term stability, strength, and modern architectural clarity. The integrated metal feet are part of the continuous base structure, providing exceptional load-bearing performance, durability, and a clean, minimal visual profile with a refined industrial character.Seat / Back PaddingHigh-resilience sponge, engineered to provide balanced support, durability, and consistent comfort over time. The material adapts to body pressure while maintaining structural integrity and shape retention.Hardware / BaseIntegrated structural fastening system within the metal frame, ensuring stability, durability, and secure long-term assembly suitable for daily use.DIMENSIONS• Width: 57 cm• Depth: 62 cm• Height: 82 cmFully assembled",
+      "price": 485,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77i4000cu7us5khib2g0",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6d2ab0f9-3a77-4c7c-a5e4-93fe473fbac0.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6d2ab0f9-3a77-4c7c-a5e4-93fe473fbac0.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/4daac876-ad84-40c6-ba04-4f2a286ed26e.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/9f5ff4cc-7c47-4a74-bb35-bd737c33605b.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ac0c8351-aad4-4c46-8ab2-b93787282b56.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/43254d9f-3d48-4314-80ad-78d8264bda95.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwg003i4bn7g2izotqe",
+      "name": "LH Deconstruct",
+      "slug": "lh-deconstruct",
+      "description": "MATERIALSInner Frame / FeetA solid ash wood structural base engineered for long-term stability, strength, and refined natural aesthetics. The integrated feet are crafted from ash wood, providing a durable foundation with a warm grain texture and balanced visual lightness suitable for contemporary interiors.Seat / Back PaddingHigh-resilience sponge, engineered to provide consistent support, durability, and long-lasting comfort. The material adapts to pressure while maintaining structural shape and seating integrity over time.Hardware / BaseIntegrated structural fastening system within the wooden frame, ensuring stability, durability, and secure long-term assembly suitable for daily use.DIMENSIONS• Width: 59 cm• Depth: 64 cm• Height: 81 cmFully assembled",
+      "price": 690,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77i4000cu7us5khib2g0",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0ab54ccb-13a1-4096-a0f2-9c3b57221f2a.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0ab54ccb-13a1-4096-a0f2-9c3b57221f2a.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6ebdc557-1272-4bfe-9fcd-4345e494ba87.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/cad5857a-e2a5-41d2-b3e2-f353d993b7cf.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0f9c6a42-e7b3-4a55-bd3c-a0b9400b7b75.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6c9f4298-e866-494b-9742-27da26530d7f.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwh003q4bn7etc4haen",
+      "name": "LH Deckroft",
+      "slug": "lh-deckroft",
+      "description": "MATERIALSInner Frame / FeetA solid wood structural frame engineered for long-term stability, strength, and precise load-bearing performance. The structure is complemented by solid wood feet, designed to provide a stable foundation, natural visual balance, and refined durability. The combination ensures both structural integrity and a clean, timeless silhouette.Seat / Back PaddingShaped cotton padding, carefully formed to deliver balanced seating comfort and ergonomic support. Designed to maintain its sculpted form while ensuring a soft, comfortable seating experience.Hardware / BaseIntegrated structural fastening system within the solid wood frame, ensuring stability, durability, and secure long-term assembly suitable for daily use.DIMENSIONS• Width: 63 cm• Depth: 57 cm• Height: 82 cmFully assembled",
+      "price": 760,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77i4000cu7us5khib2g0",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e6a99e75-e148-47c0-91b9-d3b771e26ece.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e6a99e75-e148-47c0-91b9-d3b771e26ece.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e14cf9e9-a6e8-42d3-9fe3-b37b09441732.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/50f93827-1144-4646-bfce-a7b63d10061e.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/bd552175-b4e2-4e4a-a67a-f9ae9786b00d.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c3b0c1bc-22ec-4ec7-9e85-c1586b7da3e4.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwi003y4bn7ivtrgzv5",
+      "name": "LH Brickly",
+      "slug": "lh-brickly",
+      "description": "MATERIALSInner Frame / FeetA solid wood structural frame engineered for long-term stability, strength, and precise load-bearing performance. Solid ash wood legs provide a durable foundation with a natural refined grain finish, ensuring both structural integrity and visual balance.Seat / Back PaddingShaped cotton padding, carefully formed to deliver balanced seating comfort and ergonomic support. Designed to maintain its sculpted form while providing a soft, comfortable, and supportive seating experience for daily use.Hardware / BaseIntegrated structural fastening system within the solid wood frame, ensuring stability, durability, and secure long-term assembly suitable for everyday dining applications.DIMENSIONS• Width: 54 cm• Depth: 52 cm• Height: 86 cmFully assembled",
+      "price": 635,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw000044bn795wbccp8",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/09bc1b39-62c8-478d-bf8d-046e6da86767.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/09bc1b39-62c8-478d-bf8d-046e6da86767.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1d99b31f-6741-4232-a773-589327bba2ad.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3596ce66-3f75-41d3-8e78-2cba151b51e6.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/3d2840d7-a9fd-4de9-9677-f59b001dc31d.jpg",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwi00454bn7hvqqkv5s",
+      "name": "LH Tectonic",
+      "slug": "lh-tectonic",
+      "description": "MATERIALSTabletopA Venetian brown natural marble surface, selected for its rich tonal depth, natural veining, and timeless architectural character. Each piece is unique, defined by the organic variations of the stone.Table LegsBrushed bronze stainless steel legs, engineered for structural stability and designed to complement the natural marble with a warm, refined metallic contrast.Hardware / BasePrecision-engineered structural connection system ensuring stability, balance, and secure integration between the marble top and metal base.Assembly required",
+      "price": 5490,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmosa539h0002k31yat9ktk3v",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/58a7b03f-49fb-41a1-985e-490539672b95.jpg",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwj00484bn7cz477cx6",
+      "name": "LH Tracelon",
+      "slug": "lh-tracelon",
+      "description": "MATERIALSTabletopA Pandora 6mm stone slab combined with an 8mm glass layer, forming a saddle-shaped sinter stone composite structure. This multi-layer construction enhances visual depth, structural rigidity, and surface durability while preserving the refined natural character of the stone material.Table LegsStainless steel legs with a grey titanium brushed finish, engineered as an integrated base system to ensure high structural stability, load balance, and a refined industrial aesthetic with a muted metallic tone.Hardware / BaseIntegrated structural base system designed for precise reinforcement and seamless connection between the tabletop and metal frame, ensuring long-term durability and stability.Assembly required",
+      "price": 4010,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmosa539h0002k31yat9ktk3v",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6ddd48fd-5980-41c8-9be4-de46e5e9ee94.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6ddd48fd-5980-41c8-9be4-de46e5e9ee94.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fc2c96b5-be11-4e6c-98d5-cd77a043d8fe.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/d9044997-375d-4e33-94ee-0eec36258a07.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1660f775-003a-4d0c-9e4d-5e9ac2579b54.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c3777ef4-3e07-4714-a7f6-d42d919dea69.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwk004g4bn7qwy18073",
+      "name": "LH Cacto",
+      "slug": "lh-cacto",
+      "description": "MATERIALSTabletopNaqiu green natural marble surface, selected for its distinctive green tonal depth, organic veining, and refined natural stone character. The material delivers a strong architectural presence with a unique and luxurious visual identity.Table LegsNorth American walnut colour frame combined with stainless steel mirror hardware elements, engineered for structural stability, durability, and long-term load-bearing performance. The contrast between warm wood tone and reflective metal creates a balanced, premium composition.Hardware / BaseIntegrated structural reinforcement system ensuring secure assembly, precise alignment, and long-term durability across all components connecting stone surface and mixed-material base structure.DIMENSIONS• Width: 120 cm• Depth: 120 cm• Height: 28 cmAssembly required",
+      "price": 3570,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f7aa796b-6d6e-488c-9fae-3fd4bd61eee6.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f7aa796b-6d6e-488c-9fae-3fd4bd61eee6.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ec2d83a9-393e-483e-8156-593d9dbb4dee.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/35363c62-cb17-4555-b3ec-650c0e183955.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fcff7ee6-78e2-4ed9-af32-ab953ba0c991.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/5f7fb4ba-918e-4335-b40b-909cd682dbdb.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwl004o4bn7mqpeaaz0",
+      "name": "LH Crux",
+      "slug": "lh-crux",
+      "description": "MATERIALSTabletopNatural Venetian brown marble surface, selected for its rich tonal depth, refined natural veining, and timeless architectural character. The stone delivers a solid, luxurious expression with a clean and premium visual presence.Table LegsSolid stainless steel straight-edge box structure with grey titanium brushed finish, engineered for exceptional structural strength, stability, and long-term load-bearing performance. The design integrates stainless steel feet in the same finish, forming a unified and durable base system.Hardware / BaseIntegrated fastening and reinforcement system ensuring precise alignment, secure connection between marble tabletop and metal base, and long-term structural stability across all components.DIMENSIONS• Width: 120 cm• Depth: 120 cm• Height: 23 cmAssembly required",
+      "price": 2910,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/7b62d3b2-be47-48cf-b88b-c29bf3bcf408.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/7b62d3b2-be47-48cf-b88b-c29bf3bcf408.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/456094f1-d94b-4609-b619-831414a9bdfd.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c30651cf-d67a-4395-8d85-938452b3dc95.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a10c1641-ed85-4c7e-820a-1a3e8af5dd48.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/297cdddc-dae2-42e0-a050-4611c1d5eb4a.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwm004w4bn7sxkgnyp9",
+      "name": "LH Catastal",
+      "slug": "lh-catastal",
+      "description": "MATERIALSTabletopBlue smoked wood veneer surface, offering a refined depth of tone with a soft, atmospheric wood grain expression. The finish creates a modern yet warm visual character suitable for contemporary interiors.Table LegsMetal plate structural frame, engineered for stability, durability, and long-term load-bearing performance. The solid metal construction ensures a clean architectural presence and strong foundational support.Hardware / BaseSaddle leather edging combined with integrated reinforcement system, providing a refined tactile transition while ensuring structural stability, precise alignment, and secure long-term assembly across all components.DIMENSIONS• Width: 90 cm• Depth: 90 cm• Height: 35 cmFully assembled",
+      "price": 1460,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/92628626-1e04-47ea-a26a-ce96150f48e9.png",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/92628626-1e04-47ea-a26a-ce96150f48e9.png",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/2e7e5993-628a-4c19-86ee-12a67b08e347.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b47d4462-1d4e-4683-8b6d-ff06ce025039.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/afa24649-f0e4-4fc1-bbb4-8a7aff7cae9e.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/92dfa66d-6e8c-4f09-8ee2-f3e78c7837fe.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwm00544bn7mizezifn",
+      "name": "LH Cyx",
+      "slug": "lh-cyx",
+      "description": "MATERIALSTabletopA solid wood multilayer board surface veneered in a blue smoke wood finish, offering a refined depth of tone with subtle grain expression and a contemporary, atmospheric aesthetic. The structure ensures durability while maintaining a premium natural wood character.Table LegsGlossy stainless steel hardware legs, engineered for strong structural stability, durability, and long-term load-bearing performance. The polished finish enhances light reflection and adds a modern architectural contrast to the wood surface.Hardware / BaseIntegrated fastening and reinforcement system ensuring structural stability, precise alignment, and secure long-term assembly across all components.DIMENSIONS• Width: 70 cm• Depth: 55 cm• Height: 38 cmAssembly required",
+      "price": 1180,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/dfae5db7-1df2-4687-8729-8c03ad3f98d8.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/dfae5db7-1df2-4687-8729-8c03ad3f98d8.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f1b868cf-b433-425b-99bf-967b11a59f3b.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/5c1b1ce4-613d-4ede-b9b8-182c313efb01.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fbc50b38-d05c-4046-b799-8e5003c3a6e4.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/f8461136-e5e5-47fd-86be-62f636255f5a.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwn005c4bn7hqtzj5jp",
+      "name": "LH Cot",
+      "slug": "lh-cot",
+      "description": "MATERIALSTabletopJazz white natural marble surface, selected for its elegant tonal brightness, refined veining, and timeless stone character. The material delivers a clean, architectural presence with natural variation that enhances its premium aesthetic.Table LegsStainless steel legs with a bronze brushed finish, engineered for strong structural stability, durability, and long-term load-bearing performance. The warm metallic tone adds a sophisticated contrast to the natural marble top.Hardware / BaseIntegrated structural system connecting the marble top with the solid wood and metal base, ensuring stability, precise alignment, and secure long-term assembly across all components.DIMENSIONS• Width: 110 cm• Depth: 110 cm• Height: 28 cmAssembly required",
+      "price": 1975,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/d547eb01-e579-4caf-a618-822508ab0b02.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/d547eb01-e579-4caf-a618-822508ab0b02.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/84915644-b628-45d7-82e0-2ebd35643515.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/5c4f1035-f2ca-4ea0-a399-2683f6ea5b5e.jpg",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwo005i4bn7xqfq55xo",
+      "name": "LH Cobaltic",
+      "slug": "lh-cobaltic",
+      "description": "MATERIALSTabletopStainless steel mirror natural colour surface, offering a highly reflective finish with a clean, contemporary aesthetic. The material enhances light interaction while maintaining a sleek, architectural appearance with timeless modern appeal.Table LegsStainless steel mirror natural colour, engineered for strong structural stability, durability, and long-term load-bearing performance. The polished surface creates a seamless visual continuity with the tabletop.Hardware / BaseIntegrated fastening and reinforcement system ensuring structural stability, precise alignment, and secure long-term assembly across all components.DIMENSIONS• Width: 41 cm• Depth: 36 cm• Height: 45 cmFully assembled",
+      "price": 975,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/77fea399-748c-4de7-99b1-f3651f04a387.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/77fea399-748c-4de7-99b1-f3651f04a387.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1e6cc2b2-8752-4fe2-b3ef-fc544709373d.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1f16eeca-8b1c-44cc-943d-24439b56089e.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/adf6655c-b9a5-44d5-9bec-834dc4fa9b17.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/140926a2-661f-4f62-b2cd-beca70be4f0f.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwp005q4bn78q9j7qsa",
+      "name": "LH Crystal",
+      "slug": "lh-crystal",
+      "description": "MATERIALSTabletopMirror chrome-plated surface, delivering a highly reflective, polished finish that enhances light interaction and creates a bold, modern architectural expression. The surface emphasizes clarity, depth, and a premium contemporary aesthetic.Table LegsMirror chrome-plated structural, engineered for high durability, stability, and load-bearing performance. The reflective finish adds a striking visual presence while maintaining a clean, minimalist form.Hardware / BaseIntegrated fastening and reinforcement system ensuring structural stability, precise alignment, and long-term durability across all components.DIMENSIONS• Width: 27 cm• Depth: 27 cm• Height: 45 cmFully assembled",
+      "price": 750,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a3bd579d-393e-430d-8a37-1c22da03bbcb.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/a3bd579d-393e-430d-8a37-1c22da03bbcb.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/bb53f777-5518-422e-9d04-84e04e263b31.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/d5c309aa-8d38-41a8-a30f-396b75c0fbaf.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/72d0abcf-2339-402a-a33f-aa602803c61e.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/4b2347ad-5be5-4dbb-964f-dd266f0cdde3.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwq005y4bn7e3ydyck1",
+      "name": "LH Centricon",
+      "slug": "lh-centricon",
+      "description": "MATERIALSTabletopNatural white marble carving plate, selected for its refined stone character, organic veining, and sculptural surface quality. The material delivers a timeless architectural expression with natural variation in tone and texture.Table LegsStainless steel structure with black titanium feet, engineered for high strength, durability, and long-term stability. The dark metallic finish adds a bold, modern contrast to the natural stone surface.Hardware / BaseIntegrated fastening and reinforcement system ensuring structural stability, precise alignment, and secure long-term assembly across all components.DIMENSIONS• Width: 45 cm• Depth: 45 cm• Height: 57 cmAssembly required",
+      "price": 680,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/06833332-7428-45bd-9862-63f3be074dea.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/06833332-7428-45bd-9862-63f3be074dea.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b484593f-5bd7-4a23-b50e-6e8cc59b4825.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/96519c3a-9d4f-46ed-b097-96a3ddbc8fe9.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c8e1d55a-518a-4eb6-8c8c-578438e9091b.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/da6b2633-37fb-4dfa-a7be-3befa8eebcb8.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwr00664bn78fx792t0",
+      "name": "LH Cytrel",
+      "slug": "lh-cytrel",
+      "description": "MATERIALSTabletopNatural white surface, selected for its clean, refined aesthetic and timeless minimalist expression. The material emphasizes brightness, clarity, and a modern architectural character suitable for contemporary interiors.Table LegsStainless steel structure with black titanium hardware feet, engineered for strong load-bearing performance, durability, and corrosion resistance. The metallic finish adds a bold, modern contrast to the overall design.Hardware / BaseIntegrated fastening and reinforcement system ensuring structural stability, precise alignment, and long-term durability across all components.DIMENSIONS• Width: 45 cm• Depth: 45 cm• Height: 54 cmAssembly required",
+      "price": 740,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/90f88878-4643-481c-9ed8-d6e9811083b0.png",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/90f88878-4643-481c-9ed8-d6e9811083b0.png",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/fa1e32d7-9233-40be-87a5-094248854ee8.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/381924a0-44fb-410f-93fd-a379d2c09c08.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/bc726933-175c-4602-8081-a0a7c2fe4484.jpg",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwr006d4bn7dg3mlqf1",
+      "name": "LH Nult",
+      "slug": "lh-nult",
+      "description": "MATERIALSTabletopA refined combination of natural wood elements and saddle leather  detailing, creating a balanced contrast between warm natural texture and soft-touch luxury surface finish. The composition delivers a layered, contemporary aesthetic with subtle material depth.Table LegsStainless steel structure with black titanium finish, engineered for high structural stability, durability, and long-term load-bearing performance. The design integrates saddle leather accents, enhancing the visual and tactile refinement of the metal base.Hardware / BaseIntegrated fastening and reinforcement system ensuring precise alignment, secure connection between mixed-material tabletop and metal base, and long-term structural stability across all components.DIMENSIONS• Width: 70 cm• Depth: 32 cm• Height: 50 cmFully assembled",
+      "price": 565,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw100064bn7lhj1fwkx",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/34344355-59a4-498e-85ac-043859b6c709.png",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/34344355-59a4-498e-85ac-043859b6c709.png",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/37dcc888-6989-46b3-b336-ff828a6ad4fa.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/09b7b554-7300-4025-b2c9-251caafba716.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ce8df4e7-9a1b-479f-b29e-7eedc02e6ea3.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c5c5605a-f805-4a12-a79e-d4c2515ad03a.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqws006l4bn77qklrw0q",
+      "name": "LH Deut",
+      "slug": "lh-deut",
+      "description": "MATERIALSSurface / Top / MirrorIntegrated mirror surface combined with a refined matte saddle leather finish and North American black walnut leather detailing, creating a balanced contrast between reflective clarity, soft-touch texture, and warm natural wood tone. The composition delivers a premium, elegant visual identity.Base / Structure / Storage / FeetA hard case cabinet structure finished in matte saddle leather, reinforced with brushed copper stainless steel elements. Engineered for durability, stable storage functionality, and long-term structural integrity while maintaining a refined and modern luxury appearance.DIMENSIONS• Width: 140 cm• Depth: 45 cm• Height: 80 cmFully assembled",
+      "price": 2785,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw200084bn7nnh0qu4t",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ce3239a4-5903-41f2-aef9-4bd42ef07ca4.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/ce3239a4-5903-41f2-aef9-4bd42ef07ca4.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/29bd0a7e-a333-4a03-b14e-109acf7ec9eb.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/6a90d7c1-4d40-49f8-9523-4cc1d2a43848.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/7a195e5a-f75d-43ff-933f-b36e87f2bab7.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1d0a7022-769a-4f04-945d-281ced9228c2.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwt006t4bn77zeeexs0",
+      "name": "LH Dist",
+      "slug": "lh-dist",
+      "description": "MATERIALSSurface / Top / MirrorA refined saddle leather surface combined with North American black walnut wood colour detailing on the left and right sections. This composition creates a balanced contrast between soft-touch luxury material and rich natural wood tone, delivering a sophisticated and elegant visual expression.Base / Structure / Storage / FeetIntegrated cabinet body structure combining saddle leather upholstery with North American black walnut colour wood elements on both sides. Engineered for stable storage functionality, durability, and long-term structural integrity while maintaining a clean and modern silhouette.DIMENSIONS• Width: 120 cm• Depth: 49 cm• Height: 80 cmAssembly required",
+      "price": 2230,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw200084bn7nnh0qu4t",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c251b4a5-7e65-4070-b796-a8dca822211a.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c251b4a5-7e65-4070-b796-a8dca822211a.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/13510a84-9aec-4140-845e-5c87abd58cb8.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1749d1f0-86bc-4d1b-9f08-59d385abfdf7.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/20ca9518-3f84-4163-8286-dff11f7d4009.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/38919531-bf0b-463d-8ee8-f90592356b91.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwu00714bn7bzeo7ttc",
+      "name": "LH Dot",
+      "slug": "lh-dot",
+      "description": "MATERIALSOuter Material / SurfaceSoft upholstered surface, designed to provide a smooth, comfortable, and visually refined finish suitable for everyday use.Filling / Structure / BaseA solid wood internal frame combined with high-resilience sponge, engineered to ensure stable support, durable comfort, and long-term shape retention. The structure is reinforced with stainless steel hardware feet, providing stability, strength, and a clean modern foundation.DIMENSIONS• Width: 40 cm• Depth: 40 cm• Height: 43 cmFully assembled",
+      "price": 885,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw200084bn7nnh0qu4t",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/61923bd6-ebc2-4284-9924-b992a66efb07.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/61923bd6-ebc2-4284-9924-b992a66efb07.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/cfe3ac0d-0b4f-454f-8b1e-10aa11cc9c80.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e5bec2ec-f3e3-4259-86be-b988d60512d6.jpg",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwu00774bn7trd88q4x",
+      "name": "LH Beyond",
+      "slug": "lh-beyond",
+      "description": "MATERIALSBed Frame / StructureA solid  larch wood base structure engineered for long-term stability, strength, and reliable load-bearing performance. The natural wood frame provides a durable and stable foundation with a clean structural profile.Headboard / UpholsteryHigh-resilience sponge filling, designed to deliver balanced support, durability, and consistent comfort while maintaining shape retention over time.Base / Legs / SupportStainless steel feet, engineered for strong stability, durability, and long-term structural support, providing a clean and modern metallic foundation for the bed design.DIMENSIONS• Width: 228 cm• Depth: 216 cm• Height: 105 cmMattress size • Width: 180 cm• Depth: 200 cmAssembly required",
+      "price": 1880,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw2000a4bn74e0r3vwf",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/15c78edf-2bd9-4f13-95e2-5aafbcac122d.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/15c78edf-2bd9-4f13-95e2-5aafbcac122d.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b4372d30-22ff-4d06-898e-5cf7b21b5ee5.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b144fdbe-379f-4831-b916-a45f069bfe35.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0fcd2452-5c4a-40b1-948c-95f468e44e85.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/295a740e-507e-443a-997f-116c0e33b790.jpg",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "cmp19oqwv007f4bn7kbrnd93d",
+      "name": "LH Blanc",
+      "slug": "lh-blanc",
+      "description": "MATERIALSBed Frame / StructureA solid  larch wood base structure engineered for long-term stability, strength, and reliable load-bearing performance. The natural wood frame provides a durable foundation with a clean and stable structural profile.Headboard / UpholsteryHigh-density sponge filling, designed to deliver firm yet comfortable support, ensuring shape retention and consistent comfort for everyday use.Base / Legs / SupportSolid wood feet, crafted to provide stable support, durability, and a natural visual finish that complements the wooden frame while ensuring balanced load distribution.DIMENSIONS• Width: 230 cm• Depth: 210 cm• Height: 110 cmMattress size • Width: 180 cm• Depth: 200 cmAssembly required",
+      "price": 2160,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmp19oqw2000a4bn74e0r3vwf",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/020f4bf5-e9e4-4204-876b-53e6c0610c96.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/020f4bf5-e9e4-4204-876b-53e6c0610c96.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/c55f48fb-de28-4d7d-8284-ffe65e7ec095.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/0992d628-e9ca-459e-b0ca-afbdc1954495.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/e57ed3ab-6a38-421f-858b-ebb82a03e89f.jpg",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "cmp19ot1r0001w1zom41r0ved",
+      "name": "LH Advocate",
+      "slug": "lh-advocate",
+      "description": "MATERIALSInner Frame / FeetA solid wood structural frame crafted from imported Russian larch, engineered for long-term stability, strength, and refined natural durability. The integrated solid wood feet provide a stable foundation with a clean and balanced structural presence.Seat / Back PaddingHigh-quality high-resilience sponge combined with a premium filling blend of white goose down and feather silk cotton, delivering balanced support, soft ergonomic comfort, and a relaxed seating experience with long-term shape retention.Hardware / BaseIntegrated internal fastening system within the solid wood structure, ensuring stability, durability, and secure long-term assembly suitable for everyday use.DIMENSIONS• Width: 76 cm• Depth: 89 cm• Height: 75 cmFully assembled",
+      "price": 1680,
+      "stock": 10,
+      "published": true,
+      "featured": false,
+      "categoryId": "cmowj77hy000au7usayz6fopw",
+      "material": null,
+      "dimensions": null,
+      "images": [
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1e255aab-e99d-4040-85d2-95c5156c945d.jpg",
+          "order": 0
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/1e255aab-e99d-4040-85d2-95c5156c945d.jpg",
+          "order": 1
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/b1ed6d7b-4774-4029-908c-642732f004e8.jpg",
+          "order": 2
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/16654930-3dc9-40b3-95a9-814ba6206838.jpg",
+          "order": 3
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/31f0e703-c6ee-4b56-ab92-55a250559af5.jpg",
+          "order": 4
+        },
+        {
+          "url": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down/cdn-ecommerce/store_01KF0NYS56ZV3WBS1X6D6PY4WH/assets/9d3f8faf-e41a-4a08-acf4-1a687ef23ee9.jpg",
+          "order": 5
+        }
+      ]
+    }
+  ]
+}
