@@ -12,3 +12,9 @@ coverage/
 *.db-journal
 *.db-shm
 *.db-wal
+
+# Puppeteer downloaded browser cache
+backend/.puppeteer-cache/
+
+# Uploaded media files
+backend/uploads/
