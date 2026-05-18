@@ -41,13 +41,15 @@ export function Nav({ onAuthOpen }: NavProps) {
       <nav className="nav">
         {/* LEFT: logo + nav links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-9)' }}>
-          <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-            <img
-              src="/fulllogo_transparent_nobuffer.png"
-              alt="Luxurio Home"
-              className="nav-logo"
-            />
-          </Link>
+          <div className="nav-logo-wrap">
+            <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <img
+                src="/fulllogo_transparent_nobuffer.png"
+                alt="Luxurio Home"
+                className="nav-logo"
+              />
+            </Link>
+          </div>
           <div className="nav-links" style={{ display: 'flex', gap: 'var(--sp-8)' }}>
             {/* Collections with mega-dropdown */}
             <div

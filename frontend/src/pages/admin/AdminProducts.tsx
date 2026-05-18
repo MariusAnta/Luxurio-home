@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { api, Category, Product, formatPrice, formatPriceExVat } from '../../lib/api';
+import { BgRemoveModal } from '../../components/BgRemoveModal';
 
 interface FormState {
   name: string;
@@ -39,6 +40,7 @@ export function AdminProducts() {
   const [err, setErr] = useState('');
   const [uploading, setUploading] = useState<Record<number, boolean>>({});
   const [uploadingModel, setUploadingModel] = useState(false);
+  const [bgRemove, setBgRemove] = useState<{ idx: number; source: File | string } | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
   const dragIdx = useRef<number | null>(null);
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -310,13 +312,23 @@ export function AdminProducts() {
                   style={{ display: 'none' }}
                   onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadFile(i, f); }}
                 />
-                <button type="button" className="btn outline"
-                  style={{ padding: '5px 10px', fontSize: 11 }}
-                  onClick={() => fileInputRefs.current[i]?.click()}
-                  disabled={uploading[i]}
-                >
-                  {uploading[i] ? 'Uploading…' : '↑ Upload file'}
-                </button>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button type="button" className="btn outline"
+                    style={{ padding: '5px 10px', fontSize: 11, flex: 1 }}
+                    onClick={() => fileInputRefs.current[i]?.click()}
+                    disabled={uploading[i]}
+                  >
+                    {uploading[i] ? 'Uploading…' : '↑ Upload file'}
+                  </button>
+                  <button type="button" className="btn outline"
+                    title="Remove background (AI, runs in browser)"
+                    style={{ padding: '5px 10px', fontSize: 11, whiteSpace: 'nowrap', color: 'var(--gold)', borderColor: 'var(--gold)' }}
+                    disabled={!url || uploading[i]}
+                    onClick={() => setBgRemove({ idx: i, source: url })}
+                  >
+                    ✂ Remove BG
+                  </button>
+                </div>
               </div>
               <button type="button" onClick={() => removeImg(i)} disabled={form.imageUrls.length === 1} className="btn outline" style={{ padding: '10px 12px', alignSelf: 'start', marginTop: 1 }}>×</button>
             </div>
@@ -412,6 +424,29 @@ export function AdminProducts() {
         </tbody>
       </table>
       </div>
+      {bgRemove && (
+        <BgRemoveModal
+          source={bgRemove.source}
+          onClose={() => setBgRemove(null)}
+          onApply={async (blob) => {
+            setBgRemove(null);
+            const idx = bgRemove.idx;
+            setUploading(u => ({ ...u, [idx]: true }));
+            try {
+              const fd = new FormData();
+              fd.append('file', new File([blob], 'product-nobg.png', { type: 'image/png' }));
+              const res = await api.post<{ url: string }>('/uploads/image', fd, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+              });
+              setImg(idx, res.data.url);
+            } catch {
+              setErr('Upload of processed image failed.');
+            } finally {
+              setUploading(u => ({ ...u, [idx]: false }));
+            }
+          }}
+        />
+      )}
     </>
   );
 }

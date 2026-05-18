@@ -52,6 +52,14 @@ export function AdminLayout() {
           </NavLink>          <NavLink to="/admin/settings">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
             Settings
+          </NavLink>
+          <NavLink to="/admin/content">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+            Page Content
+          </NavLink>
+          <NavLink to="/admin/bg-remove">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><path d="M2 2l12 12M14 2 2 14"/><rect x="1" y="1" width="14" height="14" rx="1"/></svg>
+            Remove BG
           </NavLink>        </aside>
         <main className="admin-main">
           <Outlet />

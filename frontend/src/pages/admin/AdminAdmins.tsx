@@ -27,7 +27,7 @@ export function AdminAdmins() {
     setSubmitting(true);
     try {
       await api.post('/admins', { email, name: name || undefined, password, role });
-      setEmail(''); setName(''); setPassword(''); setRole('ADMIN');
+      setEmail(''); setName(''); setPassword('');
       load();
     } catch (e: any) {
       setErr(e?.response?.data?.error || 'Could not create admin');

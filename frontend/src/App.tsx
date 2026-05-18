@@ -29,6 +29,9 @@ const Shop         = lazy(() => import('./pages/Shop').then(m => ({ default: m.S
 const ProductDetail= lazy(() => import('./pages/ProductDetail').then(m => ({ default: m.ProductDetail })));
 const Favorites    = lazy(() => import('./pages/Favorites').then(m => ({ default: m.Favorites })));
 const OurStory     = lazy(() => import('./pages/OurStory').then(m => ({ default: m.OurStory })));
+const Terms        = lazy(() => import('./pages/TermsAndConditions').then(m => ({ default: m.TermsAndConditions })));
+const Privacy      = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
+const Cookies      = lazy(() => import('./pages/CookiePolicy').then(m => ({ default: m.CookiePolicy })));
 
 // Admin bundle — never shipped to public users
 const AdminLogin      = lazy(() => import('./pages/admin/AdminLogin').then(m => ({ default: m.AdminLogin })));
@@ -38,6 +41,8 @@ const AdminCategories = lazy(() => import('./pages/admin/AdminCategories').then(
 const AdminAdmins     = lazy(() => import('./pages/admin/AdminAdmins').then(m => ({ default: m.AdminAdmins })));
 const AdminUsers      = lazy(() => import('./pages/admin/AdminUsers').then(m => ({ default: m.AdminUsers })));
 const AdminSettings   = lazy(() => import('./pages/admin/AdminSettings').then(m => ({ default: m.AdminSettings })));
+const AdminContent    = lazy(() => import('./pages/admin/AdminContent').then(m => ({ default: m.AdminContent })));
+const AdminBgRemove   = lazy(() => import('./pages/admin/AdminBgRemove').then(m => ({ default: m.AdminBgRemove })));
 
 export function App() {
   return (
@@ -54,6 +59,9 @@ export function App() {
               <Route path="product/:slug" element={<ProductDetail />} />
               <Route path="favorites" element={<Favorites />} />
               <Route path="our-story" element={<OurStory />} />
+              <Route path="terms" element={<Terms />} />
+              <Route path="privacy" element={<Privacy />} />
+              <Route path="cookies" element={<Cookies />} />
             </Route>
 
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -64,6 +72,8 @@ export function App() {
               <Route path="admins" element={<AdminAdmins />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
+              <Route path="content" element={<AdminContent />} />
+              <Route path="bg-remove" element={<AdminBgRemove />} />
             </Route>
           </Routes>
           </Suspense>

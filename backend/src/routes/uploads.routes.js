@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'node:path';
+import fs from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { requireAdmin } from '../middleware/auth.js';
@@ -61,6 +62,23 @@ router.post('/model', requireAdmin, uploadModel.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file received.' });
   const serverUrl = process.env.SERVER_URL || 'http://localhost:4000';
   res.status(201).json({ url: `${serverUrl}/uploads/${req.file.filename}` });
+});
+
+// DELETE /api/uploads/file  (admin only) — removes a previously uploaded file
+router.delete('/file', requireAdmin, async (req, res) => {
+  const { url } = req.body ?? {};
+  if (!url || typeof url !== 'string') return res.status(400).json({ error: 'url required' });
+  // Only allow deleting files from our own uploads directory
+  const after = url.split('/uploads/').pop();
+  if (!after || after.includes('/') || after.includes('..') || after.includes('\\')) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
+  try {
+    await fs.unlink(path.join(uploadsDir, after));
+    res.json({ ok: true });
+  } catch {
+    res.status(404).json({ error: 'File not found' });
+  }
 });
 
 export default router;

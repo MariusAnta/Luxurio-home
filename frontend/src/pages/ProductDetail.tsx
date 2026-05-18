@@ -19,6 +19,80 @@ declare global {
   }
 }
 
+// ─── Description parser ───────────────────────────────────────────────────────
+function parseProductDescription(raw: string) {
+  if (!raw?.includes('MATERIALS')) return null;
+  const dimIdx = raw.indexOf('DIMENSIONS');
+  // Prepend '.' so the first section also matches the same split pattern
+  const materialsText = '.' + raw.slice(raw.indexOf('MATERIALS') + 9, dimIdx > -1 ? dimIdx : undefined);
+  const dimText = dimIdx > -1 ? raw.slice(dimIdx + 10) : '';
+
+  // Split on: period + Title-Case-heading + uppercase lookahead (start of body sentence)
+  const headingRe = /\.([A-Z][a-z]+(?:\s*\/\s*[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+){0,2})(?=[A-Z])/;
+  const parts = materialsText.split(headingRe);
+  // parts = ['', heading1, body1, heading2, body2, ...]
+
+  const sections: { heading: string; body: string }[] = [];
+  for (let i = 1; i + 1 < parts.length; i += 2) {
+    const heading = parts[i].trim();
+    let body = parts[i + 1]
+      .replace(/Note:[\s\S]*?(?=\.|$)/g, '') // strip Note: clauses
+      .replace(/\.\s*$/, '')
+      .trim();
+    if (heading && body.length > 15) sections.push({ heading, body });
+  }
+
+  // Parse dimensions lines (each starts with • or newline)
+  const dims = dimText
+    .split(/[•\n]/)
+    .map(d => d.trim())
+    .filter(d => d.length > 2 && !/^(Assembly|Fully|Mattress size)/i.test(d));
+
+  const assembly = /Assembly required|Fully assembled/i.exec(raw)?.[0] ?? null;
+
+  return { sections, dims, assembly };
+}
+
+function DescriptionBlock({ text }: { text: string }) {
+  const parsed = parseProductDescription(text);
+
+  if (!parsed || parsed.sections.length === 0) {
+    // Plain text fallback (old mock products)
+    return <p className="pd-desc">{text}</p>;
+  }
+
+  const { sections, dims, assembly } = parsed;
+
+  return (
+    <div className="pd-desc-structured">
+      <p className="pd-desc-section-label">Materials</p>
+      <div className="pd-mat-list">
+        {sections.map((s, i) => (
+          <div key={i} className="pd-mat-row">
+            <span className="pd-mat-heading">{s.heading}</span>
+            <span className="pd-mat-body">{s.body}</span>
+          </div>
+        ))}
+      </div>
+
+      {dims.length > 0 && (
+        <>
+          <p className="pd-desc-section-label" style={{ marginTop: 'var(--sp-7)' }}>Dimensions</p>
+          <ul className="pd-dim-list">
+            {dims.map((d, i) => <li key={i}>{d}</li>)}
+          </ul>
+        </>
+      )}
+
+      {assembly && (
+        <p className="pd-assembly-note">{assembly}</p>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function ProductDetail() {
   const { slug } = useParams();
   const { openAuth } = useOutletContext<PublicOutletContext>();
@@ -146,7 +220,7 @@ export function ProductDetail() {
           )}
         </div>
         <p className="pd-excl-vat">{formatPriceExVat(hasDiscount ? p.discountPrice! : p.price)} excl. PVM</p>
-        <p className="pd-desc">{p.description}</p>
+        <DescriptionBlock text={p.description ?? ''} />
 
         <dl className="pd-specs">
           {p.material && (<><dt className="pd-spec-dt">Material</dt><dd className="pd-spec-dd">{p.material}</dd></>)}

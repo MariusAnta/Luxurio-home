@@ -25,6 +25,7 @@ const mockProduct: Product = {
   dimensions: null,
   weightKg: null,
   modelUrl: null,
+  assembled: false,
   category: null,
   images: [],
 };

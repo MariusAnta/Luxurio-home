@@ -1,0 +1,103 @@
+import { useEffect } from 'react';
+
+export function TermsAndConditions() {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  return (
+    <main className="page-main" style={{ maxWidth: 820, margin: '0 auto' }}>
+      <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 400, letterSpacing: '0.02em', marginBottom: 'var(--sp-4)', color: 'var(--fg)' }}>
+        Terms &amp; Conditions
+      </h1>
+      <p style={{ fontSize: 'var(--text-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 'var(--sp-10)' }}>
+        Last updated: May 2026
+      </p>
+
+      <Section title="1. General">
+        These Terms and Conditions govern your use of the Luxurio Home website and the purchase of products offered through it. By
+        browsing or placing an order you agree to be bound by these terms. If you do not agree, please do not use this website.
+      </Section>
+
+      <Section title="2. Products & Pricing">
+        All prices are displayed in euros (€) and include VAT where applicable. We reserve the right to change prices at any time
+        without prior notice. Product images are for illustrative purposes only; actual colours and textures may vary slightly due
+        to photographic reproduction and screen calibration.
+      </Section>
+
+      <Section title="3. Orders & Payment">
+        An order is confirmed only after you receive a written confirmation from us. We accept payment by major credit and debit
+        cards. Full payment is required before dispatch. We reserve the right to refuse or cancel any order at our discretion,
+        in which case a full refund will be issued promptly.
+      </Section>
+
+      <Section title="4. Delivery">
+        Delivery times are estimates only and may vary depending on your location and product availability. Luxurio Home is not
+        liable for delays caused by circumstances beyond our reasonable control. Delivery charges, if applicable, are shown at
+        checkout before payment is taken.
+      </Section>
+
+      <Section title="5. Returns & Refunds">
+        You have the right to cancel your order within 14 days of receiving the goods, in accordance with EU consumer protection
+        law. Items must be returned in their original, unused condition and packaging. Custom-made or bespoke pieces are
+        non-returnable unless faulty. Refunds are processed within 14 business days of receiving the returned goods.
+      </Section>
+
+      <Section title="6. Warranty">
+        All products are covered by a 12-month warranty against manufacturing defects under normal domestic use. This warranty
+        does not cover damage caused by misuse, accident, or unauthorised modification. For warranty claims, please contact us
+        at{' '}
+        <a href="mailto:info@luxuriohome.com" style={{ color: 'var(--gold)', borderBottom: '1px solid var(--gold2)' }}>
+          info@luxuriohome.com
+        </a>.
+      </Section>
+
+      <Section title="7. Intellectual Property">
+        All content on this website — including text, images, logos, and design — is the intellectual property of Luxurio Home
+        and may not be reproduced, distributed, or used without our express written permission.
+      </Section>
+
+      <Section title="8. Privacy">
+        We collect and process personal data only as necessary to fulfil your order and communicate with you. We do not sell or
+        share your data with third parties for marketing purposes. Full details are available in our Privacy Policy.
+      </Section>
+
+      <Section title="9. Limitation of Liability">
+        To the fullest extent permitted by law, Luxurio Home shall not be liable for any indirect, incidental, or consequential
+        damages arising from the use of our products or website. Our total liability for any claim shall not exceed the value of
+        the order in question.
+      </Section>
+
+      <Section title="10. Governing Law">
+        These terms are governed by and construed in accordance with the laws of the Republic of Lithuania. Any disputes shall
+        be subject to the exclusive jurisdiction of the Lithuanian courts.
+      </Section>
+
+      <Section title="11. Contact">
+        For any questions regarding these terms, please reach us at{' '}
+        <a href="mailto:info@luxuriohome.com" style={{ color: 'var(--gold)', borderBottom: '1px solid var(--gold2)' }}>
+          info@luxuriohome.com
+        </a>{' '}
+        or by phone:{' '}
+        <a href="tel:+37061370777" style={{ color: 'var(--gold)', borderBottom: '1px solid var(--gold2)' }}>
+          +370 613 70777
+        </a>.
+      </Section>
+    </main>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 'var(--sp-9)' }}>
+      <h2 style={{
+        fontFamily: 'var(--serif)', fontSize: 'var(--text-body)', fontWeight: 400,
+        letterSpacing: '0.05em', color: 'var(--fg)', marginBottom: 'var(--sp-3)',
+        paddingBottom: 'var(--sp-3)', borderBottom: 'var(--border-subtle)',
+      }}>
+        {title}
+      </h2>
+      <p style={{ fontSize: 'var(--text-body)', lineHeight: 1.85, color: 'var(--fg2)' }}>
+        {children}
+      </p>
+    </div>
+  );
+}
