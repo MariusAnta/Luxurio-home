@@ -216,7 +216,7 @@ export function Nav({ onAuthOpen }: NavProps) {
                   key={cat.id}
                   type="button"
                   className={`menu-cat-item${hoverCat?.id === cat.id ? ' active' : ''}`}
-                  onClick={() => openSub(cat)}
+                  onClick={() => hoverCat?.id === cat.id ? closeSub() : openSub(cat)}
                 >
                   <span>{cat.name}</span>
                   <svg className="menu-cat-arrow" width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">

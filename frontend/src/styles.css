@@ -833,7 +833,7 @@ th {
   color: var(--fg3); padding: 9px 40px;
   display: block;
 }
-.menu-cat-all:hover { color: var(--fg); }
+.menu-cat-all:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
 .menu-cat-item {
   font-family: var(--sans); font-weight: 400;
   font-size: 14px;
@@ -859,7 +859,7 @@ th {
 }
 .menu-cat-item::after { display: none; }
 .menu-cat-item.active { color: var(--fg); font-weight: 500; }
-.menu-cat-item:hover { color: var(--fg); }
+.menu-cat-item:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
 [data-theme="dark"] .menu-cat-item { color: rgba(255,255,255,0.4); }
 [data-theme="dark"] .menu-cat-item.active,
 [data-theme="dark"] .menu-cat-item:hover { color: #fff; }
