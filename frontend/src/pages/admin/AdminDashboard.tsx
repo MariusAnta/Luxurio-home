@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, Product, Category, formatPrice } from '../../lib/api';
+import { api, Product, Category, formatPrice, resolveUrl } from '../../lib/api';
 
 export function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -51,7 +51,7 @@ export function AdminDashboard() {
               {recent.map(p => (
                 <tr key={p.id}>
                   <td style={{ width: 48 }}>
-                    {p.images[0] && <img src={p.images[0].url} alt="" style={{ width: 40, height: 40, objectFit: 'cover' }} />}
+                    {p.images[0] && <img src={resolveUrl(p.images[0].url)} alt="" style={{ width: 40, height: 40, objectFit: 'cover' }} />}
                   </td>
                   <td>
                     {p.name}

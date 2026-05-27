@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { resolveUrl } from '../lib/api';
 
 export function useReveal() {
   useEffect(() => {
@@ -58,7 +59,7 @@ export function ImgOrPlaceholder({ url, alt, bg, id, label, style = {}, classNam
     return (
       <div className={className} style={{ position: 'relative', overflow: 'hidden', ...style }}>
         <img
-          src={url}
+          src={resolveUrl(url)}
           alt={alt || ''}
           loading="lazy"
           decoding="async"

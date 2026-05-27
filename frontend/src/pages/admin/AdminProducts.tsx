@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { api, Category, Product, formatPrice, formatPriceExVat } from '../../lib/api';
+import { api, Category, Product, formatPrice, formatPriceExVat, resolveUrl } from '../../lib/api';
 import { BgRemoveModal } from '../../components/BgRemoveModal';
 import { useToast } from '../../lib/toast';
 
@@ -622,7 +622,7 @@ export function AdminProducts() {
                 border: '1px solid rgba(26,23,20,0.09)',
                 position: 'relative', overflow: 'hidden',
               }}>
-                {url ? <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                {url ? <img src={resolveUrl(url)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                 {uploading[i] && (
                   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'var(--fg3)' }}>...</div>
                 )}
@@ -824,7 +824,7 @@ export function AdminProducts() {
                 />
               </td>
               <td style={{ width: 56 }}>
-                {p.images[0] && <img src={p.images[0].url} alt="" style={{ width: 48, height: 48, objectFit: 'cover' }} />}
+                {p.images[0] && <img src={resolveUrl(p.images[0].url)} alt="" style={{ width: 48, height: 48, objectFit: 'cover' }} />}
               </td>
               <td>
                 {p.name}

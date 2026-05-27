@@ -23,6 +23,7 @@ export function Nav({ onAuthOpen }: NavProps) {
   }
   const { dark, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
+  const [hovering, setHovering] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoverCat, setHoverCat] = useState<Category | null>(null);
   // displayedCat is NOT cleared when going back, so the subs panel keeps its
@@ -33,6 +34,8 @@ export function Nav({ onAuthOpen }: NavProps) {
   useEffect(() => {
     api.get<Category[]>('/categories').then((r) => setCats(r.data));
   }, []);
+
+  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -55,7 +58,11 @@ export function Nav({ onAuthOpen }: NavProps) {
 
   return (
     <>
-      <header className={`nav${scrolled ? ' scrolled' : ''}`}>
+      <header
+        className={`nav${(scrolled || !isHome || hovering) ? ' scrolled' : ''}`}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
         <div className="nav-left">
           <button type="button" className="nav-menu-btn" onClick={() => setMenuOpen(true)} aria-label="Menu" title="Menu">
             <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" strokeWidth="1">

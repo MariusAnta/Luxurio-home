@@ -692,8 +692,12 @@ th {
   color: var(--fg);
 }
 .nav.scrolled {
-  background: transparent;
-  border-bottom: 1px solid transparent;
+  background: #fff;
+  border-bottom: 1px solid rgba(26,23,20,0.08);
+}
+[data-theme="dark"] .nav.scrolled {
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .nav-left { display: flex; align-items: center; gap: 0; }
 .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 24px; }

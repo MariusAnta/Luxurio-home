@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import { api, Product, formatPrice, formatPriceExVat } from '../lib/api';
 import { ImgOrPlaceholder } from '../components/primitives';
+import { resolveUrl } from '../lib/api';
 import { useUserAuth } from '../lib/userAuth';
 import { Seo } from '../components/Seo';
 import { ProductLd } from '../components/JsonLd';
@@ -170,7 +171,7 @@ export function ProductDetail() {
                 className="pd-thumb-btn"
                 style={{ border: i === activeImg ? '1px solid var(--gold)' : '1px solid transparent' }}
               >
-                <img src={img.url} alt="" loading="lazy" decoding="async" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={resolveUrl(img.url)} alt="" loading="lazy" decoding="async" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               </button>
             ))}
           </div>

@@ -53,15 +53,13 @@ const uploadModel = multer({
 // POST /api/uploads/image  (admin only)
 router.post('/image', requireAdmin, uploadImage.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file received.' });
-  const serverUrl = process.env.SERVER_URL || 'http://localhost:4000';
-  res.status(201).json({ url: `${serverUrl}/uploads/${req.file.filename}` });
+  res.status(201).json({ url: `/uploads/${req.file.filename}` });
 });
 
 // POST /api/uploads/model  (admin only) — accepts .glb / .gltf
 router.post('/model', requireAdmin, uploadModel.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file received.' });
-  const serverUrl = process.env.SERVER_URL || 'http://localhost:4000';
-  res.status(201).json({ url: `${serverUrl}/uploads/${req.file.filename}` });
+  res.status(201).json({ url: `/uploads/${req.file.filename}` });
 });
 
 // DELETE /api/uploads/file  (admin only) — removes a previously uploaded file

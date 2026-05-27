@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api, Product } from '../lib/api';
+import { api, Product, resolveUrl } from '../lib/api';
 import { usePageContent } from '../lib/usePageContent';
 
 type HeroSlide = { url: string; name?: string };
@@ -70,7 +70,7 @@ export function Hero() {
         {heroImg ? (
           <img
             key={imgKey}
-            src={heroImg}
+            src={resolveUrl(heroImg)}
             alt={slide?.name ?? 'Featured piece'}
             className="hero-bg-img"
             loading="eager"

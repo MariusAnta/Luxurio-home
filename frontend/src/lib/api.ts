@@ -1,10 +1,29 @@
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
+  baseURL: API_BASE,
   // Send httpOnly cookies on every request (JWT tokens are stored server-side in cookies)
   withCredentials: true,
 });
+
+// Resolves a stored image path to a full URL.
+// Handles both legacy absolute URLs (http://...) and new relative paths (/uploads/...).
+export function resolveUrl(url: string): string {
+  if (!url) return url;
+  // Strip legacy localhost absolute URLs to get the relative path
+  const legacyPrefixes = ['http://localhost:4000', 'http://localhost:4001'];
+  for (const prefix of legacyPrefixes) {
+    if (url.startsWith(prefix)) {
+      url = url.slice(prefix.length);
+      break;
+    }
+  }
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  const origin = API_BASE.replace(/\/api\/?$/, '');
+  return `${origin}${url}`;
+}
 
 export interface ProductImage {
   id: string;
