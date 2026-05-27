@@ -2,9 +2,11 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { api, Admin } from '../../lib/api';
 import { useAdminAuth } from '../../lib/adminAuth';
+import { useToast } from '../../lib/toast';
 
 export function AdminAdmins() {
   const { admin: me } = useAdminAuth();
+  const toast = useToast();
   const [items, setItems] = useState<Admin[]>([]);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -27,22 +29,26 @@ export function AdminAdmins() {
     setSubmitting(true);
     try {
       await api.post('/admins', { email, name: name || undefined, password, role });
+      toast.success(`Admin ${email} created`);
       setEmail(''); setName(''); setPassword('');
       load();
     } catch (e: any) {
-      setErr(e?.response?.data?.error || 'Could not create admin');
+      const msg = e?.response?.data?.error || 'Could not create admin';
+      setErr(msg);
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }
   }
 
-  async function remove(id: string) {
-    if (!confirm('Delete this admin account? This cannot be undone.')) return;
+  async function remove(id: string, email: string) {
+    if (!confirm(`Delete admin ${email}? This cannot be undone.`)) return;
     try {
       await api.delete(`/admins/${id}`);
+      toast.success(`Admin ${email} deleted`);
       load();
     } catch (e: any) {
-      alert(e?.response?.data?.error || 'Delete failed');
+      toast.error(e?.response?.data?.error || 'Delete failed');
     }
   }
 
@@ -90,7 +96,7 @@ export function AdminAdmins() {
                 {a.id === me?.id ? (
                   <span style={{ color: 'var(--fg3)', fontSize: 11 }}>(you)</span>
                 ) : (
-                  <button className="btn danger" onClick={() => remove(a.id)}>Delete</button>
+                  <button className="btn danger" onClick={() => remove(a.id, a.email)}>Delete</button>
                 )}
               </td>
             </tr>

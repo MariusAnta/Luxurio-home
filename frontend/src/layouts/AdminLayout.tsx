@@ -15,7 +15,7 @@ export function AdminLayout() {
         background: 'var(--bg2)',
       }}>
         <Link to="/" style={{ fontFamily: 'var(--serif)', fontSize: 16, letterSpacing: '0.4em' }}>
-          LUXURIO <span style={{ color: 'var(--gold)' }}>· ATELIER</span>
+          LUXURIO HOME <span style={{ color: 'var(--gold)' }}>· ADMIN</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           <span style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--fg3)' }}>
@@ -49,9 +49,6 @@ export function AdminLayout() {
           <NavLink to="/admin/users">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><circle cx="5" cy="5" r="3"/><path d="M1 14c0-3 2-4.5 4-4.5s4 1.5 4 4.5"/><circle cx="11" cy="5" r="2"/><path d="M11 10.5c1.5 0 3 1 3 3.5"/></svg>
             Customers
-          </NavLink>          <NavLink to="/admin/settings">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
-            Settings
           </NavLink>
           <NavLink to="/admin/content">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><path d="M2 4h12M2 8h8M2 12h10"/></svg>
@@ -60,6 +57,10 @@ export function AdminLayout() {
           <NavLink to="/admin/bg-remove">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><path d="M2 2l12 12M14 2 2 14"/><rect x="1" y="1" width="14" height="14" rx="1"/></svg>
             Remove BG
+          </NavLink>
+          <NavLink to="/admin/new-season">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginRight: 10, opacity: 0.7, flexShrink: 0 }}><path d="M8 2v12M4 6l4-4 4 4"/><path d="M3 14h10"/></svg>
+            New This Season
           </NavLink>        </aside>
         <main className="admin-main">
           <Outlet />

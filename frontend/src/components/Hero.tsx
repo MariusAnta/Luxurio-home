@@ -1,32 +1,51 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api, Product } from '../lib/api';
+import { usePageContent } from '../lib/usePageContent';
+
+type HeroSlide = { url: string; name?: string };
 
 export function Hero() {
   const [loaded, setLoaded] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [imgKey, setImgKey] = useState(0);
   const pausedRef = useRef(false);
   const { t } = useTranslation();
+  const c = usePageContent();
+
+  const heroImages = c.images.heroImages ?? [];
 
   useEffect(() => {
     setTimeout(() => setLoaded(true), 100);
-    api.get('/products', { params: { featured: true, limit: 10 } })
-      .then((r) => setProducts(r.data.items ?? []))
-      .catch(() => {});
   }, []);
 
+  // Use custom hero images if configured, otherwise fall back to products
   useEffect(() => {
-    if (products.length <= 1) return;
+    if (heroImages.length > 0) {
+      setSlides(heroImages.map((url) => ({ url })));
+      setActiveIdx(0);
+      return;
+    }
+    api.get('/products', { params: { limit: 10 } })
+      .then((r) => {
+        const all: Product[] = (r.data.items ?? []).filter((p: Product) => p.images.length > 0);
+        setSlides(all.map((p) => ({ url: p.images[0].url, name: p.name })));
+      })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroImages.length]);
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
     const id = setInterval(() => {
       if (!pausedRef.current) {
-        setActiveIdx((i) => (i + 1) % products.length);
+        setActiveIdx((i) => (i + 1) % slides.length);
         setImgKey((k) => k + 1);
       }
     }, 5000);
     return () => clearInterval(id);
-  }, [products.length]);
+  }, [slides.length]);
 
   function goTo(i: number) {
     if (i === activeIdx) return;
@@ -34,116 +53,68 @@ export function Hero() {
     setImgKey((k) => k + 1);
   }
 
-  const product = products[activeIdx] ?? null;
-  const heroImg = product?.images[0]?.url;
+  const slide = slides[activeIdx] ?? null;
+  const heroImg = slide?.url || c.images.heroImg;
   const cls = (base: string) => `${base}${loaded ? ' in' : ''}`;
 
   return (
     <section
+      id="hero"
       className="hero"
       data-screen-label="Hero"
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
     >
-      {/* Left: text column */}
-      <div className="hero-text">
-        <div>
-          <p className={cls('t-eyebrow hero-season')} style={{ marginBottom: 'var(--sp-9)' }}>
-            {t('hero.season')}
-          </p>
-          <h1 className={cls('hero-title hero-title-wrap')}>
-            {t('hero.titleLine1')}<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>{t('hero.titleArt')}</em><br />
-            {t('hero.titleLine2')}<br />
-            {t('hero.titleLine3')}
-          </h1>
-        </div>
-
-        <div className={cls('hero-bottom')}>
-          <div className="gold-rule" style={{ marginBottom: 'var(--sp-5)' }} />
-          <p className="hero-tagline">{t('hero.tagline')}</p>
-          <div className="hero-cta-row">
-            <a href="#collections" className="hero-cta-link">
-              {t('hero.exploreCollections')}
-              <svg width="20" height="8" viewBox="0 0 20 8" fill="none">
-                <line x1="0" y1="4" x2="17" y2="4" stroke="currentColor" strokeWidth="1" />
-                <polyline points="14,1 17,4 14,7" fill="none" stroke="currentColor" strokeWidth="1" />
-              </svg>
-            </a>
-            <span className="hero-established">{t('hero.established')}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Right: image column */}
-      <div className="hero-img">
+      {/* Full-bleed background — featured product image carousel */}
+      <div className={cls('hero-bg')}>
         {heroImg ? (
           <img
             key={imgKey}
             src={heroImg}
-            alt={product?.name ?? 'Featured piece'}
-            className="cover-abs"
-            style={{ animation: 'heroImgIn 1.6s var(--ease-luxe) forwards' }}
+            alt={slide?.name ?? 'Featured piece'}
+            className="hero-bg-img"
+            loading="eager"
           />
         ) : (
-          <div style={{ position: 'absolute', inset: 0, background: '#f0ece4' }} />
+          <div className="hero-bg-fallback" />
         )}
-
-        <div className="hero-year-tag">LUXURIO HOME — 2026</div>
-
-        {product && (
-          <div key={`name-${imgKey}`} className="hero-badge" style={{ animation: 'heroTextIn 1s 0.5s var(--ease-luxe) both' }}>
-            <p className="t-eyebrow-s" style={{ marginBottom: 'var(--sp-1)' }}>{t('featured.eyebrow')}</p>
-            <p className="hero-badge-name">{product.name}</p>
-          </div>
-        )}
-
-        {products.length > 1 && (
-          <div className="hero-dots">
-            {products.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className="dot"
-                style={{
-                  width: i === activeIdx ? 28 : 6,
-                  background: i === activeIdx ? 'var(--gold)' : 'rgba(26,23,20,0.2)',
-                }}
-              />
-            ))}
-          </div>
-        )}
+        <div className="hero-bg-vignette" />
       </div>
 
-      {/* Scroll indicator */}
-      <div className={cls('hero-scroll')}>
-        <span className="t-eyebrow-s">{t('hero.scroll')}</span>
-        <div className="hero-scroll-line" />
+      {/* Bottom row: title left + CTAs right */}
+      <div className={cls('hero-overlay')}>
+        <div className="hero-overlay-text">
+          <p className="hero-season">{c.hero.season}</p>
+          <h1 className="hero-title">
+            {c.hero.titleLine1}<br />
+            {c.hero.titleArt}<br />
+            {c.hero.titleLine2}{c.hero.titleLine3 ? <><br />{c.hero.titleLine3}</> : null}
+          </h1>
+
+        </div>
+        <div className="hero-overlay-ctas">
+          <a href="#collections" className="hero-cta-link">{t('hero.exploreCollections')}</a>
+          <span className="hero-cta-link hero-cta-link-soft">{c.hero.tagline}</span>
+        </div>
       </div>
+
+      {/* Right vertical pagination markers */}
+      {slides.length > 1 && (
+        <div className={cls('hero-markers')}>
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`hero-marker${i === activeIdx ? ' active' : ''}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Year/brand vertical tag */}
+      <div className="hero-year-tag">LUXURIO HOME — 2026</div>
     </section>
-  );
-}
-
-export function Marquee() {
-  const { t } = useTranslation();
-  const items = [
-    t('marquee.delivery'),
-    t('marquee.bespoke'),
-    t('marquee.cities'),
-    t('marquee.returns'),
-    t('marquee.handcrafted'),
-  ];
-  const rep = [...items, ...items];
-  return (
-    <div className="s-marquee">
-      <div className="marquee-track">
-        {rep.map((txt, i) => (
-          <span key={i} className="marquee-item">
-            {txt} <span className="marquee-sep">·</span>
-          </span>
-        ))}
-      </div>
-    </div>
   );
 }

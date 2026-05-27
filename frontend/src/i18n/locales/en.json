@@ -2,7 +2,7 @@
   "nav": {
     "collections": "Collections",
     "featured": "Featured",
-    "atelier": "Atelier",
+    "atelier": "Our Story",
     "favorites": "Favorites",
     "signIn": "Sign In",
     "logout": "Logout"
@@ -31,21 +31,9 @@
     "viewAll": "View All",
     "pieces": "{{count}} pieces"
   },
-  "featured": {
-    "eyebrow": "Atelier Collection",
-    "designedBy": "Designed by {{designer}}",
-    "from": "From {{price}}",
-    "onSale": "On Sale",
-    "newSeason": "New Season",
-    "tabDetails": "Details",
-    "tabMaterials": "Materials",
-    "tabShipping": "Shipping",
-    "shippingNote": "White-glove delivery within Europe. 8–12 weeks for bespoke orders.",
-    "materialsFallback": "Materials specified upon request.",
-    "viewPiece": "View Piece"
-  },
+
   "editorial": {
-    "eyebrow": "The Luxurio Atelier",
+    "eyebrow": "The Luxurio Home Atelier",
     "titleLine1": "Every Object",
     "titleLine2": "Begins as a",
     "titleAccent": "Conversation.",
@@ -68,7 +56,7 @@
   },
   "newsletter": {
     "eyebrow": "Stay in Touch",
-    "title": "The Luxurio Letter",
+    "title": "The Luxurio Home Letter",
     "body": "New arrivals, atelier stories, and private events — once a month.",
     "placeholder": "Your email address",
     "subscribe": "Subscribe",
@@ -100,7 +88,7 @@
     "confirmPlaceholder": "Re-enter password",
     "passwordMismatch": "Passwords do not match",
     "genericError": "Something went wrong",
-    "newCustomer": "New to Luxurio?",
+    "newCustomer": "New to Luxurio Home?",
     "alreadyMember": "Already a member?",
     "createOne": "Create account",
     "signInLink": "Sign in"

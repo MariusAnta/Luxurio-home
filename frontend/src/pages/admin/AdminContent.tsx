@@ -1,139 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from '../../lib/api';
-
-/* ── Types ── */
-interface ContentShape {
-  hero: {
-    season: string;
-    titleLine1: string;
-    titleArt: string;
-    titleLine2: string;
-    titleLine3: string;
-    tagline: string;
-    established: string;
-  };
-  editorial: {
-    eyebrow: string;
-    titleLine1: string;
-    titleLine2: string;
-    titleAccent: string;
-    body: string;
-  };
-  newArrivals: {
-    eyebrow: string;
-    title: string;
-  };
-  services: {
-    eyebrow: string;
-    titleLine1: string;
-    titleAccent: string;
-    body: string;
-    step1: string;
-    step2: string;
-    step3: string;
-    step4: string;
-  };
-  newsletter: {
-    eyebrow: string;
-    title: string;
-    body: string;
-  };
-  footer: {
-    tagline: string;
-  };
-  atelier: {
-    heroEyebrow: string;
-    heroTitle1: string;
-    heroTitleArt: string;
-    heroTitle2: string;
-    heroBody: string;
-    manifestoQuote: string;
-    manifestoAttr: string;
-    workshopEyebrow: string;
-    workshopTitle1: string;
-    workshopTitleArt: string;
-    workshopBody: string;
-    ctaTitle: string;
-  };
-  images: {
-    heroImg: string;
-    servicesImg: string;
-    atelierHeroImg: string;
-    atelierWorkshopImg: string;
-  };
-}
-
-const DEFAULTS: ContentShape = {
-  hero: {
-    season: 'S/S 2026 — Collection N° 001',
-    titleLine1: 'The',
-    titleArt: 'Art',
-    titleLine2: 'of',
-    titleLine3: 'Stillness.',
-    tagline: 'Furniture conceived for spaces that refuse to shout. Handmade in Italy. Built to last decades.',
-    established: 'Est. 2012 · Milan',
-  },
-  editorial: {
-    eyebrow: 'The Luxurio Atelier',
-    titleLine1: 'Every Object',
-    titleLine2: 'Begins as a',
-    titleAccent: 'Conversation.',
-    body: 'We collaborate with Europe\'s most thoughtful designers to bring you furnishings built for decades. Each piece made to order, in small batches, with materials chosen for their integrity.',
-  },
-  newArrivals: {
-    eyebrow: 'Just Arrived',
-    title: 'New This Season',
-  },
-  services: {
-    eyebrow: 'Bespoke Service',
-    titleLine1: 'Private Interiors',
-    titleAccent: 'Consultation',
-    body: 'Our in-house design team composes rooms of lasting significance — from a single statement piece to a complete interior.',
-    step1: 'Site visit & mood board',
-    step2: 'Curated selection',
-    step3: 'Commission management',
-    step4: 'Installation & styling',
-  },
-  newsletter: {
-    eyebrow: 'Stay in Touch',
-    title: 'The Luxurio Letter',
-    body: 'New arrivals, atelier stories, and private events — once a month.',
-  },
-  footer: {
-    tagline: 'Fine furnishings for spaces of lasting significance. Handcrafted in Europe since 2012.',
-  },
-  atelier: {
-    heroEyebrow: 'Est. 2012 · Milan',
-    heroTitle1: 'The',
-    heroTitleArt: 'Atelier',
-    heroTitle2: 'Story.',
-    heroBody: 'Luxurio began as a conversation between two architects who were tired of furniture that looked good in a catalogue and fell apart in a decade. We set out to make pieces worth keeping — worth inheriting.',
-    manifestoQuote: '"We are not interested in trends. We are interested in the kind of object that becomes invisible in the best possible sense — something so at home in a room that no one can imagine the room without it."',
-    manifestoAttr: '— Marco Ferretti & Elise Vander, Co-founders',
-    workshopEyebrow: 'The workshops',
-    workshopTitle1: 'Made by hand,',
-    workshopTitleArt: 'in Europe.',
-    workshopBody: 'We work with twelve independent workshops across Italy, Portugal, and Denmark. Each one is family-owned, each one has been producing at the highest level for at least two generations. We visit every partner every year — not to audit, but to learn.',
-    ctaTitle: 'Explore the pieces.',
-  },
-  images: {
-    heroImg: '',
-    servicesImg: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
-    atelierHeroImg: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=1200',
-    atelierWorkshopImg: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200',
-  },
-};
-
-/* ── Helpers ── */
-function deepMerge(base: ContentShape, overrides: Partial<ContentShape>): ContentShape {
-  const result = JSON.parse(JSON.stringify(base)) as ContentShape;
-  for (const section of Object.keys(overrides) as Array<keyof ContentShape>) {
-    if (overrides[section] && typeof overrides[section] === 'object') {
-      Object.assign(result[section], overrides[section]);
-    }
-  }
-  return result;
-}
+import { PageContent as ContentShape, CONTENT_DEFAULTS as DEFAULTS, mergeDeep } from '../../lib/usePageContent';
+import { useToast } from '../../lib/toast';
 
 /* ── Editable inline text ── */
 const EditableText = React.memo(function EditableText({
@@ -201,84 +69,132 @@ function SectionWrap({ label, id, saving, saved, error, onSave, children, bg }: 
 }
 
 /* ── Image upload slot ── */
-function ImageSlot({ imgKey, url, onUploaded, label, aspect = '16/9' }: {
-  imgKey: string; url: string; onUploaded: (key: string, newUrl: string) => void;
-  label: string; aspect?: string;
-}) {
+/* ── Hero gallery — upload / manage hero images ── */
+function HeroGallery({ images, onChange }: { images: string[]; onChange: (imgs: string[]) => void }) {
+  const toast = useToast();
   const [uploading, setUploading] = useState(false);
-  const [err, setErr] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUploading(true); setErr('');
+    setUploading(true);
     try {
       const form = new FormData();
       form.append('file', file);
       const { data } = await api.post<{ url: string }>('/uploads/image', form, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      // Delete old image if it was uploaded to our server (not an external URL)
-      if (url && url.includes('/uploads/')) {
-        await api.delete('/uploads/file', { data: { url } }).catch(() => {});
-      }
-      // Auto-save to DB immediately — merge only the images key
+      const newImages = [...images, data.url];
       const res = await api.get<{ value: Partial<ContentShape> | null }>('/settings/content');
       const current = (res.data.value ?? {}) as Record<string, unknown>;
-      const imgs = (current.images ?? {}) as Record<string, string>;
-      await api.put('/settings/content', { value: { ...current, images: { ...imgs, [imgKey]: data.url } } });
-      onUploaded(imgKey, data.url);
+      const imgs = (current.images ?? {}) as Record<string, unknown>;
+      await api.put('/settings/content', { value: { ...current, images: { ...imgs, heroImages: newImages } } });
+      onChange(newImages);
+      toast.success('Hero image added');
     } catch {
-      setErr('Upload failed');
+      toast.error('Upload failed');
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = '';
     }
   }
 
-  return (
-    <div style={{ position: 'relative', width: '100%', aspectRatio: aspect, overflow: 'hidden', background: 'var(--bg3)' }}>
-      {url
-        ? <img src={url} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-        : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg3)' }}>No image — hover to upload</span>
-          </div>
+  async function removeImage(url: string) {
+    const newImages = images.filter((u) => u !== url);
+    try {
+      const res = await api.get<{ value: Partial<ContentShape> | null }>('/settings/content');
+      const current = (res.data.value ?? {}) as Record<string, unknown>;
+      const imgs = (current.images ?? {}) as Record<string, unknown>;
+      await api.put('/settings/content', { value: { ...current, images: { ...imgs, heroImages: newImages } } });
+      if (url.includes('/uploads/')) {
+        await api.delete('/uploads/file', { data: { url } }).catch(() => {});
       }
-      <div style={{
-        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', gap: 8,
-        background: 'rgba(0,0,0,0.55)', opacity: 0, transition: 'opacity 0.2s',
-      }}
-        onMouseEnter={ev => { ev.currentTarget.style.opacity = '1'; }}
-        onMouseLeave={ev => { ev.currentTarget.style.opacity = '0'; }}>
+      onChange(newImages);
+      toast.success('Image removed');
+    } catch {
+      toast.error('Could not remove image');
+    }
+  }
+
+  return (
+    <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(139,109,26,0.1)', background: 'rgba(139,109,26,0.03)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 9, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--gold)' }}>
+            Hero images
+          </span>
+          <span style={{
+            fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', padding: '2px 8px',
+            border: '1px solid', borderColor: images.length > 0 ? 'rgba(60,160,80,0.4)' : 'rgba(139,109,26,0.2)',
+            color: images.length > 0 ? 'rgba(60,160,80,0.8)' : 'var(--fg3)',
+          }}>
+            {images.length > 0 ? `${images.length} custom image${images.length !== 1 ? 's' : ''}` : 'using products as fallback'}
+          </span>
+        </div>
+        <span style={{ fontSize: 10, color: 'var(--fg3)', fontStyle: 'italic' }}>
+          {images.length === 0 ? 'No custom images — hero rotates through published products' : 'Drag to reorder coming soon'}
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        {images.map((url, i) => (
+          <div key={url} style={{ flexShrink: 0, position: 'relative' }}>
+            <div style={{
+              width: 100, height: 100, overflow: 'hidden',
+              border: '1px solid rgba(139,109,26,0.2)', background: 'var(--bg2)',
+            }}>
+              <img src={url} alt={`Hero ${i + 1}`}
+                style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+              {/* Slide number */}
+              <span style={{
+                position: 'absolute', top: 4, left: 4, fontSize: 8, letterSpacing: '0.1em',
+                background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '2px 5px', pointerEvents: 'none',
+              }}>{i + 1}</span>
+              {/* Delete overlay */}
+              <button
+                onClick={() => removeImage(url)}
+                title="Remove"
+                style={{
+                  position: 'absolute', inset: 0, width: '100%', height: '100%',
+                  background: 'rgba(0,0,0,0)', border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 22, color: '#fff', opacity: 0, transition: 'opacity 0.15s, background 0.15s',
+                }}
+                onMouseEnter={ev => { ev.currentTarget.style.opacity = '1'; ev.currentTarget.style.background = 'rgba(160,40,40,0.7)'; }}
+                onMouseLeave={ev => { ev.currentTarget.style.opacity = '0'; ev.currentTarget.style.background = 'rgba(0,0,0,0)'; }}
+              >✕</button>
+            </div>
+          </div>
+        ))}
+
+        {/* Add button */}
         <button
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
           style={{
-            background: 'var(--fg)', color: 'var(--bg)', border: 'none', cursor: uploading ? 'not-allowed' : 'pointer',
-            padding: '8px 20px', fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase',
-            fontFamily: 'var(--sans)', opacity: uploading ? 0.6 : 1,
+            width: 100, height: 100, flexShrink: 0,
+            border: '1px dashed rgba(139,109,26,0.35)', background: 'transparent',
+            cursor: uploading ? 'not-allowed' : 'pointer', color: 'var(--gold)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            gap: 4, opacity: uploading ? 0.5 : 1, transition: 'border-color 0.15s, background 0.15s',
           }}
+          onMouseEnter={ev => { if (!uploading) { ev.currentTarget.style.borderColor = 'var(--gold)'; ev.currentTarget.style.background = 'rgba(139,109,26,0.06)'; } }}
+          onMouseLeave={ev => { ev.currentTarget.style.borderColor = 'rgba(139,109,26,0.35)'; ev.currentTarget.style.background = 'transparent'; }}
         >
-          {uploading ? 'Uploading…' : '⬆ Change image'}
+          <span style={{ fontSize: uploading ? 11 : 22, lineHeight: 1 }}>{uploading ? 'Uploading…' : '+'}</span>
+          {!uploading && <span style={{ fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Add image</span>}
         </button>
-        {err && <span style={{ fontSize: 10, color: '#f06060' }}>{err}</span>}
       </div>
-      <span style={{
-        position: 'absolute', bottom: 8, left: 8, fontSize: 9, letterSpacing: '0.18em',
-        textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)',
-        background: 'rgba(0,0,0,0.5)', padding: '3px 8px', pointerEvents: 'none',
-      }}>
-        {label}
-      </span>
-      <input ref={inputRef} type="file" accept="image/*" onChange={handleFile} style={{ display: 'none' }} />
+
+      <input ref={inputRef} type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
     </div>
   );
 }
 
 /* ── Main component ── */
 export function AdminContent() {
+  const toast = useToast();
   const [content, setContent] = useState<ContentShape>(DEFAULTS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<Record<string, boolean>>({});
@@ -288,7 +204,7 @@ export function AdminContent() {
 
   useEffect(() => {
     api.get<{ value: Partial<ContentShape> | null }>('/settings/content')
-      .then(({ data }) => { if (data.value) setContent(deepMerge(DEFAULTS, data.value)); })
+      .then(({ data }) => { if (data.value) setContent(mergeDeep(DEFAULTS, data.value as Record<string, unknown>)); })
       .catch(() => {})
       .finally(() => setLoading(false));
     return () => { Object.values(savedTimers.current).forEach(clearTimeout); };
@@ -296,10 +212,6 @@ export function AdminContent() {
 
   function set<S extends keyof ContentShape>(section: S, key: keyof ContentShape[S], val: string) {
     setContent(prev => ({ ...prev, [section]: { ...prev[section], [key]: val } }));
-  }
-
-  function onImageUploaded(imgKey: string, newUrl: string) {
-    setContent(prev => ({ ...prev, images: { ...prev.images, [imgKey]: newUrl } }));
   }
 
   async function saveSection(section: keyof ContentShape) {
@@ -310,10 +222,12 @@ export function AdminContent() {
       const current = res.data.value ?? {};
       await api.put('/settings/content', { value: { ...current, [section]: content[section] } });
       setSaved(p => ({ ...p, [section]: true }));
+      toast.success(`${String(section)} section saved`);
       if (savedTimers.current[section]) clearTimeout(savedTimers.current[section]);
       savedTimers.current[section] = setTimeout(() => setSaved(p => ({ ...p, [section]: false })), 2500);
     } catch {
       setErrors(p => ({ ...p, [section]: 'Failed to save.' }));
+      toast.error(`Could not save ${String(section)} section`);
     } finally {
       setSaving(p => ({ ...p, [section]: false }));
     }
@@ -328,6 +242,16 @@ export function AdminContent() {
 
   const commit = <S extends keyof ContentShape>(section: S, key: keyof ContentShape[S]) =>
     (v: string) => set(section, key, v);
+
+  const sections: Array<{ id: keyof ContentShape; label: string }> = [
+    { id: 'hero', label: 'Hero' },
+    { id: 'collections', label: 'Collections' },
+    { id: 'shop', label: 'Shop' },
+    { id: 'newArrivals', label: 'Arrivals' },
+    { id: 'newsletter', label: 'Newsletter' },
+    { id: 'trade', label: 'Trade' },
+    { id: 'footer', label: 'Footer' },
+  ];
 
   return (
     <div style={{ margin: 'calc(-1 * var(--sp-9))' }}>
@@ -345,11 +269,11 @@ export function AdminContent() {
           </span>
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
-          {(['hero','editorial','newArrivals','services','newsletter','atelier','footer'] as const).map(s => (
-            <a key={s} href={`#acms-${s}`} style={{ fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', padding: '4px 8px' }}
+          {sections.map(s => (
+            <a key={s.id} href={`#acms-${s.id}`} style={{ fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', padding: '4px 8px' }}
               onMouseEnter={ev => { ev.currentTarget.style.color = 'rgba(255,255,255,0.9)'; }}
               onMouseLeave={ev => { ev.currentTarget.style.color = 'rgba(255,255,255,0.45)'; }}>
-              {s === 'newArrivals' ? 'Arrivals' : s.charAt(0).toUpperCase() + s.slice(1)}
+              {s.label}
             </a>
           ))}
         </div>
@@ -357,8 +281,16 @@ export function AdminContent() {
 
       {/* ── Hero ── */}
       <SectionWrap label="Hero" id="acms-hero" bg="var(--bg)" {...sp('hero')}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 520 }}>
-          <div style={{ padding: 'var(--sp-13) var(--sp-10) var(--sp-11)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRight: '1px solid rgba(26,23,20,0.06)' }}>
+        <div style={{ padding: 'var(--sp-5) var(--sp-10) var(--sp-4)', borderBottom: '1px solid rgba(26,23,20,0.06)' }}>
+          <p style={{ fontSize: 10, color: 'var(--fg3)', margin: 0 }}>
+            Background rotates through your <strong style={{ color: 'var(--fg2)' }}>published products</strong> with images. Add products in the Products page to control what appears here.
+          </p>
+        </div>
+        <HeroGallery
+          images={content.images.heroImages ?? []}
+          onChange={(imgs) => setContent(prev => ({ ...prev, images: { ...prev.images, heroImages: imgs } }))}
+        />
+        <div style={{ padding: 'var(--sp-13) var(--sp-10) var(--sp-11)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <EditableText tag="p" className="t-eyebrow" initialValue={content.hero.season}
                 onCommit={commit('hero', 'season')} style={{ display: 'block', marginBottom: 'var(--sp-9)' }} />
@@ -372,39 +304,52 @@ export function AdminContent() {
             <div>
               <div style={{ width: 40, height: 1, background: 'var(--gold2)', marginBottom: 'var(--sp-5)' }} />
               <EditableText tag="p" initialValue={content.hero.tagline} onCommit={commit('hero', 'tagline')} multiline
-                style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 14, lineHeight: 1.85, color: 'var(--fg2)', marginBottom: 'var(--sp-7)', maxWidth: 400 }} />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 14, lineHeight: 1.85, color: 'var(--fg2)', marginBottom: 'var(--sp-7)', maxWidth: 600 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
                 <span style={{ fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)' }}>Explore Collections →</span>
                 <EditableText tag="span" initialValue={content.hero.established} onCommit={commit('hero', 'established')}
                   style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg3)' }} />
               </div>
             </div>
           </div>
-          <div style={{ background: 'var(--bg2)', minHeight: 520 }}>
-            <ImageSlot imgKey="heroImg" url={content.images.heroImg} onUploaded={onImageUploaded}
-              label="Hero image" aspect="3/4" />
+      </SectionWrap>
+
+      {/* ── Collections ── */}
+      <SectionWrap label="Collections" id="acms-collections" bg="var(--bg)" {...sp('collections')}>
+        <div style={{ padding: 'var(--sp-10) var(--sp-10)' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'var(--sp-8)' }}>
+            <div>
+              <EditableText tag="p" className="t-eyebrow" initialValue={content.collections.eyebrow}
+                onCommit={commit('collections', 'eyebrow')} style={{ display: 'block', marginBottom: 'var(--sp-3)' }} />
+              <EditableText tag="h2" initialValue={content.collections.title} onCommit={commit('collections', 'title')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(24px,3vw,42px)' }} />
+            </div>
+            <EditableText tag="span" initialValue={content.collections.viewAll} onCommit={commit('collections', 'viewAll')}
+              style={{ fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)' }} />
           </div>
+          <p style={{ fontSize: 11, color: 'var(--fg3)', fontStyle: 'italic' }}>
+            Category cards are pulled automatically from your categories. Manage categories and their cover images in the Categories page.
+          </p>
         </div>
       </SectionWrap>
 
-      {/* ── Editorial ── */}
-      <SectionWrap label="Editorial" id="acms-editorial" bg="var(--bg2)" {...sp('editorial')}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', padding: 'var(--sp-14) var(--sp-10)', gap: 'var(--sp-12)' }}>
-          <div>
-            <EditableText tag="p" className="t-eyebrow" initialValue={content.editorial.eyebrow}
-              onCommit={commit('editorial', 'eyebrow')} style={{ display: 'block', marginBottom: 'var(--sp-7)' }} />
-            <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(36px,3.5vw,64px)', lineHeight: 0.92, letterSpacing: '-0.01em', marginBottom: 'var(--sp-8)' }}>
-              <EditableText initialValue={content.editorial.titleLine1} onCommit={commit('editorial', 'titleLine1')} /><br />
-              <EditableText initialValue={content.editorial.titleLine2} onCommit={commit('editorial', 'titleLine2')} /><br />
-              <EditableText initialValue={content.editorial.titleAccent} onCommit={commit('editorial', 'titleAccent')} style={{ color: 'var(--gold)', fontStyle: 'italic' }} />
-            </h2>
-            <EditableText tag="p" initialValue={content.editorial.body} onCommit={commit('editorial', 'body')} multiline
-              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.85, color: 'var(--fg2)', maxWidth: 460 }} />
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            {['photo-1616486338812-3dadae4b4ace','photo-1600607687939-ce8a6c25118c','photo-1631679706909-1844bbd07221','photo-1618221195710-dd6b41faaea6'].map((id, i) => (
-              <img key={i} src={`https://images.unsplash.com/${id}?w=400`} alt="" style={{ width: '100%', aspectRatio: '1/1.3', objectFit: 'cover', display: 'block' }} />
-            ))}
+      {/* ── Shop ── */}
+      <SectionWrap label="Shop Page" id="acms-shop" bg="var(--bg)" {...sp('shop')}>
+        <div style={{ padding: 'var(--sp-10) var(--sp-10)' }}>
+          <p style={{ fontSize: 11, color: 'var(--fg3)', fontStyle: 'italic', marginBottom: 'var(--sp-6)' }}>
+            These texts appear at the top of the /shop page when no category filter is active.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-8)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Eyebrow</label>
+              <EditableText tag="p" className="t-eyebrow" initialValue={content.shop.eyebrow}
+                onCommit={commit('shop', 'eyebrow')} style={{ display: 'block' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Title (default, no filter)</label>
+              <EditableText tag="p" initialValue={content.shop.title} onCommit={commit('shop', 'title')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(22px,2.5vw,38px)' }} />
+            </div>
           </div>
         </div>
       </SectionWrap>
@@ -431,33 +376,6 @@ export function AdminContent() {
         </div>
       </SectionWrap>
 
-      {/* ── Services ── */}
-      <SectionWrap label="Services" id="acms-services" bg="var(--bg2)" {...sp('services')}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', padding: 'var(--sp-14) var(--sp-10)', gap: 'var(--sp-12)' }}>
-          <div style={{ minHeight: 480 }}>
-            <ImageSlot imgKey="servicesImg" url={content.images.servicesImg} onUploaded={onImageUploaded}
-              label="Services image" aspect="4/5" />
-          </div>
-          <div>
-            <EditableText tag="p" className="t-eyebrow" initialValue={content.services.eyebrow}
-              onCommit={commit('services', 'eyebrow')} style={{ display: 'block', marginBottom: 'var(--sp-5)' }} />
-            <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(32px,3.5vw,56px)', lineHeight: 0.92, marginBottom: 'var(--sp-7)' }}>
-              <EditableText initialValue={content.services.titleLine1} onCommit={commit('services', 'titleLine1')} /><br />
-              <EditableText initialValue={content.services.titleAccent} onCommit={commit('services', 'titleAccent')} style={{ fontStyle: 'italic', color: 'var(--gold)' }} />
-            </h2>
-            <EditableText tag="p" initialValue={content.services.body} onCommit={commit('services', 'body')} multiline
-              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.85, color: 'var(--fg2)', marginBottom: 'var(--sp-8)' }} />
-            {(['step1','step2','step3','step4'] as const).map(sk => (
-              <div key={sk} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 0', borderTop: '1px solid rgba(26,23,20,0.06)' }}>
-                <div style={{ width: 40, height: 1, background: 'var(--gold2)', flexShrink: 0 }} />
-                <EditableText tag="span" initialValue={content.services[sk]} onCommit={commit('services', sk)}
-                  style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--fg2)' }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </SectionWrap>
-
       {/* ── Newsletter ── */}
       <SectionWrap label="Newsletter" id="acms-newsletter" bg="#1a1714" {...sp('newsletter')}>
         <div style={{ padding: 'var(--sp-14) var(--sp-10)', textAlign: 'center' }}>
@@ -474,62 +392,64 @@ export function AdminContent() {
         </div>
       </SectionWrap>
 
-      {/* ── Atelier (Our Story) ── */}
-      <SectionWrap label="Atelier / Our Story" id="acms-atelier" bg="var(--bg)" {...sp('atelier')}>
-        {/* Hero row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 480 }}>
-          <div style={{ padding: 'var(--sp-13) var(--sp-10)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <EditableText tag="p" className="t-eyebrow" initialValue={content.atelier.heroEyebrow}
-              onCommit={commit('atelier', 'heroEyebrow')} style={{ display: 'block', marginBottom: 'var(--sp-7)' }} />
-            <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(36px,4vw,72px)', lineHeight: 0.9, marginBottom: 'var(--sp-7)' }}>
-              <EditableText initialValue={content.atelier.heroTitle1} onCommit={commit('atelier', 'heroTitle1')} /><br />
-              <EditableText initialValue={content.atelier.heroTitleArt} onCommit={commit('atelier', 'heroTitleArt')} style={{ color: 'var(--gold)', fontStyle: 'italic' }} /><br />
-              <EditableText initialValue={content.atelier.heroTitle2} onCommit={commit('atelier', 'heroTitle2')} />
-            </h2>
-            <EditableText tag="p" initialValue={content.atelier.heroBody} onCommit={commit('atelier', 'heroBody')} multiline
-              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.85, color: 'var(--fg2)', maxWidth: 440 }} />
+      {/* ── Trade ── */}
+      <SectionWrap label="Trade / Partner" id="acms-trade" bg="#f0ece4" {...sp('trade')}>
+        <div style={{ padding: 'var(--sp-14) var(--sp-10)', textAlign: 'center', color: '#0c0b0a' }}>
+          <EditableText tag="p" initialValue={content.trade.eyebrow} onCommit={commit('trade', 'eyebrow')}
+            style={{ display: 'block', fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(12,11,10,0.45)', marginBottom: 'var(--sp-5)' }} />
+          <EditableText tag="h2" initialValue={content.trade.title} onCommit={commit('trade', 'title')}
+            style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(32px,4vw,56px)', color: '#0c0b0a', marginBottom: 'var(--sp-6)' }} />
+          <EditableText tag="p" initialValue={content.trade.body} onCommit={commit('trade', 'body')} multiline
+            style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.85, color: 'rgba(12,11,10,0.6)', maxWidth: 540, margin: '0 auto var(--sp-8)' }} />
+          <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+            <EditableText tag="span" initialValue={content.trade.ctaLabel} onCommit={commit('trade', 'ctaLabel')}
+              style={{ display: 'inline-block', background: '#0c0b0a', color: '#f0ece4', padding: '14px 36px', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', fontFamily: 'var(--sans)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(12,11,10,0.45)' }}>Sends to:</span>
+              <EditableText tag="span" initialValue={content.trade.ctaEmail} onCommit={commit('trade', 'ctaEmail')}
+                style={{ fontSize: 11, color: 'rgba(12,11,10,0.7)' }} />
+            </div>
           </div>
-          <ImageSlot imgKey="atelierHeroImg" url={content.images.atelierHeroImg} onUploaded={onImageUploaded}
-            label="Atelier hero image" aspect="auto" />
-        </div>
-        {/* Manifesto */}
-        <div style={{ padding: 'var(--sp-14) var(--sp-10)', background: 'var(--bg2)', textAlign: 'center', borderTop: '1px solid var(--border-dim)' }}>
-          <div style={{ width: 48, height: 1, background: 'var(--gold2)', margin: '0 auto var(--sp-7)' }} />
-          <EditableText tag="p" initialValue={content.atelier.manifestoQuote} onCommit={commit('atelier', 'manifestoQuote')} multiline
-            style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(16px,2vw,24px)', lineHeight: 1.6, color: 'var(--fg)', maxWidth: 760, margin: '0 auto var(--sp-5)' }} />
-          <EditableText tag="p" initialValue={content.atelier.manifestoAttr} onCommit={commit('atelier', 'manifestoAttr')}
-            style={{ display: 'block', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg3)' }} />
-        </div>
-        {/* Workshop row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid var(--border-dim)' }}>
-          <ImageSlot imgKey="atelierWorkshopImg" url={content.images.atelierWorkshopImg} onUploaded={onImageUploaded}
-            label="Workshop image" aspect="4/3" />
-          <div style={{ padding: 'var(--sp-13) var(--sp-10)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <EditableText tag="p" className="t-eyebrow" initialValue={content.atelier.workshopEyebrow}
-              onCommit={commit('atelier', 'workshopEyebrow')} style={{ display: 'block', marginBottom: 'var(--sp-5)' }} />
-            <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(28px,3vw,52px)', lineHeight: 0.92, marginBottom: 'var(--sp-7)' }}>
-              <EditableText initialValue={content.atelier.workshopTitle1} onCommit={commit('atelier', 'workshopTitle1')} /><br />
-              <EditableText initialValue={content.atelier.workshopTitleArt} onCommit={commit('atelier', 'workshopTitleArt')} style={{ fontStyle: 'italic', color: 'var(--gold)' }} />
-            </h2>
-            <EditableText tag="p" initialValue={content.atelier.workshopBody} onCommit={commit('atelier', 'workshopBody')} multiline
-              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.85, color: 'var(--fg2)' }} />
-          </div>
-        </div>
-        {/* CTA */}
-        <div style={{ padding: 'var(--sp-10)', textAlign: 'center', borderTop: '1px solid var(--border-dim)' }}>
-          <EditableText tag="h3" initialValue={content.atelier.ctaTitle} onCommit={commit('atelier', 'ctaTitle')}
-            style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(24px,2.5vw,40px)', marginBottom: 'var(--sp-6)' }} />
-          <span style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', border: '1px solid var(--border-dim)', padding: '10px 24px', pointerEvents: 'none' }}>Shop All Pieces</span>
         </div>
       </SectionWrap>
 
-      {/* ── Footer Tagline ── */}
-      <SectionWrap label="Footer Tagline" id="acms-footer" bg="#0c0b0a" {...sp('footer')}>
-        <div style={{ padding: 'var(--sp-10) var(--sp-10) var(--sp-8)', textAlign: 'center' }}>
-          <p style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(240,237,230,0.35)', marginBottom: 16 }}>LUXURIO HOME</p>
-          <EditableText tag="p" initialValue={content.footer.tagline} onCommit={commit('footer', 'tagline')} multiline
-            style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.8, color: 'rgba(240,237,230,0.4)', maxWidth: 480, margin: '0 auto' }} />
-          <p style={{ fontSize: 9, marginTop: 24, color: 'rgba(240,237,230,0.15)', letterSpacing: '0.15em' }}>© Luxurio Home 2026 — Milan</p>
+      {/* ── Footer ── */}
+      <SectionWrap label="Footer" id="acms-footer" bg="#f0ece4" {...sp('footer')}>
+        <div style={{ padding: 'var(--sp-12) var(--sp-10)', color: '#1a1714' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-10)', marginBottom: 'var(--sp-10)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Newsletter label</label>
+              <EditableText tag="p" initialValue={content.footer.newsletterLabel} onCommit={commit('footer', 'newsletterLabel')}
+                style={{ display: 'block', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.7)', borderBottom: '1px solid rgba(26,23,20,0.2)', paddingBottom: 8 }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Tagline (optional)</label>
+              <EditableText tag="p" initialValue={content.footer.tagline} onCommit={commit('footer', 'tagline')} multiline
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.7, color: 'rgba(26,23,20,0.7)' }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--sp-10)', borderTop: '1px solid rgba(26,23,20,0.15)', paddingTop: 'var(--sp-8)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Contact — address line 1</label>
+              <EditableText tag="p" initialValue={content.footer.contactAddressLine1} onCommit={commit('footer', 'contactAddressLine1')}
+                style={{ display: 'block', fontSize: 13, marginBottom: 16 }} />
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Contact — address line 2</label>
+              <EditableText tag="p" initialValue={content.footer.contactAddressLine2} onCommit={commit('footer', 'contactAddressLine2')}
+                style={{ display: 'block', fontSize: 13, marginBottom: 16 }} />
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Contact email</label>
+              <EditableText tag="p" initialValue={content.footer.contactEmail} onCommit={commit('footer', 'contactEmail')}
+                style={{ display: 'block', fontSize: 13 }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Copyright (use <code>{'{year}'}</code> for current year)</label>
+              <EditableText tag="p" initialValue={content.footer.copyText} onCommit={commit('footer', 'copyText')}
+                style={{ display: 'block', fontSize: 13, marginBottom: 16 }} />
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(26,23,20,0.45)', display: 'block', marginBottom: 8 }}>Locale label (right side)</label>
+              <EditableText tag="p" initialValue={content.footer.localeLabel} onCommit={commit('footer', 'localeLabel')}
+                style={{ display: 'block', fontSize: 13 }} />
+            </div>
+          </div>
         </div>
       </SectionWrap>
 
@@ -537,4 +457,3 @@ export function AdminContent() {
     </div>
   );
 }
-

@@ -26,7 +26,7 @@ export function AdminLogin() {
         <p style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 12 }}>The Atelier</p>
         <h2>Admin Sign In</h2>
         <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--fg2)', marginBottom: 32, marginTop: 8 }}>
-          Manage the Luxurio collection.
+          Manage the Luxurio Home collection.
         </p>
         <form onSubmit={onSubmit}>
           <div className="field">

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useOutletContext, Link } from 'react-router-dom';
 import { api, Product, formatPrice, formatPriceExVat } from '../lib/api';
 import { ImgOrPlaceholder } from '../components/primitives';
 import { useUserAuth } from '../lib/userAuth';
@@ -19,74 +19,26 @@ declare global {
   }
 }
 
-// ─── Description parser ───────────────────────────────────────────────────────
-function parseProductDescription(raw: string) {
-  if (!raw?.includes('MATERIALS')) return null;
-  const dimIdx = raw.indexOf('DIMENSIONS');
-  // Prepend '.' so the first section also matches the same split pattern
-  const materialsText = '.' + raw.slice(raw.indexOf('MATERIALS') + 9, dimIdx > -1 ? dimIdx : undefined);
-  const dimText = dimIdx > -1 ? raw.slice(dimIdx + 10) : '';
-
-  // Split on: period + Title-Case-heading + uppercase lookahead (start of body sentence)
-  const headingRe = /\.([A-Z][a-z]+(?:\s*\/\s*[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+){0,2})(?=[A-Z])/;
-  const parts = materialsText.split(headingRe);
-  // parts = ['', heading1, body1, heading2, body2, ...]
-
-  const sections: { heading: string; body: string }[] = [];
-  for (let i = 1; i + 1 < parts.length; i += 2) {
-    const heading = parts[i].trim();
-    let body = parts[i + 1]
-      .replace(/Note:[\s\S]*?(?=\.|$)/g, '') // strip Note: clauses
-      .replace(/\.\s*$/, '')
-      .trim();
-    if (heading && body.length > 15) sections.push({ heading, body });
-  }
-
-  // Parse dimensions lines (each starts with • or newline)
-  const dims = dimText
-    .split(/[•\n]/)
-    .map(d => d.trim())
-    .filter(d => d.length > 2 && !/^(Assembly|Fully|Mattress size)/i.test(d));
-
-  const assembly = /Assembly required|Fully assembled/i.exec(raw)?.[0] ?? null;
-
-  return { sections, dims, assembly };
-}
-
-function DescriptionBlock({ text }: { text: string }) {
-  const parsed = parseProductDescription(text);
-
-  if (!parsed || parsed.sections.length === 0) {
-    // Plain text fallback (old mock products)
-    return <p className="pd-desc">{text}</p>;
-  }
-
-  const { sections, dims, assembly } = parsed;
-
+// ─── Structured materials block ─────────────────────────────────────────────
+function MaterialsBlock({ raw }: { raw?: string | null }) {
+  if (!raw) return null;
+  let entries: { name: string; desc: string }[] = [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) entries = parsed;
+  } catch { return null; }
+  if (entries.length === 0) return null;
   return (
-    <div className="pd-desc-structured">
+    <div className="pd-desc-structured" style={{ marginTop: 'var(--sp-6)' }}>
       <p className="pd-desc-section-label">Materials</p>
       <div className="pd-mat-list">
-        {sections.map((s, i) => (
+        {entries.map((e, i) => (
           <div key={i} className="pd-mat-row">
-            <span className="pd-mat-heading">{s.heading}</span>
-            <span className="pd-mat-body">{s.body}</span>
+            <span className="pd-mat-heading" style={{ fontStyle: 'italic' }}>{e.name}</span>
+            <span className="pd-mat-body">{e.desc}</span>
           </div>
         ))}
       </div>
-
-      {dims.length > 0 && (
-        <>
-          <p className="pd-desc-section-label" style={{ marginTop: 'var(--sp-7)' }}>Dimensions</p>
-          <ul className="pd-dim-list">
-            {dims.map((d, i) => <li key={i}>{d}</li>)}
-          </ul>
-        </>
-      )}
-
-      {assembly && (
-        <p className="pd-assembly-note">{assembly}</p>
-      )}
     </div>
   );
 }
@@ -101,6 +53,9 @@ export function ProductDetail() {
   const [notFound, setNotFound] = useState(false);
   const [activeImg, setActiveImg] = useState(0);
   const [view3d, setView3d] = useState(false);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  useEffect(() => { window.scrollTo(0, 0); }, [slug]);
 
   useEffect(() => {
     if (!slug) return;
@@ -109,6 +64,19 @@ export function ProductDetail() {
       .then((r) => { setP(r.data); setActiveImg(0); setView3d(false); })
       .catch(() => setNotFound(true));
   }, [slug]);
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!p) return;
+      if (e.key === 'Escape') setLightbox(null);
+      if (e.key === 'ArrowRight') setLightbox(i => i !== null ? (i + 1) % p.images.length : null);
+      if (e.key === 'ArrowLeft') setLightbox(i => i !== null ? (i - 1 + p.images.length) % p.images.length : null);
+    };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [lightbox, p]);
 
   // Inject model-viewer script only when this page mounts and product has a 3D model
   useEffect(() => {
@@ -179,13 +147,17 @@ export function ProductDetail() {
             />
           </div>
         ) : (
-          <div className="aspect-port" style={{ marginBottom: 'var(--sp-4)' }}>
+          <div style={{ position: 'relative', marginBottom: 'var(--sp-4)', cursor: 'zoom-in' }} onClick={() => setLightbox(activeImg)}>
             <ImgOrPlaceholder
               id={`pdmain${p.id}`}
               url={p.images[activeImg]?.url || p.images[0]?.url}
               alt={p.name}
-              style={{ position: 'absolute', inset: 0 }}
+              className="pd-main-img"
+              style={{ paddingBottom: '125%' }}
             />
+            {p.images.length > 1 && (
+              <span className="pd-img-count">{p.images.length} photos</span>
+            )}
           </div>
         )}
 
@@ -204,35 +176,149 @@ export function ProductDetail() {
           </div>
         )}
       </div>
-      <div>
-        {p.category && <p className="pd-cat">{p.category.name}</p>}
+
+      {/* ── Lightbox ── */}
+      {lightbox !== null && (
+        <div className="lb-overlay" onClick={() => setLightbox(null)} role="dialog" aria-modal="true" aria-label="Photo gallery">
+          <button className="lb-close" onClick={() => setLightbox(null)} aria-label="Close gallery">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+
+          <div className="lb-counter">{lightbox + 1} / {p.images.length}</div>
+
+          {p.images.length > 1 && (
+            <button className="lb-arrow lb-arrow-prev" aria-label="Previous"
+              onClick={e => { e.stopPropagation(); setLightbox((lightbox - 1 + p.images.length) % p.images.length); }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+          )}
+
+          <div className="lb-img-wrap" onClick={e => e.stopPropagation()}>
+            <img
+              key={lightbox}
+              src={p.images[lightbox]?.url}
+              alt={`${p.name} — photo ${lightbox + 1}`}
+              className="lb-img"
+            />
+          </div>
+
+          {p.images.length > 1 && (
+            <button className="lb-arrow lb-arrow-next" aria-label="Next"
+              onClick={e => { e.stopPropagation(); setLightbox((lightbox + 1) % p.images.length); }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          )}
+
+          {p.images.length > 1 && (
+            <div className="lb-thumbs" onClick={e => e.stopPropagation()}>
+              {p.images.map((img, i) => (
+                <button key={img.id} className={`lb-thumb${i === lightbox ? ' active' : ''}`}
+                  onClick={() => setLightbox(i)}>
+                  <img src={img.url} alt="" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Right panel ── */}
+      <div className="pd-info">
+
+        {/* Meta row: category + stock */}
+        <div className="pd-meta">
+          <div className="pd-breadcrumb">
+            <Link to="/shop" className="pd-breadcrumb-link">Shop</Link>
+            {p.category && (
+              <>
+                <span className="pd-breadcrumb-sep">/</span>
+                <Link to={`/shop?category=${p.category.slug}`} className="pd-breadcrumb-link">{p.category.name}</Link>
+              </>
+            )}
+          </div>
+          <span className={`pd-stock-badge ${p.stock === 0 ? 'out' : p.stock <= 3 ? 'low' : 'in'}`}>
+            {p.stock === 0 ? 'Out of stock' : p.stock <= 3 ? `Only ${p.stock} left` : `${p.stock} in stock`}
+          </span>
+        </div>
+
+        {/* Title + designer */}
         <h1 className="pd-title">{p.name}</h1>
-        {p.designer && <p className="pd-designer">Designed by {p.designer}</p>}
+        {p.designer && <p className="pd-designer">By {p.designer}</p>}
+
+        {/* Price */}
         <div className="pd-prices">
           {hasDiscount ? (
             <>
               <span className="pd-strike">{formatPrice(p.price)}</span>
               <span className="pd-price">{formatPrice(p.discountPrice!)}</span>
-              <span className="pd-pct">-{Math.round((1 - Number(p.discountPrice) / Number(p.price)) * 100)}%</span>
+              <span className="pd-pct">−{Math.round((1 - Number(p.discountPrice) / Number(p.price)) * 100)}%</span>
             </>
           ) : (
             <span className="pd-price">{formatPrice(p.price)}</span>
           )}
         </div>
         <p className="pd-excl-vat">{formatPriceExVat(hasDiscount ? p.discountPrice! : p.price)} excl. PVM</p>
-        <DescriptionBlock text={p.description ?? ''} />
 
-        <dl className="pd-specs">
-          {p.material && (<><dt className="pd-spec-dt">Material</dt><dd className="pd-spec-dd">{p.material}</dd></>)}
-          {p.color && (<><dt className="pd-spec-dt">Color</dt><dd className="pd-spec-dd">{p.color}</dd></>)}
-          {p.dimensions && (<><dt className="pd-spec-dt">Dimensions</dt><dd className="pd-spec-dd">{p.dimensions}</dd></>)}
-          {p.weightKg && (<><dt className="pd-spec-dt">Weight</dt><dd className="pd-spec-dd">{p.weightKg} kg</dd></>)}
-          <dt className="pd-spec-dt">Assembly</dt><dd className="pd-spec-dd">{p.assembled ? 'Pre-assembled' : 'Requires assembly'}</dd>
-        </dl>
+        <div className="pd-divider" />
 
+        {/* Description */}
+        {p.description && <p className="pd-desc">{p.description}</p>}
+
+        {/* Materials */}
+        <MaterialsBlock raw={p.material} />
+
+        {/* Specs */}
+        {(p.color || p.dimensions || p.weightKg || p.assembled !== undefined) && (
+          <div className="pd-specs-block">
+            <p className="pd-section-label">Specifications</p>
+            <dl className="pd-specs">
+              {p.color && (
+                <>
+                  <dt className="pd-spec-dt">Colour</dt>
+                  <dd className="pd-spec-dd">{p.color.split(',').map(s => s.trim()).filter(Boolean).join(', ')}</dd>
+                </>
+              )}
+              {p.dimensions && (() => {
+                try {
+                  const dims: { name: string; value: string }[] = JSON.parse(p.dimensions!);
+                  if (Array.isArray(dims) && dims.length > 0) return dims.map((d, i) => (
+                    <React.Fragment key={i}>
+                      <dt className="pd-spec-dt">{d.name || 'Dimensions'}</dt>
+                      <dd className="pd-spec-dd">{d.value}</dd>
+                    </React.Fragment>
+                  ));
+                } catch { /* legacy */ }
+                return (
+                  <React.Fragment>
+                    <dt className="pd-spec-dt">Dimensions</dt>
+                    <dd className="pd-spec-dd">{p.dimensions}</dd>
+                  </React.Fragment>
+                );
+              })()}
+              {p.weightKg != null && (
+                <>
+                  <dt className="pd-spec-dt">Weight</dt>
+                  <dd className="pd-spec-dd">{p.weightKg} kg</dd>
+                </>
+              )}
+              <dt className="pd-spec-dt">Assembly</dt>
+              <dd className="pd-spec-dd">{p.assembled ? 'Pre-assembled' : 'Requires assembly'}</dd>
+            </dl>
+          </div>
+        )}
+
+        <div className="pd-divider" />
+
+        {/* Actions */}
         <div className="pd-actions">
-          <button className="btn" style={{ flex: 1 }}>Request a Quote</button>
-          <button onClick={onHeart}
+          <a
+            href={`mailto:hello@luxurio.home?subject=${encodeURIComponent(`Quote Request: ${p.name}`)}&body=${encodeURIComponent(`Hi,\n\nI would like to request a quote for: ${p.name}\n\nProduct link: ${window.location.href}`)}`}
+            className="btn pd-quote-btn"
+          >
+            Request a Quote
+          </a>
+          <button
+            onClick={onHeart}
             aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
             className="pd-fav"
             style={{ color: isFav ? 'var(--gold)' : 'var(--fg)' }}

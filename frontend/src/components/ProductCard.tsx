@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Product, formatPrice, formatPriceExVat } from '../lib/api';
+import { Product } from '../lib/api';
 import { ImgOrPlaceholder } from './primitives';
 import { useUserAuth } from '../lib/userAuth';
 
@@ -12,7 +12,6 @@ interface Props {
 export function ProductCard({ product, bg = '#f0ece4', onRequireAuth }: Props) {
   const { user, favorites, toggleFavorite } = useUserAuth();
   const isFav = favorites.has(product.id);
-  const hasDiscount = product.discountPrice != null && Number(product.discountPrice) < Number(product.price);
 
   async function onHeart(e: React.MouseEvent) {
     e.preventDefault();
@@ -39,7 +38,7 @@ export function ProductCard({ product, bg = '#f0ece4', onRequireAuth }: Props) {
             aria-hidden="true"
             className="pc-brand"
           />
-          {hasDiscount && <div className="pc-sale">Sale</div>}
+          {product.discountPrice != null && Number(product.discountPrice) < Number(product.price) && <div className="pc-sale">Sale</div>}
           <button
             onClick={onHeart}
             aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
@@ -59,17 +58,7 @@ export function ProductCard({ product, bg = '#f0ece4', onRequireAuth }: Props) {
             <p className="pc-name">{product.name}</p>
             {product.designer && <p className="pc-designer">{product.designer}</p>}
           </div>
-          <div className="pc-prices">
-            {hasDiscount ? (
-              <>
-                <p className="pc-strike">{formatPrice(product.price)}</p>
-                <p className="pc-price">{formatPrice(product.discountPrice!)}</p>
-              </>
-            ) : (
-              <p className="pc-price-reg">{formatPrice(product.price)}</p>
-            )}
-          </div>
-          <p className="pc-excl-vat">{formatPriceExVat(hasDiscount ? product.discountPrice! : product.price)} excl. PVM</p>
+
         </div>
       </Link>
     </div>

@@ -3,12 +3,14 @@ import { useSearchParams, useOutletContext } from 'react-router-dom';
 import { api, Product, Category } from '../lib/api';
 import { ProductCard } from '../components/ProductCard';
 import { Seo } from '../components/Seo';
+import { usePageContent } from '../lib/usePageContent';
 import type { PublicOutletContext } from '../layouts/PublicLayout';
 
 const PAGE_SIZE = 24;
 
 export function Shop() {
   const { openAuth } = useOutletContext<PublicOutletContext>();
+  const c = usePageContent();
   const [params, setParams] = useSearchParams();
   const [items, setItems] = useState<Product[]>([]);
   const [cats, setCats] = useState<Category[]>([]);
@@ -82,9 +84,9 @@ export function Shop() {
         canonical={`/shop${category ? `?category=${category}` : ''}`}
         breadcrumbs={[{ name: 'Shop', path: '/shop' }]}
       />
-      <p className="t-eyebrow shop-eyebrow">The Collection</p>
+      <p className="t-eyebrow shop-eyebrow">{c.shop.eyebrow}</p>
       <h1 className="shop-title">
-        {category ? cats.find((c) => c.slug === category)?.name || 'Shop' : featured ? 'Featured Pieces' : 'Shop All'}
+        {category ? cats.find((cat) => cat.slug === category)?.name || c.shop.title : featured ? 'Featured Pieces' : c.shop.title}
       </h1>
 
       {/* Row 1: All + parent categories + search */}
@@ -135,7 +137,7 @@ export function Shop() {
         <p style={{ color: 'var(--fg3)' }}>No pieces found.</p>
       ) : (
         <>
-          <div className="prod-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--sp-6)' }}>
+          <div className="prod-grid">
             {items.map((p) => <ProductCard key={p.id} product={p} onRequireAuth={openAuth} />)}
           </div>
           {hasMore && (

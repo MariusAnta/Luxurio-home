@@ -38,7 +38,7 @@ export function Favorites() {
           No favorites yet — tap the heart on any piece to save it here.
         </p>
       ) : (
-        <div className="prod-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--sp-6)' }}>
+        <div className="prod-grid">
           {items.map((p) => <ProductCard key={p.id} product={p} onRequireAuth={openAuth} />)}
         </div>
       )}
