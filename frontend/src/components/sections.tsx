@@ -75,10 +75,49 @@ export function Newsletter() {
   );
 }
 
-export function Footer() {
+interface FooterProps {
+  onWorkWithUsOpen: () => void;
+}
+
+export function Footer({ onWorkWithUsOpen }: FooterProps) {
   const [nlEmail, setNlEmail] = useState('');
   const [nlDone, setNlDone] = useState(false);
+  const [partnerOpen, setPartnerOpen] = useState(false);
+  const [partnerName, setPartnerName] = useState('');
+  const [partnerSurname, setPartnerSurname] = useState('');
+  const [partnerEmail, setPartnerEmail] = useState('');
+  const [partnerMessage, setPartnerMessage] = useState('');
   const c = usePageContent();
+
+  useEffect(() => {
+    if (!partnerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPartnerOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [partnerOpen]);
+
+  const submitPartnerForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent('Partnership enquiry - Luxurio Home');
+    const body = encodeURIComponent(
+      [
+        `Name: ${partnerName}`,
+        `Surname: ${partnerSurname}`,
+        `Email: ${partnerEmail}`,
+        '',
+        'Message:',
+        partnerMessage,
+      ].join('\n')
+    );
+    window.location.href = `mailto:info@luxuriohome.com?subject=${subject}&body=${body}`;
+    setPartnerOpen(false);
+    setPartnerName('');
+    setPartnerSurname('');
+    setPartnerEmail('');
+    setPartnerMessage('');
+  };
 
   const socials = [
     {
@@ -102,8 +141,55 @@ export function Footer() {
       <p className="t-eyebrow trade-eyebrow">{c.trade.eyebrow}</p>
       <h2 className="trade-h2">{c.trade.title}</h2>
       <p className="trade-body">{c.trade.body}</p>
-      <a href={`mailto:${c.trade.ctaEmail}`} className="btn trade-cta">{c.trade.ctaLabel}</a>
+      <button type="button" className="btn trade-cta" onClick={() => setPartnerOpen(true)}>{c.trade.ctaLabel}</button>
     </section>
+
+    {partnerOpen && (
+      <div className="modal-backdrop" onClick={() => setPartnerOpen(false)}>
+        <div className="modal partner-modal" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close" onClick={() => setPartnerOpen(false)} aria-label="Close">x</button>
+          <h2>Partner with Luxurio Home</h2>
+          <p className="partner-modal-sub">Leave your details and message, and we will prepare the email for info@luxuriohome.com.</p>
+          <form className="partner-form" onSubmit={submitPartnerForm}>
+            <div className="partner-form-row">
+              <input
+                type="text"
+                className="partner-input"
+                placeholder="Name"
+                value={partnerName}
+                onChange={(e) => setPartnerName(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                className="partner-input"
+                placeholder="Surname"
+                value={partnerSurname}
+                onChange={(e) => setPartnerSurname(e.target.value)}
+                required
+              />
+            </div>
+            <input
+              type="email"
+              className="partner-input"
+              placeholder="E-mail address"
+              value={partnerEmail}
+              onChange={(e) => setPartnerEmail(e.target.value)}
+              required
+            />
+            <textarea
+              className="partner-textarea"
+              placeholder="Your message"
+              value={partnerMessage}
+              onChange={(e) => setPartnerMessage(e.target.value)}
+              rows={6}
+              required
+            />
+            <button type="submit" className="btn trade-cta partner-submit">Send email</button>
+          </form>
+        </div>
+      </div>
+    )}
 
     <footer className="site-footer">
 
@@ -173,14 +259,18 @@ export function Footer() {
           <a href={`mailto:${c.footer.contactEmail}`} className="foot-email">
             {c.footer.contactEmail}
           </a>
+          {c.footer.contactPhone && (
+            <a href={`tel:${c.footer.contactPhone.replace(/\s/g, '')}`} className="foot-email" style={{ display: 'block', marginTop: 8 }}>
+              {c.footer.contactPhone}
+            </a>
+          )}
         </div>
 
         {/* Company */}
         <div>
           <p className="foot-col-head">Company</p>
           <Link to="/shop" className="foot-nav-link">Our Collections</Link>
-          <a href={`mailto:${c.footer.contactEmail}?subject=Press%20Enquiry`} className="foot-nav-link">Press</a>
-          <a href={`mailto:${c.footer.contactEmail}?subject=Careers%20%2F%20Work%20With%20Us`} className="foot-nav-link">Work With Us</a>
+          <button type="button" className="foot-nav-link foot-nav-link-btn" onClick={onWorkWithUsOpen}>Work With Us</button>
         </div>
 
         {/* Legal */}

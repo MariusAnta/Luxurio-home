@@ -16,4 +16,13 @@ router.get('/', requireAdmin, async (_req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// DELETE /api/users/:id — delete a customer account (admin only)
+router.delete('/:id', requireAdmin, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await prisma.user.delete({ where: { id } });
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
 export default router;

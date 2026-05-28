@@ -6,9 +6,12 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { api, Category } from '../lib/api';
 import { useTheme } from '../lib/useTheme';
 
-interface NavProps { onAuthOpen: () => void; }
+interface NavProps {
+  onAuthOpen: () => void;
+  onContactOpen: () => void;
+}
 
-export function Nav({ onAuthOpen }: NavProps) {
+export function Nav({ onAuthOpen, onContactOpen }: NavProps) {
   const { user, favorites, logout } = useUserAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,6 +29,7 @@ export function Nav({ onAuthOpen }: NavProps) {
   const [hovering, setHovering] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoverCat, setHoverCat] = useState<Category | null>(null);
+  const [navSearch, setNavSearch] = useState('');
   // displayedCat is NOT cleared when going back, so the subs panel keeps its
   // content visible while the slide-out animation plays.
   const [displayedCat, setDisplayedCat] = useState<Category | null>(null);
@@ -34,6 +38,11 @@ export function Nav({ onAuthOpen }: NavProps) {
   useEffect(() => {
     api.get<Category[]>('/categories').then((r) => setCats(r.data));
   }, []);
+
+  useEffect(() => {
+    const q = new URLSearchParams(location.search).get('q') || '';
+    setNavSearch(q);
+  }, [location.search]);
 
   const isHome = location.pathname === '/';
 
@@ -52,6 +61,12 @@ export function Nav({ onAuthOpen }: NavProps) {
   const close = () => { setMenuOpen(false); setHoverCat(null); setDisplayedCat(null); };
   const openSub = (cat: Category) => { setDisplayedCat(cat); setHoverCat(cat); };
   const closeSub = () => { setHoverCat(null); };
+  const submitNavSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = navSearch.trim();
+    navigate(q ? `/shop?q=${encodeURIComponent(q)}` : '/shop');
+    close();
+  };
   const rootCats = cats.filter((c) => !c.parentId);
   const childrenOf = (id: string) => cats.filter((c) => c.parentId === id);
   const displayedSubs = displayedCat ? childrenOf(displayedCat.id) : [];
@@ -70,26 +85,54 @@ export function Nav({ onAuthOpen }: NavProps) {
               <line x1="0" y1="9" x2="22" y2="9" />
             </svg>
           </button>
+          <form className="nav-search nav-search-desktop" onSubmit={submitNavSearch} role="search" aria-label="Search products">
+            <input
+              type="search"
+              value={navSearch}
+              onChange={(e) => setNavSearch(e.target.value)}
+              className="nav-search-input"
+              placeholder="Search products"
+              aria-label="Search products"
+            />
+            <button type="submit" className="nav-search-btn" aria-label="Search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="7" />
+                <line x1="20" y1="20" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          </form>
         </div>
 
         <Link to="/" className="nav-wordmark" onClick={handleLogoClick} aria-label="Luxurio Home">
           <img src="/grayscale_transparent_nobuffer.png" alt="Luxurio Home" className="nav-wordmark-img" />
         </Link>
 
-        <div className="nav-right">
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-link nav-icon-btn"
-            aria-label="Instagram"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <circle cx="12" cy="12" r="4.5"/>
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        <form className="nav-search nav-search-mobile" onSubmit={submitNavSearch} role="search" aria-label="Search products">
+          <input
+            type="search"
+            value={navSearch}
+            onChange={(e) => setNavSearch(e.target.value)}
+            className="nav-search-input"
+            placeholder="Search products"
+            aria-label="Search products"
+          />
+          <button type="submit" className="nav-search-btn" aria-label="Search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="20" y1="20" x2="16.65" y2="16.65" />
             </svg>
-          </a>
+          </button>
+        </form>
+
+        <div className="nav-right">
+          <button
+            type="button"
+            className="nav-link nav-contact-btn"
+            onClick={onContactOpen}
+            aria-label="Contact us"
+          >
+            Contact Us
+          </button>
           {user ? (
             <>
               <Link to="/favorites" className="nav-link nav-favs" aria-label={t('nav.favorites')}>
@@ -289,6 +332,7 @@ export function Nav({ onAuthOpen }: NavProps) {
           </div>
         </div>
       </div>
+
     </>
   );
 }

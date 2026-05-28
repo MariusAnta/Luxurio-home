@@ -13,7 +13,7 @@ const uploadsDir = path.resolve(__dirname, '..', '..', 'uploads');
 const ALLOWED_IMAGE_MIME = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif']);
 const ALLOWED_MODEL_MIME = new Set(['model/gltf-binary', 'model/gltf+json', 'application/octet-stream']);
 const ALLOWED_MODEL_EXT = new Set(['.glb', '.gltf']);
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 const MAX_MODEL_SIZE_BYTES = 100 * 1024 * 1024; // 100 MB
 
 const storage = multer.diskStorage({

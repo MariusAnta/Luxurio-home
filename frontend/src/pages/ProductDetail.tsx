@@ -44,6 +44,18 @@ function MaterialsBlock({ raw }: { raw?: string | null }) {
   );
 }
 
+function formatDimensionValue(raw: string): string {
+  const value = raw.trim();
+  if (!value) return value;
+  if (/width|height|depth|\bw\b|\bh\b|\bd\b|\bl\b/i.test(value)) return value;
+
+  const parts = value.split(/\s*[xX×]\s*/).map((p) => p.trim()).filter(Boolean);
+  if (parts.length < 2 || parts.length > 4) return value;
+
+  const labels = ['Width', 'Height', 'Depth', 'Length'];
+  return parts.map((part, i) => `${labels[i]} ${part}`).join(' x ');
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function ProductDetail() {
@@ -156,9 +168,7 @@ export function ProductDetail() {
               className="pd-main-img"
               style={{ paddingBottom: '125%' }}
             />
-            {p.images.length > 1 && (
-              <span className="pd-img-count">{p.images.length} photos</span>
-            )}
+
           </div>
         )}
 
@@ -285,14 +295,14 @@ export function ProductDetail() {
                   if (Array.isArray(dims) && dims.length > 0) return dims.map((d, i) => (
                     <React.Fragment key={i}>
                       <dt className="pd-spec-dt">{d.name || 'Dimensions'}</dt>
-                      <dd className="pd-spec-dd">{d.value}</dd>
+                      <dd className="pd-spec-dd">{formatDimensionValue(d.value)}</dd>
                     </React.Fragment>
                   ));
                 } catch { /* legacy */ }
                 return (
                   <React.Fragment>
                     <dt className="pd-spec-dt">Dimensions</dt>
-                    <dd className="pd-spec-dd">{p.dimensions}</dd>
+                    <dd className="pd-spec-dd">{formatDimensionValue(p.dimensions)}</dd>
                   </React.Fragment>
                 );
               })()}

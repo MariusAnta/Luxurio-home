@@ -5,7 +5,7 @@ import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
-const ALLOWED_KEYS = ['marquee', 'content'];
+const ALLOWED_KEYS = ['marquee', 'content', 'new_season'];
 
 // Public: get a setting by key
 router.get('/:key', async (req, res, next) => {

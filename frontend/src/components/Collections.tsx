@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { api, Category } from '../lib/api';
 import { useReveal } from './primitives';
 import { usePageContent } from '../lib/usePageContent';
@@ -36,7 +35,6 @@ export function Collections() {
 }
 
 function CollCard({ c }: { c: Category }) {
-  const { t } = useTranslation();
   return (
     <Link to={`/shop?category=${c.slug}`} className="coll-card">
       <div className="coll-card-media">
@@ -49,7 +47,6 @@ function CollCard({ c }: { c: Category }) {
       </div>
       <div className="coll-card-body">
         <h3 className="coll-card-title">{c.name}</h3>
-        <p className="coll-card-count">{t('collections.pieces', { count: c.productCount ?? 0 })}</p>
       </div>
     </Link>
   );

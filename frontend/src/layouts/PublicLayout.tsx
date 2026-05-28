@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Nav } from '../components/Nav';
 import { Footer } from '../components/sections';
 import { AuthModal } from '../components/AuthModal';
+import { ContactDrawer } from '../components/ContactDrawer';
 import { useReveal } from '../components/primitives';
 import { GlobalJsonLd } from '../components/JsonLd';
 import { CookieBanner } from '../components/CookieBanner';
@@ -33,12 +34,28 @@ export function PublicLayout() {
   useReveal();
   useContentLoader();
   const [authOpen, setAuthOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+
+  useEffect(() => {
+    if (!contactOpen) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setContactOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [contactOpen]);
+
   return (
     <>
       <GlobalJsonLd />
-      <Nav onAuthOpen={() => setAuthOpen(true)} />
+      <Nav onAuthOpen={() => setAuthOpen(true)} onContactOpen={() => setContactOpen(true)} />
       <Outlet context={{ openAuth: () => setAuthOpen(true) } satisfies PublicOutletContext} />
-      <Footer />
+      <Footer onWorkWithUsOpen={() => setContactOpen(true)} />
+      <ContactDrawer open={contactOpen} onClose={() => setContactOpen(false)} />
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
       <CookieBanner />
     </>

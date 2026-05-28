@@ -37,8 +37,18 @@ const productSchema = z.object({
 //   Offset-based  (legacy):    ?page=1&limit=20
 router.get('/', async (req, res, next) => {
   try {
-    const { category, featured, q, page = '1', limit = '20', cursor } = req.query;
+    const { category, featured, q, page = '1', limit = '20', cursor, ids } = req.query;
     const where = { published: true };
+    if (ids) {
+      const idList = String(ids).split(',').map(s => s.trim()).filter(Boolean);
+      const items = await prisma.product.findMany({
+        where: { id: { in: idList } },
+        include: { images: { orderBy: { order: 'asc' } }, category: true },
+      });
+      // preserve order from idList
+      const ordered = idList.map(id => items.find(p => p.id === id)).filter(Boolean);
+      return res.json({ items: ordered, total: ordered.length, page: 1, limit: ordered.length });
+    }
     if (category) {
       const cat = await prisma.category.findUnique({
         where: { slug: String(category) },
@@ -146,6 +156,30 @@ router.delete('/:id', requireAdmin, async (req, res, next) => {
   try {
     await prisma.product.delete({ where: { id: req.params.id } });
     res.status(204).end();
+  } catch (e) { next(e); }
+});
+
+router.post('/bulk-discount', requireAdmin, async (req, res, next) => {
+  try {
+    const { ids, discountPercent } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) return res.status(400).json({ error: 'ids required' });
+    if (discountPercent === null || discountPercent === undefined) {
+      // remove discount
+      await prisma.$transaction(
+        ids.map(id => prisma.product.update({ where: { id }, data: { discountPrice: null } }))
+      );
+    } else {
+      const pct = Number(discountPercent);
+      if (isNaN(pct) || pct < 0 || pct > 100) return res.status(400).json({ error: 'discountPercent must be 0-100' });
+      const products = await prisma.product.findMany({ where: { id: { in: ids } }, select: { id: true, price: true } });
+      await prisma.$transaction(
+        products.map(p => prisma.product.update({
+          where: { id: p.id },
+          data: { discountPrice: Math.round(p.price * (1 - pct / 100) * 100) / 100 },
+        }))
+      );
+    }
+    res.json({ updated: ids.length });
   } catch (e) { next(e); }
 });
 

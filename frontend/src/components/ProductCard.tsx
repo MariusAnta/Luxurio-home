@@ -54,7 +54,7 @@ export function ProductCard({ product, bg = '#f0ece4', onRequireAuth }: Props) {
           <div className="pc-quick">Quick View</div>
         </div>
         <div className="pc-meta">
-          <div style={{ minWidth: 0 }}>
+          <div style={{ minWidth: 0, width: '100%', textAlign: 'center' }}>
             <p className="pc-name">{product.name}</p>
             {product.designer && <p className="pc-designer">{product.designer}</p>}
           </div>

@@ -47,6 +47,7 @@ export interface PageContent {
     contactAddressLine1: string;
     contactAddressLine2: string;
     contactEmail: string;
+    contactPhone: string;
     newsletterLabel: string;
     copyText: string;
     localeLabel: string;
@@ -114,6 +115,7 @@ export const CONTENT_DEFAULTS: PageContent = {
     contactAddressLine1: 'Via della Spiga 12',
     contactAddressLine2: '20121 Milan, Italy',
     contactEmail: 'info@luxuriohome.com',
+    contactPhone: '+370 613 70777',
     newsletterLabel: 'Subscribe to our newsletter',
     copyText: '© Luxurio Home {year} — Milan',
     localeLabel: 'Italy / English',

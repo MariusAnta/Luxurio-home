@@ -10,7 +10,7 @@ interface FormState {
   description: string;
   price: number;
   discountPrice: number | '';
-  stock: number;
+  stock: number | '';
   featured: boolean;
   published: boolean;
   assembled: boolean;
@@ -24,7 +24,7 @@ interface FormState {
 
 const empty: FormState = {
   name: '', slug: '', designer: '', description: '',
-  price: 0, discountPrice: '', stock: 0,
+  price: 0, discountPrice: '', stock: '',
   featured: false, published: true, assembled: false,
   material: [], color: [], dimensionEntries: [], modelUrl: '',
   categoryId: '', imageUrls: [''],
@@ -88,7 +88,7 @@ export function AdminProducts() {
       description: form.description,
       price: Number(form.price),
       discountPrice: form.discountPrice === '' ? null : Number(form.discountPrice),
-      stock: Number(form.stock),
+      stock: form.stock === '' ? 0 : Number(form.stock),
       featured: form.featured,
       published: form.published,
       assembled: form.assembled,
@@ -397,7 +397,15 @@ export function AdminProducts() {
             )}
           </div>
           <div className="field"><label>Stock</label>
-            <input type="number" min="0" value={form.stock} onChange={(e) => setForm({ ...form, stock: Math.max(0, Number(e.target.value)) })} style={{ width: '100%' }} placeholder="0" />
+            <input
+              type="number"
+              min="0"
+              value={form.stock}
+              onChange={(e) => setForm({ ...form, stock: e.target.value === '' ? '' : Math.max(0, Number(e.target.value)) })}
+              style={{ width: '100%' }}
+              placeholder="Enter stock"
+              required
+            />
           </div>
           <div className="field" style={{ gridColumn: '1 / -1', flexDirection: 'row', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--fg2)', textTransform: 'none', letterSpacing: 0 }}>

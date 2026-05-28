@@ -35,7 +35,7 @@ if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
 const app = express();
 
-// Trust nginx reverse proxy (required for rate-limiter X-Forwarded-For)
+// Trust first proxy (nginx) so express-rate-limit reads X-Forwarded-For correctly
 app.set('trust proxy', 1);
 
 // Security headers with explicit CSP

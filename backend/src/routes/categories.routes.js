@@ -15,7 +15,7 @@ const categorySchema = z.object({
 router.get('/', async (_req, res, next) => {
   try {
     const categories = await prisma.category.findMany({
-      orderBy: { name: 'asc' },
+      orderBy: [{ number: 'asc' }, { name: 'asc' }],
       include: {
         _count: { select: { products: true } },
         products: {
@@ -55,6 +55,23 @@ router.delete('/:id', requireAdmin, async (req, res, next) => {
   try {
     await prisma.category.delete({ where: { id: req.params.id } });
     res.status(204).end();
+  } catch (e) { next(e); }
+});
+
+// Reorder: body = { ids: string[] } — ids in desired order (top-level only)
+router.post('/reorder', requireAdmin, async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids)) return res.status(400).json({ error: 'ids must be an array' });
+    await Promise.all(
+      ids.map((id, i) =>
+        prisma.category.update({
+          where: { id },
+          data: { number: String(i + 1).padStart(4, '0') },
+        })
+      )
+    );
+    res.json({ ok: true });
   } catch (e) { next(e); }
 });
 

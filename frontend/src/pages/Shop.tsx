@@ -117,7 +117,7 @@ export function Shop() {
             onClick={() => setParam('category', activeParent!.slug)}
             className={`chip chip-sub${category === activeParent!.slug ? ' active' : ''}`}
           >
-            All {activeParent!.name}
+            All
           </button>
           {activeParentChildren.map((kid) => (
             <button
