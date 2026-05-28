@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUXURIO — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --ink: #000000;
+      --ink-soft: #1a1a1a;
+      --line: #000000;
+      --muted: #6a6a6a;
+      --paper: #f4f2ee;
+      --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 1.4;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .placeholder-img {
+      position: relative;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    .placeholder-img .ph-bg {
+      position: absolute; inset: 0;
+    }
+    .placeholder-img .ph-label {
+      position: absolute; bottom: 16px; left: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.4);
+      mix-blend-mode: multiply;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    /* ────────── Placeholder image ────────── */
+    function PH({ tone = "warm", label, scale = 1 }) {
+      // Tones map to neutral palettes that read as "campaign photography"
+      const palettes = {
+        warm:    ["#e4dccf", "#cbbfae", "#8c7a64"],
+        cool:    ["#dadcd8", "#b9bcb5", "#6f7166"],
+        stone:   ["#d6cfc4", "#a99c8a", "#5a4e3e"],
+        clay:    ["#ddc4ae", "#b08c6e", "#5d4530"],
+        smoke:   ["#c4c1bb", "#8e8b85", "#3a3935"],
+        bone:    ["#ece6db", "#cdc2ac", "#7a6e58"],
+        umber:   ["#c9a884", "#8a6a4a", "#3e2c1d"],
+        char:    ["#3c3a36", "#1f1d1b", "#0a0908"],
+      };
+      const p = palettes[tone] || palettes.warm;
+      const id = React.useMemo(() => "ph" + Math.random().toString(36).slice(2, 9), []);
+      return (
+        <div className="placeholder-img">
+          <div className="ph-bg">
+            <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 400 400">
+              <defs>
+                <radialGradient id={id+"-rg"} cx="55%" cy="40%" r="80%">
+                  <stop offset="0%" stopColor={p[0]} />
+                  <stop offset="55%" stopColor={p[1]} />
+                  <stop offset="100%" stopColor={p[2]} />
+                </radialGradient>
+                <pattern id={id+"-pat"} width="6" height="6" patternUnits="userSpaceOnUse">
+                  <rect width="6" height="6" fill="transparent"/>
+                  <circle cx="1" cy="1" r="0.5" fill="rgba(0,0,0,0.06)"/>
+                </pattern>
+              </defs>
+              <rect width="400" height="400" fill={`url(#${id}-rg)`} />
+              <rect width="400" height="400" fill={`url(#${id}-pat)`} />
+              {/* Suggestive vertical shapes (drapery / silhouette) */}
+              <ellipse cx="200" cy="380" rx="180" ry="40" fill="rgba(0,0,0,0.12)" />
+            </svg>
+          </div>
+          {label && <div className="ph-label">{label}</div>}
+        </div>
+      );
+    }
+
+    /* ────────── Top Bar ────────── */
+    function TopBar({ scrolled, onMenu }) {
+      const dark = !scrolled;
+      const color = dark ? "#fff" : "#000";
+      return (
+        <header style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 60,
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
+          alignItems: "center",
+          padding: "20px 28px",
+          background: scrolled ? "rgba(255,255,255,0.98)" : "transparent",
+          borderBottom: scrolled ? "1px solid #000" : "1px solid transparent",
+          transition: "background 0.4s, border-color 0.4s, color 0.4s",
+          color,
+          mixBlendMode: scrolled ? "normal" : "difference",
+        }}>
+          <div style={{ display: "flex", gap: 0, alignItems: "center" }}>
+            <button onClick={onMenu} aria-label="Menu" style={{
+              background: "none", border: "none", padding: "8px 12px 8px 0", color: "inherit",
+              fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 500,
+              cursor: "pointer", display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" strokeWidth="1">
+                <line x1="0" y1="1" x2="22" y2="1"/>
+                <line x1="0" y1="9" x2="22" y2="9"/>
+              </svg>
+              Menu
+            </button>
+          </div>
+          <a href="/" style={{
+            fontFamily: "var(--sans)",
+            fontWeight: 500,
+            fontSize: 22,
+            letterSpacing: "0.32em",
+            color: "inherit",
+            paddingLeft: "0.32em",
+          }}>LUXURIO</a>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: 24, alignItems: "center" }}>
+            <a href="#stores" style={topLink}>Stores</a>
+            <a href="/shop" style={topLink}>Search</a>
+            <a href="javascript:void(0)" style={topLink}>Account</a>
+            <a href="javascript:void(0)" style={{...topLink, display: "inline-flex", alignItems: "center", gap: 6}}>
+              Bag <span style={{ opacity: 0.6 }}>(0)</span>
+            </a>
+          </div>
+        </header>
+      );
+    }
+    const topLink = {
+      fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 500,
+      color: "inherit",
+    };
+
+    /* ────────── Menu Overlay ────────── */
+    function MenuOverlay({ open, onClose }) {
+      const cats = [
+        ["Collections", ["New Arrivals", "Atelier Collection", "Spring 2026", "Archive"]],
+        ["Living", ["Sofas", "Lounge Chairs", "Coffee Tables", "Sideboards", "Rugs"]],
+        ["Dining", ["Tables", "Chairs", "Tableware", "Glassware", "Linens"]],
+        ["Bedroom", ["Beds", "Wardrobes", "Nightstands", "Lighting", "Textiles"]],
+        ["Objects", ["Vases", "Sculpture", "Mirrors", "Art Editions"]],
+        ["Services", ["Interiors", "Bespoke", "Trade Programme", "Showrooms"]],
+      ];
+      return (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 80,
+          background: "#fff",
+          transform: open ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.7s cubic-bezier(.77,0,.18,1)",
+          display: "flex", flexDirection: "column",
+        }}>
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr auto 1fr",
+            alignItems: "center", padding: "20px 28px",
+            borderBottom: "1px solid #000",
+          }}>
+            <button onClick={onClose} style={{
+              background: "none", border: "none", padding: 0, color: "#000",
+              fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 500,
+              cursor: "pointer", display: "flex", alignItems: "center", gap: 12, justifySelf: "start",
+            }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1">
+                <line x1="1" y1="1" x2="13" y2="13"/>
+                <line x1="13" y1="1" x2="1" y2="13"/>
+              </svg>
+              Close
+            </button>
+            <div style={{ fontFamily: "var(--sans)", fontWeight: 500, fontSize: 22, letterSpacing: "0.32em", paddingLeft: "0.32em" }}>LUXURIO</div>
+            <div></div>
+          </div>
+          <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1.4fr 1fr", overflow: "hidden" }}>
+            <div style={{ padding: "56px 64px", overflowY: "auto" }}>
+              {cats.map(([head, items], i) => (
+                <div key={head} style={{
+                  borderBottom: i === cats.length - 1 ? "none" : "1px solid rgba(0,0,0,0.12)",
+                  padding: "20px 0",
+                }}>
+                  <details style={{ width: "100%" }}>
+                    <summary style={{
+                      listStyle: "none", cursor: "pointer",
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      fontFamily: "var(--sans)", fontWeight: 400, fontSize: "clamp(28px,3vw,44px)",
+                      letterSpacing: "-0.01em",
+                    }}>
+                      <span>{head}</span>
+                      <span style={{ fontSize: 16 }}>+</span>
+                    </summary>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 32px", marginTop: 16, paddingBottom: 4 }}>
+                      {items.map(it => (
+                        <a key={it} href="/shop" style={{
+                          fontSize: 13, color: "rgba(0,0,0,0.7)", letterSpacing: "0.02em",
+                        }}>{it}</a>
+                      ))}
+                    </div>
+                  </details>
+                </div>
+              ))}
+            </div>
+            <div style={{ position: "relative", background: "#f4f2ee", borderLeft: "1px solid #000" }}>
+              <PH tone="bone" label="Editorial: Spring 2026 / Living Room" />
+              <div style={{
+                position: "absolute", bottom: 40, left: 40, right: 40, color: "#fff",
+              }}>
+                <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.85, marginBottom: 12 }}>Featured</div>
+                <div style={{ fontSize: 36, fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1.05, marginBottom: 18 }}>
+                  Spring/Summer<br />2026 Campaign
+                </div>
+                <a href="/shop" style={{
+                  fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+                  borderBottom: "1px solid #fff", paddingBottom: 4,
+                }}>Discover</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ────────── Hero ────────── */
+    function Hero() {
+      const [loaded, setLoaded] = useState(false);
+      useEffect(() => { requestAnimationFrame(() => setLoaded(true)); }, []);
+      return (
+        <section data-screen-label="Hero" style={{
+          position: "relative",
+          height: "100vh",
+          minHeight: 720,
+          background: "#000",
+          overflow: "hidden",
+        }}>
+          <div style={{
+            position: "absolute", inset: 0,
+            transform: loaded ? "scale(1)" : "scale(1.05)",
+            transition: "transform 2.2s cubic-bezier(.19,1,.22,1)",
+          }}>
+            <PH tone="char" label="campaign / hero film still" />
+          </div>
+          {/* Overlay info */}
+          <div style={{
+            position: "absolute", left: 28, bottom: 28, color: "#fff",
+            display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+            width: "calc(100% - 56px)",
+            opacity: loaded ? 1 : 0, transition: "opacity 1s 0.4s",
+          }}>
+            <div style={{ maxWidth: 540 }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.75, marginBottom: 16 }}>
+                Spring / Summer 2026
+              </div>
+              <h1 style={{
+                fontFamily: "var(--sans)",
+                fontWeight: 400,
+                fontSize: "clamp(40px, 5vw, 78px)",
+                letterSpacing: "-0.02em",
+                lineHeight: 0.98,
+              }}>
+                A Quiet<br />Architecture<br />of Living.
+              </h1>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 14 }}>
+              <a href="/shop" style={{
+                fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+                borderBottom: "1px solid #fff", paddingBottom: 4,
+              }}>Discover the Collection</a>
+              <a href="javascript:void(0)" style={{
+                fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+                borderBottom: "1px solid rgba(255,255,255,0.4)", paddingBottom: 4, opacity: 0.85,
+              }}>Watch the Film</a>
+            </div>
+          </div>
+          {/* Marker pagination */}
+          <div style={{
+            position: "absolute", top: "50%", right: 28, transform: "translateY(-50%)",
+            display: "flex", flexDirection: "column", gap: 10,
+            opacity: loaded ? 0.7 : 0, transition: "opacity 1s 0.8s",
+          }}>
+            {[0,1,2].map(i => (
+              <div key={i} style={{
+                width: 1, height: 28, background: i === 0 ? "#fff" : "rgba(255,255,255,0.4)",
+              }} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ────────── Category Tiles (3-up) ────────── */
+    function CategoryTriple() {
+      const tiles = [
+        { label: "Living", desc: "Sofas, lounges & seating", tone: "warm", href: "/shop" },
+        { label: "Dining", desc: "Tables, chairs & objects", tone: "stone", href: "/shop" },
+        { label: "Lighting", desc: "Sculptural illumination", tone: "smoke", href: "/shop" },
+      ];
+      return (
+        <section data-screen-label="Categories" style={{
+          display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
+          height: "85vh", minHeight: 640,
+          borderTop: "1px solid #000",
+        }}>
+          {tiles.map((t, i) => (
+            <CategoryTile key={t.label} t={t} divider={i < tiles.length - 1} />
+          ))}
+        </section>
+      );
+    }
+
+    function CategoryTile({ t, divider }) {
+      const [hover, setHover] = useState(false);
+      return (
+        <a href={t.href}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          style={{
+            position: "relative", overflow: "hidden",
+            borderRight: divider ? "1px solid #000" : "none",
+            color: "#000",
+          }}>
+          <div style={{
+            position: "absolute", inset: 0,
+            transform: hover ? "scale(1.04)" : "scale(1)",
+            transition: "transform 1.2s cubic-bezier(.19,1,.22,1)",
+          }}>
+            <PH tone={t.tone} label={`${t.label.toLowerCase()} editorial`} />
+          </div>
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, padding: "32px 28px",
+            display: "flex", justifyContent: "space-between", alignItems: "flex-end",
+            color: "#fff",
+          }}>
+            <div>
+              <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.8, marginBottom: 10 }}>
+                {t.desc}
+              </div>
+              <div style={{
+                fontFamily: "var(--sans)", fontWeight: 400,
+                fontSize: "clamp(32px, 3.4vw, 56px)",
+                letterSpacing: "-0.015em", lineHeight: 1,
+              }}>
+                {t.label}
+              </div>
+            </div>
+            <div style={{
+              fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+              borderBottom: "1px solid #fff", paddingBottom: 3,
+              opacity: hover ? 1 : 0.65,
+              transform: hover ? "translateY(0)" : "translateY(4px)",
+              transition: "opacity 0.3s, transform 0.4s",
+            }}>
+              Discover →
+            </div>
+          </div>
+        </a>
+      );
+    }
+
+    /* ────────── Feature Diptych (image left, text right) ────────── */
+    function Diptych({ flipped, eyebrow, title, body, cta, ctaHref = "javascript:void(0)", tone = "warm", label }) {
+      return (
+        <section style={{
+          display: "grid", gridTemplateColumns: "1fr 1fr",
+          height: "92vh", minHeight: 680,
+          borderTop: "1px solid #000",
+        }}>
+          {flipped && <TextPanel eyebrow={eyebrow} title={title} body={body} cta={cta} ctaHref={ctaHref} />}
+          <div style={{ position: "relative", borderRight: flipped ? "none" : "1px solid #000", borderLeft: flipped ? "1px solid #000" : "none" }}>
+            <PH tone={tone} label={label} />
+          </div>
+          {!flipped && <TextPanel eyebrow={eyebrow} title={title} body={body} cta={cta} ctaHref={ctaHref} />}
+        </section>
+      );
+    }
+    function TextPanel({ eyebrow, title, body, cta, ctaHref = "javascript:void(0)" }) {
+      return (
+        <div style={{
+          padding: "0 56px",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+          background: "#fff",
+        }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 24, color: "#000" }}>{eyebrow}</div>
+          <h2 style={{
+            fontFamily: "var(--sans)", fontWeight: 400,
+            fontSize: "clamp(36px, 3.6vw, 64px)",
+            letterSpacing: "-0.02em", lineHeight: 0.98,
+            marginBottom: 32,
+            maxWidth: 480,
+          }}>{title}</h2>
+          <p style={{
+            fontSize: 14, lineHeight: 1.65, color: "#1a1a1a",
+            maxWidth: 400, marginBottom: 40,
+          }}>{body}</p>
+          <a href={ctaHref} style={{
+            alignSelf: "flex-start",
+            fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+            borderBottom: "1px solid #000", paddingBottom: 4, color: "#000",
+          }}>{cta}</a>
+        </div>
+      );
+    }
+
+    /* ────────── Product Grid (4-up) ────────── */
+    const products = [
+      { name: "Atelier 01 Sofa", code: "ATL-S01", price: "On request", tone: "warm", category: "Living" },
+      { name: "Marble Console", code: "OBJ-C14", price: "€ 7,400", tone: "stone", category: "Living" },
+      { name: "Sphere Pendant", code: "LGT-P03", price: "€ 3,200", tone: "smoke", category: "Lighting" },
+      { name: "Walnut Dining Table", code: "DIN-T08", price: "€ 12,600", tone: "umber", category: "Dining" },
+      { name: "Lounge 02 Armchair", code: "LIV-A02", price: "€ 5,800", tone: "clay", category: "Living" },
+      { name: "Travertine Bench", code: "OBJ-B07", price: "€ 4,400", tone: "bone", category: "Living" },
+      { name: "Brass Floor Lamp", code: "LGT-F11", price: "€ 2,800", tone: "char", category: "Lighting" },
+      { name: "Linen Daybed", code: "BED-D04", price: "€ 9,200", tone: "cool", category: "Bedroom" },
+    ];
+
+    function ProductGrid() {
+      const [filter, setFilter] = useState("All");
+      const filters = ["All", "Living", "Dining", "Bedroom", "Lighting"];
+      const shown = filter === "All" ? products : products.filter(p => p.category === filter);
+      return (
+        <section data-screen-label="Product Grid" style={{
+          borderTop: "1px solid #000", padding: "32px 0 0",
+        }}>
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "flex-end",
+            padding: "0 28px 28px", borderBottom: "1px solid #000",
+          }}>
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 12 }}>
+                New Arrivals — {shown.length} items
+              </div>
+              <h2 style={{
+                fontFamily: "var(--sans)", fontWeight: 400,
+                fontSize: "clamp(36px, 3.6vw, 64px)",
+                letterSpacing: "-0.02em", lineHeight: 1,
+              }}>The Edit</h2>
+            </div>
+            <div style={{ display: "flex", gap: 24 }}>
+              {filters.map(f => (
+                <button key={f} onClick={() => setFilter(f)} style={{
+                  background: "none", border: "none", padding: "4px 0", cursor: "pointer",
+                  fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
+                  fontWeight: filter === f ? 500 : 400,
+                  borderBottom: filter === f ? "1px solid #000" : "1px solid transparent",
+                  color: filter === f ? "#000" : "#6a6a6a",
+                }}>{f}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+            {shown.map((p, i) => (
+              <ProductCard key={p.code} p={p} divider={(i + 1) % 4 !== 0} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function ProductCard({ p, divider }) {
+      const [hover, setHover] = useState(false);
+      return (
+        <a href="/shop"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          style={{
+            position: "relative", color: "#000",
+            borderRight: divider ? "1px solid #000" : "none",
+            borderBottom: "1px solid #000",
+            display: "flex", flexDirection: "column",
+          }}>
+          <div style={{ position: "relative", aspectRatio: "4/5", overflow: "hidden", borderBottom: "1px solid #000" }}>
+            <div style={{
+              position: "absolute", inset: 0,
+              opacity: hover ? 0 : 1,
+              transition: "opacity 0.5s",
+            }}>
+              <PH tone={p.tone} label={p.code} />
+            </div>
+            <div style={{
+              position: "absolute", inset: 0,
+              opacity: hover ? 1 : 0,
+              transition: "opacity 0.5s",
+            }}>
+              <PH tone={p.tone === "char" ? "smoke" : "bone"} label={`${p.code} / alt`} />
+            </div>
+            <button style={{
+              position: "absolute", top: 14, right: 14, zIndex: 2,
+              background: "rgba(255,255,255,0.95)", border: "1px solid #000",
+              width: 32, height: 32, padding: 0, cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              opacity: hover ? 1 : 0,
+              transform: hover ? "translateY(0)" : "translateY(-4px)",
+              transition: "opacity 0.3s, transform 0.3s",
+            }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.4">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+          <div style={{ padding: "18px 20px 22px", display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <div style={{ fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em" }}>{p.name}</div>
+              <div style={{ fontSize: 11, color: "#6a6a6a", letterSpacing: "0.05em" }}>{p.code}</div>
+            </div>
+            <div style={{ fontSize: 12, color: "#1a1a1a", letterSpacing: "0.02em" }}>{p.price}</div>
+          </div>
+        </a>
+      );
+    }
+
+    /* ────────── Editorial Manifesto ────────── */
+    function Manifesto() {
+      return (
+        <section data-screen-label="Manifesto" style={{
+          background: "#000", color: "#fff",
+          padding: "160px 56px", borderTop: "1px solid #000",
+          display: "flex", justifyContent: "center",
+        }}>
+          <div style={{ maxWidth: 1100, width: "100%" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.55, marginBottom: 56 }}>
+              The House — Est. 2012
+            </div>
+            <h2 style={{
+              fontFamily: "var(--sans)", fontWeight: 400,
+              fontSize: "clamp(32px, 3.4vw, 56px)",
+              letterSpacing: "-0.015em", lineHeight: 1.15,
+              maxWidth: 980,
+            }}>
+              Luxurio operates outside trend. Each piece is conceived to last decades, made in
+              limited series with European artisans, and intended for spaces where time is meant
+              to be felt rather than spent.
+            </h2>
+            <div style={{ display: "flex", gap: 56, marginTop: 80, flexWrap: "wrap" }}>
+              <a href="/our-story" style={{
+                fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+                borderBottom: "1px solid #fff", paddingBottom: 4, color: "#fff",
+              }}>Read the Manifesto</a>
+              <a href="javascript:void(0)" style={{
+                fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+                borderBottom: "1px solid rgba(255,255,255,0.4)", paddingBottom: 4, color: "rgba(255,255,255,0.85)",
+              }}>Sustainability Report</a>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ────────── Stores & Showrooms ────────── */
+    function Stores() {
+      const cities = [
+        { city: "Milan", addr: "Via della Spiga, 12", hours: "Mon–Sat 10–19" },
+        { city: "Paris", addr: "Rue Saint-Honoré, 264", hours: "Mon–Sat 10–19" },
+        { city: "London", addr: "Mount Street, 18", hours: "Mon–Sat 10–18" },
+        { city: "New York", addr: "Mercer Street, 121", hours: "Mon–Sat 11–19" },
+        { city: "Tokyo", addr: "Aoyama, Minato 5-3", hours: "Mon–Sun 11–20" },
+        { city: "Los Angeles", addr: "Melrose Avenue, 8420", hours: "Mon–Sat 11–18" },
+      ];
+      return (
+        <section data-screen-label="Stores" style={{
+          padding: "32px 28px 0", borderTop: "1px solid #000",
+        }}>
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "flex-end",
+            paddingBottom: 28, borderBottom: "1px solid #000",
+          }}>
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 12 }}>
+                Showrooms
+              </div>
+              <h2 style={{
+                fontFamily: "var(--sans)", fontWeight: 400,
+                fontSize: "clamp(36px, 3.6vw, 64px)",
+                letterSpacing: "-0.02em", lineHeight: 1,
+              }}>Visit Us</h2>
+            </div>
+            <a href="#" style={{
+              fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
+              borderBottom: "1px solid #000", paddingBottom: 4,
+            }}>Book an Appointment</a>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+            {cities.map((c, i) => (
+              <div key={c.city} style={{
+                padding: "32px 0", borderBottom: i < 3 ? "1px solid #000" : "none",
+                borderRight: (i + 1) % 3 !== 0 ? "1px solid rgba(0,0,0,0.18)" : "none",
+                paddingLeft: i % 3 === 0 ? 0 : 32, paddingRight: 32,
+                display: "flex", flexDirection: "column", gap: 6,
+              }}>
+                <div style={{ fontSize: 22, fontWeight: 400, letterSpacing: "-0.01em", marginBottom: 6 }}>{c.city}</div>
+                <div style={{ fontSize: 13, color: "#1a1a1a" }}>{c.addr}</div>
+                <div style={{ fontSize: 12, color: "#6a6a6a", letterSpacing: "0.04em" }}>{c.hours}</div>
+                <a href="#" style={{
+                  marginTop: 16, alignSelf: "flex-start",
+                  fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase",
+                  borderBottom: "1px solid #000", paddingBottom: 3,
+                }}>Directions</a>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ────────── Newsletter ────────── */
+    function Newsletter() {
+      const [email, setEmail] = useState("");
+      const [done, setDone] = useState(false);
+      return (
+        <section data-screen-label="Newsletter" style={{
+          borderTop: "1px solid #000", padding: "120px 28px",
+          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80,
+        }}>
+          <div>
+            <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 16 }}>
+              Stay Informed
+            </div>
+            <h2 style={{
+              fontFamily: "var(--sans)", fontWeight: 400,
+              fontSize: "clamp(32px, 3.4vw, 56px)",
+              letterSpacing: "-0.02em", lineHeight: 1,
+            }}>Newsletter</h2>
+          </div>
+          <div>
+            <p style={{ fontSize: 14, lineHeight: 1.65, marginBottom: 32, maxWidth: 440 }}>
+              Receive notice of new arrivals, atelier stories, and private previews of upcoming
+              collections. One letter per month, no more.
+            </p>
+            {!done ? (
+              <form onSubmit={(e) => { e.preventDefault(); if (email) setDone(true); }}
+                style={{ display: "flex", borderBottom: "1px solid #000", maxWidth: 520 }}>
+                <input
+                  type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  placeholder="Your email"
+                  style={{
+                    flex: 1, padding: "14px 0", border: "none", background: "transparent",
+                    outline: "none", fontFamily: "var(--sans)", fontSize: 14,
+                  }}
+                />
+                <button type="submit" style={{
+                  background: "none", border: "none", padding: "14px 0", cursor: "pointer",
+                  fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 500,
+                }}>
+                  Subscribe →
+                </button>
+              </form>
+            ) : (
+              <div style={{ fontSize: 14, color: "#1a1a1a" }}>Thank you. You will hear from us shortly.</div>
+            )}
+            <div style={{ display: "flex", gap: 14, marginTop: 24 }}>
+              <input type="checkbox" id="terms" defaultChecked style={{ accentColor: "#000" }}/>
+              <label htmlFor="terms" style={{ fontSize: 11, color: "#6a6a6a", letterSpacing: "0.02em", lineHeight: 1.5 }}>
+                I accept the privacy policy and consent to receive communications from Luxurio.
+              </label>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ────────── Footer ────────── */
+    function Footer() {
+      const cols = [
+        ["Customer Care", ["Contact Us", "Order Tracking", "Returns", "Care & Repair", "FAQs"]],
+        ["The House", ["About Luxurio", "Designers", "Sustainability", "Press", "Careers"]],
+        ["Services", ["Interiors Consultation", "Bespoke Commissions", "Trade Programme", "Gift Cards"]],
+        ["Legal", ["Terms of Sale", "Privacy Policy", "Cookies", "Imprint", "Accessibility"]],
+      ];
+      return (
+        <footer style={{
+          background: "#fff", borderTop: "1px solid #000",
+          padding: "56px 28px 28px", color: "#000",
+        }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32, marginBottom: 80 }}>
+            {cols.map(([head, items]) => (
+              <div key={head}>
+                <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 20, fontWeight: 500 }}>{head}</div>
+                {items.map(it => (
+                  <a key={it} href="#" style={{ display: "block", fontSize: 13, color: "#1a1a1a", padding: "6px 0", letterSpacing: "0.01em" }}>{it}</a>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div style={{ borderTop: "1px solid rgba(0,0,0,0.18)", paddingTop: 28, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+              <select style={{
+                appearance: "none", background: "transparent", border: "1px solid #000",
+                padding: "8px 28px 8px 12px", fontFamily: "var(--sans)", fontSize: 11,
+                letterSpacing: "0.12em", textTransform: "uppercase", color: "#000",
+                backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23000' d='M0 0h10L5 6z'/></svg>\")",
+                backgroundRepeat: "no-repeat", backgroundPosition: "right 10px center", cursor: "pointer",
+              }}>
+                <option>Italy / EUR</option>
+                <option>United States / USD</option>
+                <option>United Kingdom / GBP</option>
+                <option>Japan / JPY</option>
+              </select>
+              <select style={{
+                appearance: "none", background: "transparent", border: "1px solid #000",
+                padding: "8px 28px 8px 12px", fontFamily: "var(--sans)", fontSize: 11,
+                letterSpacing: "0.12em", textTransform: "uppercase", color: "#000",
+                backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23000' d='M0 0h10L5 6z'/></svg>\")",
+                backgroundRepeat: "no-repeat", backgroundPosition: "right 10px center", cursor: "pointer",
+              }}>
+                <option>English</option>
+                <option>Italiano</option>
+                <option>Français</option>
+                <option>日本語</option>
+              </select>
+            </div>
+            <div style={{ display: "flex", gap: 24 }}>
+              {["Instagram", "Pinterest", "YouTube", "Spotify"].map(s => (
+                <a key={s} href="#" style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "#000" }}>{s}</a>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginTop: 40, fontSize: 11, color: "#6a6a6a", letterSpacing: "0.04em" }}>
+            © 2026 Luxurio S.p.A. — All rights reserved. — VAT IT 0987 6543 210
+          </div>
+          {/* Oversized brand wordmark */}
+          <div style={{
+            marginTop: 48, paddingTop: 24, borderTop: "1px solid rgba(0,0,0,0.1)",
+            fontFamily: "var(--sans)", fontWeight: 500,
+            fontSize: "clamp(80px, 18vw, 280px)",
+            letterSpacing: "0.04em", lineHeight: 0.85,
+            textAlign: "center", color: "#000",
+            overflow: "hidden",
+          }}>
+            LUXURIO
+          </div>
+        </footer>
+      );
+    }
+
+    /* ────────── App ────────── */
+    function App() {
+      const [scrolled, setScrolled] = useState(false);
+      const [menuOpen, setMenuOpen] = useState(false);
+      useEffect(() => {
+        const on = () => setScrolled(window.scrollY > 40);
+        on();
+        window.addEventListener("scroll", on, { passive: true });
+        return () => window.removeEventListener("scroll", on);
+      }, []);
+      useEffect(() => {
+        document.body.style.overflow = menuOpen ? "hidden" : "";
+      }, [menuOpen]);
+
+      return (
+        <>
+          <TopBar scrolled={scrolled} onMenu={() => setMenuOpen(true)} />
+          <MenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)} />
+          <main>
+            <Hero />
+            <CategoryTriple />
+            <Diptych
+              eyebrow="In Focus"
+              title="The Atelier 01 Sofa"
+              body="Two years in development, sculpted from solid walnut and upholstered in vegetable-tanned saddle leather. Made to be inherited."
+              cta="See the Piece"
+              tone="clay"
+              label="atelier sofa / studio"
+            />
+            <ProductGrid />
+            <Diptych
+              flipped
+              eyebrow="Service"
+              title="Private Interiors Consultation"
+              body="Our in-house team composes spaces with our pieces and bespoke commissions. From a single room to a complete residence."
+              cta="Request an Introduction"
+              tone="bone"
+              label="interiors / project"
+            />
+            <Manifesto />
+            <Stores />
+            <Newsletter />
+          </main>
+          <Footer />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+      <rect width="80" height="56" fill="#ffffff"/>
+      <rect x="0" y="0" width="80" height="56" fill="#000"/>
+      <text x="40" y="32" font-family="Helvetica, Arial, sans-serif" font-weight="500" font-size="9" fill="#fff" text-anchor="middle" letter-spacing="3">LUXURIO</text>
+    </svg>
+  </template>
+</body>
+</html>

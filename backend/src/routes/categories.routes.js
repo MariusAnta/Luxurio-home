@@ -18,6 +18,18 @@ router.get('/', async (_req, res, next) => {
       orderBy: [{ number: 'asc' }, { name: 'asc' }],
       include: {
         _count: { select: { products: true } },
+        children: {
+          select: {
+            id: true,
+            _count: { select: { products: true } },
+            products: {
+              where: { published: true },
+              orderBy: { createdAt: 'asc' },
+              take: 1,
+              include: { images: { orderBy: { order: 'asc' }, take: 1 } },
+            },
+          },
+        },
         products: {
           where: { published: true },
           orderBy: { createdAt: 'asc' },
@@ -28,9 +40,10 @@ router.get('/', async (_req, res, next) => {
     });
     res.json(categories.map((c) => ({
       ...c,
-      productCount: c._count.products,
-      coverImage: c.products[0]?.images[0]?.url ?? null,
+      productCount: c._count.products + c.children.reduce((sum, child) => sum + child._count.products, 0),
+      coverImage: c.products[0]?.images[0]?.url ?? c.children.find((child) => child.products[0]?.images[0]?.url)?.products[0]?.images[0]?.url ?? null,
       products: undefined,
+      children: undefined,
     })));
   } catch (e) { next(e); }
 });

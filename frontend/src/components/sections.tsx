@@ -256,11 +256,11 @@ export function Footer({ onWorkWithUsOpen }: FooterProps) {
             {c.footer.contactAddressLine1}<br />
             {c.footer.contactAddressLine2}
           </p>
-          <a href={`mailto:${c.footer.contactEmail}`} className="foot-email">
+          <a href={`mailto:${c.footer.contactEmail}`} className="foot-email foot-email--block">
             {c.footer.contactEmail}
           </a>
           {c.footer.contactPhone && (
-            <a href={`tel:${c.footer.contactPhone.replace(/\s/g, '')}`} className="foot-email" style={{ display: 'block', marginTop: 8 }}>
+            <a href={`tel:${c.footer.contactPhone.replace(/\s/g, '')}`} className="foot-email foot-email--block">
               {c.footer.contactPhone}
             </a>
           )}

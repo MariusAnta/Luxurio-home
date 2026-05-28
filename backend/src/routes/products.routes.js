@@ -5,8 +5,13 @@ import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
+const mediaUrlSchema = z.union([
+  z.string().url(),
+  z.string().regex(/^\/uploads\/[A-Za-z0-9._-]+$/, 'Must be a valid URL or /uploads path'),
+]);
+
 const imageSchema = z.object({
-  url: z.string().url(),
+  url: mediaUrlSchema,
   alt: z.string().optional(),
   order: z.number().int().optional(),
 });
@@ -25,7 +30,7 @@ const productSchema = z.object({
   color: z.string().optional().nullable(),
   dimensions: z.string().optional().nullable(),
   weightKg: z.number().optional().nullable(),
-  modelUrl: z.string().url().optional().nullable(),
+  modelUrl: mediaUrlSchema.optional().nullable(),
   assembled: z.boolean().optional(),
   categoryId: z.string().optional().nullable(),
   images: z.array(imageSchema).optional(),
