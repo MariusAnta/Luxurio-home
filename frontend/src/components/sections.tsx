@@ -270,6 +270,7 @@ export function Footer({ onWorkWithUsOpen }: FooterProps) {
         <div>
           <p className="foot-col-head">Company</p>
           <Link to="/shop" className="foot-nav-link">Our Collections</Link>
+          <Link to="/our-story" className="foot-nav-link">Our Story</Link>
           <button type="button" className="foot-nav-link foot-nav-link-btn" onClick={onWorkWithUsOpen}>Work With Us</button>
         </div>
 

@@ -192,6 +192,102 @@ function HeroGallery({ images, onChange }: { images: string[]; onChange: (imgs: 
   );
 }
 
+/* ── Single image upload slot ── */
+function SingleImageSlot({ label, imageKey, currentUrl, onChange }: {
+  label: string;
+  imageKey: 'storyHeroImg' | 'storyWorkshopImg';
+  currentUrl: string;
+  onChange: (url: string) => void;
+}) {
+  const toast = useToast();
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append('file', file);
+      const { data } = await api.post<{ url: string }>('/uploads/image', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      const res = await api.get<{ value: Partial<ContentShape> | null }>('/settings/content');
+      const current = (res.data.value ?? {}) as Record<string, unknown>;
+      const imgs = (current.images ?? {}) as Record<string, unknown>;
+      await api.put('/settings/content', { value: { ...current, images: { ...imgs, [imageKey]: data.url } } });
+      onChange(data.url);
+      toast.success(`${label} updated`);
+    } catch {
+      toast.error('Upload failed');
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = '';
+    }
+  }
+
+  async function removeImage() {
+    try {
+      const res = await api.get<{ value: Partial<ContentShape> | null }>('/settings/content');
+      const current = (res.data.value ?? {}) as Record<string, unknown>;
+      const imgs = (current.images ?? {}) as Record<string, unknown>;
+      await api.put('/settings/content', { value: { ...current, images: { ...imgs, [imageKey]: '' } } });
+      if (currentUrl.includes('/uploads/')) {
+        await api.delete('/uploads/file', { data: { url: currentUrl } }).catch(() => {});
+      }
+      onChange('');
+      toast.success(`${label} removed`);
+    } catch {
+      toast.error('Could not remove image');
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <span style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--gold)' }}>{label}</span>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        {currentUrl ? (
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <div style={{ width: 120, height: 80, overflow: 'hidden', border: '1px solid rgba(139,109,26,0.2)', background: 'var(--bg2)' }}>
+              <img src={currentUrl} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+            <button
+              onClick={removeImage}
+              title="Remove"
+              style={{
+                position: 'absolute', inset: 0, width: '100%', height: '100%',
+                background: 'rgba(0,0,0,0)', border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 18, color: '#fff', opacity: 0, transition: 'opacity 0.15s, background 0.15s',
+              }}
+              onMouseEnter={ev => { ev.currentTarget.style.opacity = '1'; ev.currentTarget.style.background = 'rgba(160,40,40,0.7)'; }}
+              onMouseLeave={ev => { ev.currentTarget.style.opacity = '0'; ev.currentTarget.style.background = 'rgba(0,0,0,0)'; }}
+            >✕</button>
+          </div>
+        ) : null}
+        <button
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          style={{
+            width: 120, height: 80, flexShrink: 0,
+            border: '1px dashed rgba(139,109,26,0.35)', background: 'transparent',
+            cursor: uploading ? 'not-allowed' : 'pointer', color: 'var(--gold)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            gap: 4, opacity: uploading ? 0.5 : 1, transition: 'border-color 0.15s, background 0.15s',
+          }}
+          onMouseEnter={ev => { if (!uploading) { ev.currentTarget.style.borderColor = 'var(--gold)'; ev.currentTarget.style.background = 'rgba(139,109,26,0.06)'; } }}
+          onMouseLeave={ev => { ev.currentTarget.style.borderColor = 'rgba(139,109,26,0.35)'; ev.currentTarget.style.background = 'transparent'; }}
+        >
+          <span style={{ fontSize: uploading ? 10 : 20, lineHeight: 1 }}>{uploading ? 'Uploading…' : '+'}</span>
+          {!uploading && <span style={{ fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase' }}>{currentUrl ? 'Replace' : 'Upload'}</span>}
+        </button>
+      </div>
+      <input ref={inputRef} type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
+    </div>
+  );
+}
+
 /* ── Main component ── */
 export function AdminContent() {
   const toast = useToast();
@@ -251,6 +347,7 @@ export function AdminContent() {
     { id: 'newsletter', label: 'Newsletter' },
     { id: 'trade', label: 'Trade' },
     { id: 'footer', label: 'Footer' },
+    { id: 'story', label: 'Our Story' },
   ];
 
   return (
@@ -449,6 +546,103 @@ export function AdminContent() {
               <EditableText tag="p" initialValue={content.footer.localeLabel} onCommit={commit('footer', 'localeLabel')}
                 style={{ display: 'block', fontSize: 13 }} />
             </div>
+          </div>
+        </div>
+      </SectionWrap>
+
+      {/* ── Our Story ── */}
+      <SectionWrap label="Our Story Page" id="acms-story" bg="var(--bg)" {...sp('story')}>
+        <div style={{ padding: 'var(--sp-10) var(--sp-10)', display: 'flex', flexDirection: 'column', gap: 'var(--sp-8)' }}>
+          <p style={{ fontSize: 11, color: 'var(--fg3)', fontStyle: 'italic', margin: 0 }}>
+            Content for the <strong style={{ color: 'var(--fg2)' }}>/our-story</strong> page. Hero text, manifesto quote, and workshop copy.
+          </p>
+
+          {/* Hero text */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-6)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Eyebrow</label>
+              <EditableText tag="p" className="t-eyebrow" initialValue={content.story.heroEyebrow}
+                onCommit={commit('story', 'heroEyebrow')} style={{ display: 'block' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Hero title line 1</label>
+              <EditableText tag="p" initialValue={content.story.heroTitle1} onCommit={commit('story', 'heroTitle1')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(20px,2vw,32px)' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Hero title — italic/gold word</label>
+              <EditableText tag="p" initialValue={content.story.heroTitleArt} onCommit={commit('story', 'heroTitleArt')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(20px,2vw,32px)', color: 'var(--gold)' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Hero title line 2</label>
+              <EditableText tag="p" initialValue={content.story.heroTitle2} onCommit={commit('story', 'heroTitle2')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(20px,2vw,32px)' }} />
+            </div>
+          </div>
+          <div>
+            <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Hero body text</label>
+            <EditableText tag="p" initialValue={content.story.heroBody} onCommit={commit('story', 'heroBody')} multiline
+              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.85, color: 'var(--fg2)', maxWidth: 640 }} />
+          </div>
+
+          {/* Manifesto */}
+          <div style={{ borderTop: '1px solid rgba(139,109,26,0.12)', paddingTop: 'var(--sp-7)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-6)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Manifesto quote</label>
+              <EditableText tag="p" initialValue={content.story.manifestoQuote} onCommit={commit('story', 'manifestoQuote')} multiline
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 16, fontStyle: 'italic', lineHeight: 1.75, color: 'var(--fg2)' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Manifesto attribution</label>
+              <EditableText tag="p" initialValue={content.story.manifestoAttr} onCommit={commit('story', 'manifestoAttr')}
+                style={{ display: 'block', fontSize: 12, letterSpacing: '0.05em', color: 'var(--fg3)' }} />
+            </div>
+          </div>
+
+          {/* Workshop */}
+          <div style={{ borderTop: '1px solid rgba(139,109,26,0.12)', paddingTop: 'var(--sp-7)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-6)' }}>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Workshop eyebrow</label>
+              <EditableText tag="p" className="t-eyebrow" initialValue={content.story.workshopEyebrow} onCommit={commit('story', 'workshopEyebrow')}
+                style={{ display: 'block' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Workshop title line 1</label>
+              <EditableText tag="p" initialValue={content.story.workshopTitle1} onCommit={commit('story', 'workshopTitle1')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(18px,2vw,28px)' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Workshop title — italic/gold word</label>
+              <EditableText tag="p" initialValue={content.story.workshopTitleArt} onCommit={commit('story', 'workshopTitleArt')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(18px,2vw,28px)', color: 'var(--gold)' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>CTA title</label>
+              <EditableText tag="p" initialValue={content.story.ctaTitle} onCommit={commit('story', 'ctaTitle')}
+                style={{ display: 'block', fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(16px,1.5vw,24px)' }} />
+            </div>
+          </div>
+          <div>
+            <label style={{ fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--fg3)', display: 'block', marginBottom: 8 }}>Workshop body text</label>
+            <EditableText tag="p" initialValue={content.story.workshopBody} onCommit={commit('story', 'workshopBody')} multiline
+              style={{ display: 'block', fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.85, color: 'var(--fg2)', maxWidth: 640 }} />
+          </div>
+
+          {/* Story images */}
+          <div style={{ borderTop: '1px solid rgba(139,109,26,0.12)', paddingTop: 'var(--sp-7)', display: 'flex', gap: 'var(--sp-10)', flexWrap: 'wrap' }}>
+            <SingleImageSlot
+              label="Hero image"
+              imageKey="storyHeroImg"
+              currentUrl={content.images.storyHeroImg}
+              onChange={(url) => setContent(prev => ({ ...prev, images: { ...prev.images, storyHeroImg: url } }))}
+            />
+            <SingleImageSlot
+              label="Workshop image"
+              imageKey="storyWorkshopImg"
+              currentUrl={content.images.storyWorkshopImg}
+              onChange={(url) => setContent(prev => ({ ...prev, images: { ...prev.images, storyWorkshopImg: url } }))}
+            />
           </div>
         </div>
       </SectionWrap>

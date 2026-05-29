@@ -38,6 +38,7 @@ const Favorites    = lazy(() => import('./pages/Favorites').then(m => ({ default
 const Terms        = lazy(() => import('./pages/TermsAndConditions').then(m => ({ default: m.TermsAndConditions })));
 const Privacy      = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const Cookies      = lazy(() => import('./pages/CookiePolicy').then(m => ({ default: m.CookiePolicy })));
+const OurStory     = lazy(() => import('./pages/OurStory').then(m => ({ default: m.OurStory })));
 
 // Admin bundle — never shipped to public users
 const AdminLogin      = lazy(() => import('./pages/admin/AdminLogin').then(m => ({ default: m.AdminLogin })));
@@ -70,6 +71,7 @@ export function App() {
               <Route path="terms" element={<Terms />} />
               <Route path="privacy" element={<Privacy />} />
               <Route path="cookies" element={<Cookies />} />
+              <Route path="our-story" element={<OurStory />} />
             </Route>
 
             <Route path="/admin/login" element={<AdminLogin />} />

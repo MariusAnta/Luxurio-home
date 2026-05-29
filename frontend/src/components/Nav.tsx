@@ -240,6 +240,13 @@ export function Nav({ onAuthOpen, onContactOpen }: NavProps) {
             >
               All Collections
             </Link>
+            <Link
+              to="/our-story"
+              className="menu-cat-all"
+              onClick={close}
+            >
+              Our Story
+            </Link>
             {rootCats.map((cat) => {
               const hasKids = childrenOf(cat.id).length > 0;
               if (!hasKids) {
