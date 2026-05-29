@@ -33,6 +33,19 @@ export interface ProductImage {
   alt?: string | null;
   order: number;
 }
+export interface ProductVariant {
+  id: string;
+  label: string;
+  options?: Record<string, string> | string | null;
+  sku?: string | null;
+  price: number;
+  discountPrice?: number | null;
+  stock: number;
+  dimensions?: string | null;
+  weightKg?: number | null;
+  imageUrl?: string | null;
+  order: number;
+}
 export interface Category {
   id: string;
   name: string;
@@ -61,6 +74,7 @@ export interface Product {
   assembled: boolean;
   category?: Category | null;
   images: ProductImage[];
+  variants?: ProductVariant[];
 }
 export interface Admin {
   id: string;

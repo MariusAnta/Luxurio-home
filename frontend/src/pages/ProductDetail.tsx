@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
-import { api, Product, formatPrice, formatPriceExVat } from '../lib/api';
+import { api, Product, ProductVariant, formatPrice, formatPriceExVat } from '../lib/api';
 import { ImgOrPlaceholder } from '../components/primitives';
 import { resolveUrl } from '../lib/api';
 import { useUserAuth } from '../lib/userAuth';
@@ -67,6 +67,7 @@ export function ProductDetail() {
   const [activeImg, setActiveImg] = useState(0);
   const [view3d, setView3d] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, [slug]);
 
@@ -74,7 +75,13 @@ export function ProductDetail() {
     if (!slug) return;
     setNotFound(false);
     api.get(`/products/${slug}`)
-      .then((r) => { setP(r.data); setActiveImg(0); setView3d(false); })
+      .then((r) => {
+        setP(r.data);
+        setActiveImg(0);
+        setView3d(false);
+        const vs: ProductVariant[] = r.data.variants ?? [];
+        setSelectedVariantId(vs.length > 0 ? vs[0].id : null);
+      })
       .catch(() => setNotFound(true));
   }, [slug]);
 
@@ -106,7 +113,30 @@ export function ProductDetail() {
   if (!p) return <main className="pd-state">Loading…</main>;
 
   const isFav = favorites.has(p.id);
-  const hasDiscount = p.discountPrice && Number(p.discountPrice) < Number(p.price);
+
+  // ── Variant resolution ────────────────────────────────────────────────────
+  const variants: ProductVariant[] = p.variants ?? [];
+  const selectedVariant = variants.find(v => v.id === selectedVariantId) ?? null;
+
+  // Resolve effective values: prefer selected variant, fall back to product
+  const effectivePrice         = selectedVariant != null ? selectedVariant.price         : Number(p.price);
+  const effectiveDiscountPrice = selectedVariant != null ? selectedVariant.discountPrice  : (p.discountPrice ? Number(p.discountPrice) : null);
+  const effectiveStock         = selectedVariant != null ? selectedVariant.stock          : p.stock;
+  const effectiveDimensions    = selectedVariant?.dimensions ?? p.dimensions;
+
+  const hasDiscount = effectiveDiscountPrice != null && effectiveDiscountPrice < effectivePrice;
+
+  // Parse variant options for grouped selector
+  function parseOptions(v: ProductVariant): Record<string, string> {
+    if (!v.options) return {};
+    if (typeof v.options === 'object' && !Array.isArray(v.options)) return v.options as Record<string, string>;
+    try { return JSON.parse(v.options as string); } catch { return {}; }
+  }
+
+  // Determine if all variants share a single option key → show grouped buttons
+  const optionKeys = variants.length > 0
+    ? [...new Set(variants.flatMap(v => Object.keys(parseOptions(v))))]
+    : [];
 
   async function onHeart() {
     if (!p) return;
@@ -247,8 +277,8 @@ export function ProductDetail() {
               </>
             )}
           </div>
-          <span className={`pd-stock-badge ${p.stock === 0 ? 'out' : p.stock <= 3 ? 'low' : 'in'}`}>
-            {p.stock === 0 ? 'Out of stock' : p.stock <= 3 ? `Only ${p.stock} left` : `${p.stock} in stock`}
+          <span className={`pd-stock-badge ${effectiveStock === 0 ? 'out' : effectiveStock <= 3 ? 'low' : 'in'}`}>
+            {effectiveStock === 0 ? 'Out of stock' : effectiveStock <= 3 ? `Only ${effectiveStock} left` : `${effectiveStock} in stock`}
           </span>
         </div>
 
@@ -260,17 +290,70 @@ export function ProductDetail() {
         <div className="pd-prices">
           {hasDiscount ? (
             <>
-              <span className="pd-strike">{formatPrice(p.price)}</span>
-              <span className="pd-price">{formatPrice(p.discountPrice!)}</span>
-              <span className="pd-pct">−{Math.round((1 - Number(p.discountPrice) / Number(p.price)) * 100)}%</span>
+              <span className="pd-strike">{formatPrice(effectivePrice)}</span>
+              <span className="pd-price">{formatPrice(effectiveDiscountPrice!)}</span>
+              <span className="pd-pct">−{Math.round((1 - effectiveDiscountPrice! / effectivePrice) * 100)}%</span>
             </>
           ) : (
-            <span className="pd-price">{formatPrice(p.price)}</span>
+            <span className="pd-price">{variants.length > 1 && !selectedVariant ? `nuo ${formatPrice(effectivePrice)}` : formatPrice(effectivePrice)}</span>
           )}
         </div>
-        <p className="pd-excl-vat">{formatPriceExVat(hasDiscount ? p.discountPrice! : p.price)} excl. PVM</p>
+        <p className="pd-excl-vat">{formatPriceExVat(hasDiscount ? effectiveDiscountPrice! : effectivePrice)} excl. PVM</p>
 
         <div className="pd-divider" />
+
+        {/* Variants */}
+        {variants.length > 0 && (
+          <div className="pd-variants" style={{ marginBottom: 'var(--sp-4)' }}>
+            {optionKeys.length > 0 ? (
+              optionKeys.map(key => (
+                <div key={key} style={{ marginBottom: 12 }}>
+                  <p className="pd-section-label" style={{ marginBottom: 8 }}>{key}</p>
+                  <div className="pd-variant-options">
+                    {variants.map(v => {
+                      const opts = parseOptions(v);
+                      if (!opts[key]) return null;
+                      const isActive = v.id === selectedVariantId;
+                      const isOos = v.stock === 0;
+                      return (
+                        <button
+                          key={v.id}
+                          type="button"
+                          className={`pd-variant-btn${isActive ? ' is-active' : ''}${isOos ? ' is-oos' : ''}`}
+                          onClick={() => setSelectedVariantId(v.id)}
+                          title={isOos ? 'Out of stock' : undefined}
+                        >
+                          {opts[key]}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>
+                <p className="pd-section-label" style={{ marginBottom: 8 }}>Options</p>
+                <div className="pd-variant-options">
+                  {variants.map(v => {
+                    const isActive = v.id === selectedVariantId;
+                    const isOos = v.stock === 0;
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        className={`pd-variant-btn${isActive ? ' is-active' : ''}${isOos ? ' is-oos' : ''}`}
+                        onClick={() => setSelectedVariantId(v.id)}
+                        title={isOos ? 'Out of stock' : undefined}
+                      >
+                        {v.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Description */}
         {p.description && <p className="pd-desc">{p.description}</p>}
@@ -279,7 +362,7 @@ export function ProductDetail() {
         <MaterialsBlock raw={p.material} />
 
         {/* Specs */}
-        {(p.color || p.dimensions || p.weightKg || p.assembled !== undefined) && (
+        {(p.color || effectiveDimensions || p.weightKg || p.assembled !== undefined) && (
           <div className="pd-specs-block">
             <p className="pd-section-label">Specifications</p>
             <dl className="pd-specs">
@@ -289,9 +372,9 @@ export function ProductDetail() {
                   <dd className="pd-spec-dd">{p.color.split(',').map(s => s.trim()).filter(Boolean).join(', ')}</dd>
                 </>
               )}
-              {p.dimensions && (() => {
+              {effectiveDimensions && (() => {
                 try {
-                  const dims: { name: string; value: string }[] = JSON.parse(p.dimensions!);
+                  const dims: { name: string; value: string }[] = JSON.parse(effectiveDimensions!);
                   if (Array.isArray(dims) && dims.length > 0) return dims.map((d, i) => (
                     <React.Fragment key={i}>
                       <dt className="pd-spec-dt">{d.name || 'Dimensions'}</dt>
@@ -302,7 +385,7 @@ export function ProductDetail() {
                 return (
                   <React.Fragment>
                     <dt className="pd-spec-dt">Dimensions</dt>
-                    <dd className="pd-spec-dd">{formatDimensionValue(p.dimensions)}</dd>
+                    <dd className="pd-spec-dd">{formatDimensionValue(effectiveDimensions)}</dd>
                   </React.Fragment>
                 );
               })()}

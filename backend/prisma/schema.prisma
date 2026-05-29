@@ -61,6 +61,7 @@ model Product {
   assembled  Boolean   @default(false)
 
   images     ProductImage[]
+  variants   ProductVariant[]
   favorites  Favorite[]
 
   categoryId String?
@@ -80,6 +81,29 @@ model ProductImage {
   order     Int      @default(0)
   productId String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model ProductVariant {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  label         String
+  options       String?  // JSON: {"size":"120 cm","material":"Oak"}
+  sku           String?  @unique
+  price         Float
+  discountPrice Float?
+  stock         Int      @default(0)
+
+  dimensions    String?  // same JSON shape as Product.dimensions
+  weightKg      Float?
+  imageUrl      String?
+
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([productId])
 }

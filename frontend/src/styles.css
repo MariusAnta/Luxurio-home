@@ -2029,6 +2029,27 @@ th {
 .pd-fav:hover { border-color: var(--fg); }
 [data-theme="dark"] .pd-fav { border-color: rgba(255,255,255,0.15); }
 
+/* ── Variants ── */
+.pd-variant-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.pd-variant-btn {
+  padding: 8px 18px;
+  border: 1px solid rgba(26,23,20,0.18);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.pd-variant-btn:hover { border-color: var(--fg); }
+.pd-variant-btn.is-active { border-color: var(--gold); background: var(--gold); color: var(--bg); }
+.pd-variant-btn.is-oos { opacity: 0.45; text-decoration: line-through; cursor: default; }
+[data-theme="dark"] .pd-variant-btn { border-color: rgba(255,255,255,0.15); }
+[data-theme="dark"] .pd-variant-btn:hover { border-color: rgba(255,255,255,0.5); }
+
+/* ── ProductCard from-price ── */
+.pc-from-price { font-size: 11px; color: var(--fg3); letter-spacing: 0.06em; margin-top: 2px; }
+
 /* ── Legacy structured description (scraped products) ── */
 .pd-dim-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
 .pd-dim-list li { font-size: var(--text-body); color: var(--fg2); line-height: 1.6; }

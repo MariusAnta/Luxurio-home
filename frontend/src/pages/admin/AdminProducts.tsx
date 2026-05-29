@@ -3,6 +3,17 @@ import { api, Category, Product, formatPrice, formatPriceExVat, resolveUrl } fro
 import { BgRemoveModal } from '../../components/BgRemoveModal';
 import { useToast } from '../../lib/toast';
 
+interface VariantFormEntry {
+  id?: string;
+  label: string;
+  options: { key: string; value: string }[];
+  sku: string;
+  price: number | '';
+  discountPrice: number | '';
+  stock: number | '';
+  imageUrl: string;
+}
+
 interface FormState {
   name: string;
   slug: string;
@@ -20,7 +31,12 @@ interface FormState {
   modelUrl: string;
   categoryId: string;
   imageUrls: string[]; // first image is the main
+  variants: VariantFormEntry[];
 }
+
+const emptyVariant = (): VariantFormEntry => ({
+  label: '', options: [], sku: '', price: '', discountPrice: '', stock: '', imageUrl: '',
+});
 
 const empty: FormState = {
   name: '', slug: '', designer: '', description: '',
@@ -28,6 +44,7 @@ const empty: FormState = {
   featured: false, published: true, assembled: false,
   material: [], color: [], dimensionEntries: [], modelUrl: '',
   categoryId: '', imageUrls: [''],
+  variants: [],
 };
 
 export function AdminProducts() {
@@ -51,7 +68,7 @@ export function AdminProducts() {
   const [uploadingMulti, setUploadingMulti] = useState(false);
   const [bgRemove, setBgRemove] = useState<{ idx: number; source: File | string } | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
-  const [formTab, setFormTab] = useState<'basic' | 'pricing' | 'media' | 'details'>('basic');
+  const [formTab, setFormTab] = useState<'basic' | 'pricing' | 'media' | 'details' | 'variants'>('basic');
   const [sortBy, setSortBy] = useState<'name' | 'price' | 'stock' | 'category' | 'status'>('name');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [page, setPage] = useState(1);
@@ -71,7 +88,7 @@ export function AdminProducts() {
   }
   useEffect(() => { load(); }, []);
 
-  function reset() { setForm({ ...empty, imageUrls: [''] }); setEditing(null); setErr(''); setSlugManual(false); setFormTab('basic'); }
+  function reset() { setForm({ ...empty, imageUrls: [''], variants: [] }); setEditing(null); setErr(''); setSlugManual(false); setFormTab('basic'); }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -100,6 +117,19 @@ export function AdminProducts() {
       modelUrl: form.modelUrl || null,
       categoryId: form.categoryId || null,
       images: cleanUrls.map((url, i) => ({ url, order: i })),
+      variants: form.variants.length
+        ? form.variants.map((v, i) => ({
+            ...(v.id ? { id: v.id } : {}),
+            label: v.label,
+            options: v.options.length ? Object.fromEntries(v.options.map(o => [o.key, o.value])) : null,
+            sku: v.sku || null,
+            price: Number(v.price) || 0,
+            discountPrice: v.discountPrice === '' ? null : Number(v.discountPrice),
+            stock: v.stock === '' ? 0 : Number(v.stock),
+            imageUrl: v.imageUrl || null,
+            order: i,
+          }))
+        : [],
     };
     setSubmitting(true);
     try {
@@ -151,6 +181,27 @@ export function AdminProducts() {
       modelUrl: p.modelUrl || '',
       categoryId: p.category?.id || '',
       imageUrls: p.images.length ? p.images.map((i) => i.url) : [''],
+      variants: (p.variants ?? []).map(v => {
+        let opts: { key: string; value: string }[] = [];
+        if (v.options) {
+          try {
+            const parsed = typeof v.options === 'string' ? JSON.parse(v.options) : v.options;
+            if (parsed && typeof parsed === 'object') {
+              opts = Object.entries(parsed).map(([key, value]) => ({ key, value: String(value) }));
+            }
+          } catch { /* ignore */ }
+        }
+        return {
+          id: v.id,
+          label: v.label,
+          options: opts,
+          sku: v.sku ?? '',
+          price: v.price,
+          discountPrice: v.discountPrice ?? '',
+          stock: v.stock,
+          imageUrl: v.imageUrl ?? '',
+        };
+      }),
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -322,6 +373,7 @@ export function AdminProducts() {
             { id: 'pricing', label: 'Pricing' },
             { id: 'media', label: 'Media' },
             { id: 'details', label: 'Details' },
+            { id: 'variants', label: `Variants${form.variants.length ? ` (${form.variants.length})` : ''}` },
           ] as const).map(t => (
             <button key={t.id} type="button" role="tab"
               aria-selected={formTab === t.id}
@@ -527,6 +579,87 @@ export function AdminProducts() {
               >+ Add dimension</button>
             </div>
           </div>
+        </div>
+        )}
+
+        {formTab === 'variants' && (
+        <div>
+          <p style={{ fontSize: 11, color: 'var(--fg3)', marginBottom: 16 }}>
+            Add variants for different sizes, materials or configurations — each with its own price and stock.
+            If variants are added, the base price above becomes the &ldquo;from&rdquo; price on listings.
+          </p>
+          {form.variants.map((v, vi) => (
+            <div key={vi} style={{ border: '1px solid rgba(26,23,20,0.09)', padding: 16, marginBottom: 12, background: 'var(--bg)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--fg3)' }}>Variant {vi + 1}</span>
+                <button type="button" className="btn outline" style={{ padding: '4px 10px', fontSize: 11 }}
+                  onClick={() => setForm(f => ({ ...f, variants: f.variants.filter((_, i) => i !== vi) }))}>
+                  × Remove
+                </button>
+              </div>
+              <div className="admin-form-2col">
+                <div className="field">
+                  <label>Label <span style={{ color: 'var(--fg3)', fontWeight: 400, fontSize: 10 }}>(shown on button, e.g. "120 cm" or "Oak")</span></label>
+                  <input value={v.label} required
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], label: e.target.value }; return { ...f, variants: vs }; })}
+                    placeholder="e.g. 120 cm" />
+                </div>
+                <div className="field">
+                  <label>SKU <span style={{ color: 'var(--fg3)', fontWeight: 400, fontSize: 10 }}>(optional)</span></label>
+                  <input value={v.sku}
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], sku: e.target.value }; return { ...f, variants: vs }; })}
+                    placeholder="e.g. TBL-OAK-120" />
+                </div>
+                <div className="field">
+                  <label>Price (€)</label>
+                  <input type="number" step="0.01" min="0" value={v.price}
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], price: e.target.value === '' ? '' : Number(e.target.value) }; return { ...f, variants: vs }; })}
+                    placeholder="0" />
+                </div>
+                <div className="field">
+                  <label>Discount Price (€) <span style={{ color: 'var(--fg3)', fontWeight: 400, fontSize: 10 }}>(optional)</span></label>
+                  <input type="number" step="0.01" min="0" value={v.discountPrice}
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], discountPrice: e.target.value === '' ? '' : Number(e.target.value) }; return { ...f, variants: vs }; })}
+                    placeholder="Leave empty for no discount" />
+                </div>
+                <div className="field">
+                  <label>Stock</label>
+                  <input type="number" min="0" value={v.stock}
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], stock: e.target.value === '' ? '' : Math.max(0, Number(e.target.value)) }; return { ...f, variants: vs }; })}
+                    placeholder="0" />
+                </div>
+                <div className="field">
+                  <label>Image URL <span style={{ color: 'var(--fg3)', fontWeight: 400, fontSize: 10 }}>(optional override)</span></label>
+                  <input value={v.imageUrl}
+                    onChange={e => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], imageUrl: e.target.value }; return { ...f, variants: vs }; })}
+                    placeholder="Leave empty to use product images" />
+                </div>
+                <div className="field" style={{ gridColumn: '1 / -1' }}>
+                  <label>Options <span style={{ color: 'var(--fg3)', fontWeight: 400, fontSize: 10 }}>(key/value pairs — optional, used for grouped selectors)</span></label>
+                  {v.options.map((opt, oi) => (
+                    <div key={oi} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 8, marginBottom: 6 }}>
+                      <input value={opt.key}
+                        onChange={e => setForm(f => { const vs = [...f.variants]; const opts = [...vs[vi].options]; opts[oi] = { ...opts[oi], key: e.target.value }; vs[vi] = { ...vs[vi], options: opts }; return { ...f, variants: vs }; })}
+                        placeholder="e.g. Size" />
+                      <input value={opt.value}
+                        onChange={e => setForm(f => { const vs = [...f.variants]; const opts = [...vs[vi].options]; opts[oi] = { ...opts[oi], value: e.target.value }; vs[vi] = { ...vs[vi], options: opts }; return { ...f, variants: vs }; })}
+                        placeholder="e.g. 120 cm" />
+                      <button type="button" className="btn outline" style={{ padding: '8px 12px' }}
+                        onClick={() => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], options: vs[vi].options.filter((_, i) => i !== oi) }; return { ...f, variants: vs }; })}>×</button>
+                    </div>
+                  ))}
+                  <button type="button" className="btn outline" style={{ fontSize: 11, alignSelf: 'flex-start' }}
+                    onClick={() => setForm(f => { const vs = [...f.variants]; vs[vi] = { ...vs[vi], options: [...vs[vi].options, { key: '', value: '' }] }; return { ...f, variants: vs }; })}>
+                    + Add option
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          <button type="button" className="btn outline"
+            onClick={() => setForm(f => ({ ...f, variants: [...f.variants, emptyVariant()] }))}>
+            + Add variant
+          </button>
         </div>
         )}
 

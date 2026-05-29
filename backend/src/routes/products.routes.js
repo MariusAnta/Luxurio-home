@@ -16,6 +16,20 @@ const imageSchema = z.object({
   order: z.number().int().optional(),
 });
 
+const variantSchema = z.object({
+  id: z.string().optional(),
+  label: z.string().min(1),
+  options: z.record(z.string()).optional().nullable(),
+  sku: z.string().optional().nullable(),
+  price: z.number().nonnegative(),
+  discountPrice: z.number().nonnegative().optional().nullable(),
+  stock: z.number().int().nonnegative().default(0),
+  dimensions: z.string().optional().nullable(),
+  weightKg: z.number().optional().nullable(),
+  imageUrl: z.string().optional().nullable(),
+  order: z.number().int().optional(),
+});
+
 const productSchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
@@ -34,6 +48,7 @@ const productSchema = z.object({
   assembled: z.boolean().optional(),
   categoryId: z.string().optional().nullable(),
   images: z.array(imageSchema).optional(),
+  variants: z.array(variantSchema).optional(),
 });
 
 // Public list with filters & pagination
@@ -48,7 +63,7 @@ router.get('/', async (req, res, next) => {
       const idList = String(ids).split(',').map(s => s.trim()).filter(Boolean);
       const items = await prisma.product.findMany({
         where: { id: { in: idList } },
-        include: { images: { orderBy: { order: 'asc' } }, category: true },
+        include: { images: { orderBy: { order: 'asc' } }, category: true, variants: { orderBy: { order: 'asc' } } },
       });
       // preserve order from idList
       const ordered = idList.map(id => items.find(p => p.id === id)).filter(Boolean);
@@ -77,7 +92,7 @@ router.get('/', async (req, res, next) => {
         take: take + 1,
         cursor: { id: String(cursor) },
         skip: 1, // skip the cursor item itself
-        include: { images: { orderBy: { order: 'asc' } }, category: true },
+        include: { images: { orderBy: { order: 'asc' } }, category: true, variants: { orderBy: { order: 'asc' } } },
         orderBy: { createdAt: 'desc' },
       });
       const hasMore = raw.length > take;
@@ -91,7 +106,7 @@ router.get('/', async (req, res, next) => {
     const [items, total] = await Promise.all([
       prisma.product.findMany({
         where, take, skip,
-        include: { images: { orderBy: { order: 'asc' } }, category: true },
+        include: { images: { orderBy: { order: 'asc' } }, category: true, variants: { orderBy: { order: 'asc' } } },
         orderBy: { createdAt: 'desc' },
       }),
       prisma.product.count({ where }),
@@ -104,7 +119,7 @@ router.get('/', async (req, res, next) => {
 router.get('/admin/all', requireAdmin, async (_req, res, next) => {
   try {
     const items = await prisma.product.findMany({
-      include: { images: { orderBy: { order: 'asc' } }, category: true },
+      include: { images: { orderBy: { order: 'asc' } }, category: true, variants: { orderBy: { order: 'asc' } } },
       orderBy: { createdAt: 'desc' },
     });
     res.json(items);
@@ -115,7 +130,7 @@ router.get('/:slug', async (req, res, next) => {
   try {
     const product = await prisma.product.findFirst({
       where: { slug: req.params.slug, published: true },
-      include: { images: { orderBy: { order: 'asc' } }, category: true },
+      include: { images: { orderBy: { order: 'asc' } }, category: true, variants: { orderBy: { order: 'asc' } } },
     });
     if (!product) return res.status(404).json({ error: 'Not found' });
     res.json(product);
@@ -125,15 +140,21 @@ router.get('/:slug', async (req, res, next) => {
 router.post('/', requireAdmin, async (req, res, next) => {
   try {
     const data = productSchema.parse(req.body);
-    const { images, ...rest } = data;
+    const { images, variants, ...rest } = data;
     const created = await prisma.product.create({
       data: {
         ...rest,
         images: images?.length
           ? { create: images.map((img, i) => ({ ...img, order: img.order ?? i })) }
           : undefined,
+        variants: variants?.length
+          ? { create: variants.map((v, i) => {
+              const { id: _id, options, ...vRest } = v;
+              return { ...vRest, options: options ? JSON.stringify(options) : null, order: v.order ?? i };
+            }) }
+          : undefined,
       },
-      include: { images: true, category: true },
+      include: { images: true, category: true, variants: { orderBy: { order: 'asc' } } },
     });
     res.status(201).json(created);
   } catch (e) { next(e); }
@@ -142,7 +163,7 @@ router.post('/', requireAdmin, async (req, res, next) => {
 router.put('/:id', requireAdmin, async (req, res, next) => {
   try {
     const data = productSchema.partial().parse(req.body);
-    const { images, ...rest } = data;
+    const { images, variants, ...rest } = data;
     const updated = await prisma.product.update({
       where: { id: req.params.id },
       data: {
@@ -150,8 +171,14 @@ router.put('/:id', requireAdmin, async (req, res, next) => {
         ...(images
           ? { images: { deleteMany: {}, create: images.map((img, i) => ({ ...img, order: img.order ?? i })) } }
           : {}),
+        ...(variants !== undefined
+          ? { variants: { deleteMany: {}, create: variants.map((v, i) => {
+              const { id: _id, options, ...vRest } = v;
+              return { ...vRest, options: options ? JSON.stringify(options) : null, order: v.order ?? i };
+            }) } }
+          : {}),
       },
-      include: { images: true, category: true },
+      include: { images: true, category: true, variants: { orderBy: { order: 'asc' } } },
     });
     res.json(updated);
   } catch (e) { next(e); }
